@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">OtusLesson</string>
+    <string name="app_name">OtusHomeWork1</string>
+    <string name="bruges_title">In Bruges</string>
+    <string name="like_btn">Назад</string>
+    <string name="share_btn">Share</string>
+
 </resources>
