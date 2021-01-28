@@ -4,32 +4,81 @@ package ru.voodster.otuslesson
 // методом forEach вышло некрасиво и сложно. Теперь узнал про RecyclerView
 // буду переделывать через него, а этот сделаю в тупую...
 object Constants {
-    fun getFilmList():ArrayList<Film>{
-        val filmList = ArrayList<Film>()
-        val film1 = Film(
+    fun sampleList():ArrayList<FilmItem>{
+        val filmList = ArrayList<FilmItem>()
+        filmList.add(FilmItem(
             1,
             R.drawable.ic_inbruges,
             "In Bruges",
-            "In Bruges",
-            4
+            "Чёрная трагикомедия режиссёра и сценариста Мартина Макдонаха 2008 года.")
         )
-        filmList.add(film1)
-        val film2 = Film(
+        filmList.add(FilmItem(
             2,
             R.drawable.ic_inception,
             "Inception",
-            "Inception",
-            1
+            " Научно-фантастический триллер Кристофера Нолана, основанный на идее осознанных сновидений")
         )
-        filmList.add(film2)
-        val film3 = Film(
+        filmList.add(FilmItem(
             3,
             R.drawable.ic_lotr,
             "Lord of the rings",
-            "Lord of the rings",
-            1
+            "Экранизация романа Дж. Р. Р. Толкина «Властелин колец»")
         )
-        filmList.add(film3)
+        filmList.add(FilmItem(
+            1,
+            R.drawable.ic_inbruges,
+            "In Bruges",
+            "Чёрная трагикомедия режиссёра и сценариста Мартина Макдонаха 2008 года.")
+        )
+        filmList.add(FilmItem(
+            2,
+            R.drawable.ic_inception,
+            "Inception",
+            "Научно-фантастический триллер Кристофера Нолана, основанный на идее осознанных сновидений")
+        )
+        filmList.add(FilmItem(
+            3,
+            R.drawable.ic_lotr,
+            "Lord of the rings",
+            "Экранизация романа Дж. Р. Р. Толкина «Властелин колец»")
+        )
+        filmList.add(FilmItem(
+            1,
+            R.drawable.ic_inbruges,
+            "In Bruges",
+            "Чёрная трагикомедия режиссёра и сценариста Мартина Макдонаха 2008 года")
+        )
+        filmList.add(FilmItem(
+            2,
+            R.drawable.ic_inception,
+            "Inception",
+            "Научно-фантастический триллер Кристофера Нолана, основанный на идее осознанных сновидений")
+        )
+        filmList.add(FilmItem(
+            3,
+            R.drawable.ic_lotr,
+            "Lord of the rings",
+            "Экранизация романа Дж. Р. Р. Толкина «Властелин колец»")
+        )
+        filmList.add(FilmItem(
+            1,
+            R.drawable.ic_inbruges,
+            "In Bruges",
+            "Чёрная трагикомедия режиссёра и сценариста Мартина Макдонаха 2008 года")
+        )
+        filmList.add(FilmItem(
+            2,
+            R.drawable.ic_inception,
+            "Inception",
+            "Научно-фантастический триллер Кристофера Нолана, основанный на идее осознанных сновидений")
+        )
+        filmList.add(FilmItem(
+            3,
+            R.drawable.ic_lotr,
+            "Lord of the rings",
+            "Экранизация романа Дж. Р. Р. Толкина «Властелин колец»")
+        )
+
         return filmList
     }
 }
