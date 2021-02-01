@@ -1,9 +1,6 @@
 package ru.voodster.otuslesson
 
-import android.os.Parcel
-import android.os.Parcelable
 import android.util.Log
-import java.time.LocalDate
 
 // Data class для фильма
 //
