@@ -23,7 +23,7 @@ class FavFilmAdapter (private val filmsList : ArrayList<FilmItem>) : RecyclerVie
         // Log.d(TAG,"onCreateViewHolder $viewType")
         val layoutInflater = LayoutInflater.from(parent.context)
         return if (viewType == 0) {
-            val view = layoutInflater.inflate(R.layout.item_film, parent, false)
+            val view = layoutInflater.inflate(R.layout.item_fav_film, parent, false)
             FavFilmVH(view)
         } else {
             val view = layoutInflater.inflate(R.layout.item_fav_header, parent, false)
