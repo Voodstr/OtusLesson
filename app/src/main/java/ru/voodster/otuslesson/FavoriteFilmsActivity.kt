@@ -27,8 +27,7 @@ class FavoriteFilmsActivity() : AppCompatActivity() {
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        mFavFilmList?.let {
-            recyclerView.adapter = FavFilmAdapter(it)
-        }
+            recyclerView.adapter = FavFilmAdapter(mFavFilmList)
+
     }
 }

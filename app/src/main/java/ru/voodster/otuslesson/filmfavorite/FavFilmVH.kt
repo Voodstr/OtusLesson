@@ -1,6 +1,5 @@
 package ru.voodster.otuslesson.filmfavorite
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,9 +9,9 @@ import ru.voodster.otuslesson.R
 
 class FavFilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
 
-    private val img: ImageView = itemView.findViewById(R.id.img)
-    private val title: TextView = itemView.findViewById(R.id.titleTv)
-    private val likeBtn: ImageView = itemView.findViewById(R.id.likeBtn)
+    private val img: ImageView = itemView.findViewById(R.id.filmImg)
+    private val title: TextView = itemView.findViewById(R.id.filmTitleTv)
+    private val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
 
     private fun pressLike(film: FilmItem){
         if (film.fav) {

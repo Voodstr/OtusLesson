@@ -1,8 +1,11 @@
 package ru.voodster.otuslesson
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,8 +14,6 @@ import ru.voodster.otuslesson.film.FilmAdapter
 
 class MainActivity : AppCompatActivity() {
 
-
-    private var mFilmList = FilmList
 
     private val recyclerView by lazy {
         findViewById<RecyclerView>(R.id.recyclerView)
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, FavoriteFilmsActivity()::class.java)
             startActivity(intent)
         }
+
     }
 
 
