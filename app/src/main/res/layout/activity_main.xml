@@ -26,6 +26,6 @@
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Favorite"/>
+        android:text="@string/favBtn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

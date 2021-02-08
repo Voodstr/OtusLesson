@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:gravity="center"
-    android:text="@string/header_text"
+    android:text="@string/headerText"
     android:textSize="24sp"
     android:textStyle="italic"
     android:textColor="@color/pal_3">

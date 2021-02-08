@@ -53,7 +53,7 @@
         app:layout_constraintEnd_toStartOf="@id/aboutShareBtn"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintVertical_chainStyle="spread"
-        tools:text="Add"
+        android:text="@string/like_btn"
         android:textColor="@color/pal_4"
         android:backgroundTint="@color/pal_2" />
     <Button
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@id/aboutAddBtn"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintVertical_chainStyle="spread"
-        tools:text="Share"
+        android:text="@string/share_btn"
         android:textColor="@color/pal_4"
         android:backgroundTint="@color/pal_2" />
 

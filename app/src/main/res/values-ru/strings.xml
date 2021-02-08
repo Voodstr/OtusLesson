@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">OtusHomeWork2</string>
+    <string name="bruges_title">In Bruges</string>
+    <string name="like_btn">Нравится</string>
+    <string name="share_btn">Поделиться</string>
+    <string name="headerText">Фильмы</string>
+    <string name="favHeaderText">Избранное</string>
+    <string name="exitDialogTitle">Выход</string>
+    <string name="exitDialogText">Вы хотите выйти из приложения?</string>
+    <string name="yesBtn">Да</string>
+    <string name="noBtn">Нет</string>
+    <string name="cancelBtn">Отмена</string>
+    <string name="favBtn">Избранное</string>
+</resources>

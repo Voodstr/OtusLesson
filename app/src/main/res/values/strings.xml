@@ -3,6 +3,12 @@
     <string name="bruges_title">In Bruges</string>
     <string name="like_btn">Like</string>
     <string name="share_btn">Share</string>
-    <string name="header_text">Фильмы</string>
-
+    <string name="headerText">Films</string>
+    <string name="favHeaderText">Favorite</string>
+    <string name="exitDialogTitle">Exit</string>
+    <string name="exitDialogText">Do you want to exit the app?</string>
+    <string name="yesBtn">Yes</string>
+    <string name="noBtn">No</string>
+    <string name="cancelBtn">Cancel</string>
+    <string name="favBtn">Favorite</string>
 </resources>
