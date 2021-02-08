@@ -9,13 +9,18 @@ import android.util.Log
     val img:Int,
     val name : String,
     val description:String,
-    var fav:Boolean = false){
+    var fav:Boolean = false,
+    var likes:Long = 0){
+
     companion object {
         const val TAG = "FilmItem"
     }
 
     fun clickFav(){
-        Log.d(TAG,"fav $fav")
+       // Log.d(TAG,"fav $fav")
         fav=!fav
+    }
+    fun like(){
+        likes++
     }
  }

@@ -30,16 +30,18 @@ class FilmAdapter(private val filmsList : ArrayList<FilmItem>) : RecyclerView.Ad
                 val view = layoutInflater.inflate(R.layout.item_header, parent, false)
                 FilmHeaderVH(view)
             }
+
         }
 
+    override fun getItemCount() = filmsList.size + 1 // +1 = header]
 
-    override fun getItemCount() = filmsList.size + 1 // +1 = header
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is FilmVH) {
             holder.bind(filmsList[position-1])
         }
     }
+
 
 
 }
