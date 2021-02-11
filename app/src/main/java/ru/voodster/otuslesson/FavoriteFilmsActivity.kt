@@ -14,7 +14,7 @@ class FavoriteFilmsActivity() : AppCompatActivity() {
 
     private val mFavFilmList = FilmList.favList()
     private val recyclerView by lazy {
-        findViewById<RecyclerView>(R.id.recyclerViewFavorite)
+        findViewById<RecyclerView>(R.id.favoriteRV)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

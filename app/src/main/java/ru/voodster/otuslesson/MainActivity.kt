@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     private var  backPressedTime:Long = 0
 
-    private val filmListFragment = FilmListFragment()
+   /* private val filmListFragment = FilmListFragment()
     private val favFilmListFragment = FavoriteFilmsFragment()
-    private val searchFragment = SearchFragment()
+    private val searchFragment = SearchFragment()*/
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setClickListeners()
-        replaceFragment(filmListFragment)
+        replaceFragment(FilmListFragment())
         setNavigationBar()
     }
 
@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.nav_filmList -> replaceFragment(filmListFragment)
-                R.id.nav_favorite -> replaceFragment(favFilmListFragment)
-                R.id.nav_search -> replaceFragment(searchFragment)
+                R.id.nav_filmList -> replaceFragment(FilmListFragment())
+                R.id.nav_favorite -> replaceFragment(FavoriteFilmsFragment())
+                R.id.nav_search -> replaceFragment(SearchFragment())
             }
             true
         }

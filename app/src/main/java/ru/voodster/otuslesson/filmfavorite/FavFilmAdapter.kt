@@ -9,7 +9,7 @@ import ru.voodster.otuslesson.R
 class FavFilmAdapter (private val filmsList : ArrayList<FilmItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        const val TAG = "FilmAdapter"
+        const val TAG = "FavFilmAdapter"
 
         const val VIEW_TYPE_FAV_FILM = 1
         const val VIEW_TYPE_FAV_FILM_HEADER = 0
