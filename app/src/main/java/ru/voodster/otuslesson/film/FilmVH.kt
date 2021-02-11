@@ -16,7 +16,6 @@ class FilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
     private val img: ImageView = itemView.findViewById(R.id.filmImg)
     private val title: TextView = itemView.findViewById(R.id.filmTitleTv)
     private val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
-    private val aboutBtn : ImageView = itemView.findViewById(R.id.filmAboutBtn)
 
     companion object{
         const val EXTRA_ID = 0
@@ -32,19 +31,11 @@ class FilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
     fun bind(film: FilmItem) {
         img.setImageResource(film.img)
         title.text = film.name
-
         pressLike(film)
-
         likeBtn.setOnClickListener {
             film.clickFav()
             pressLike(film)
         }
-
-        aboutBtn.setOnClickListener{
-            val intent = Intent(it.context,AboutActivity::class.java)
-            intent.putExtra("EXTRA_ID",film.id)
-            startActivity(it.context,intent, Bundle.EMPTY)
-        }
-
     }
+
 }

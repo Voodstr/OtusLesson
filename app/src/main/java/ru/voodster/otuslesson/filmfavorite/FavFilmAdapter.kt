@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.R
 
-class FavFilmAdapter (private val filmsList : ArrayList<FilmItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FavFilmAdapter (private val layoutInflater: LayoutInflater,
+                      private val filmsList :ArrayList<FilmItem>,
+                      private val listener:((filmItem:FilmItem)->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object {
         const val TAG = "FavFilmAdapter"
@@ -20,8 +22,6 @@ class FavFilmAdapter (private val filmsList : ArrayList<FilmItem>) : RecyclerVie
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        // Log.d(TAG,"onCreateViewHolder $viewType")
-        val layoutInflater = LayoutInflater.from(parent.context)
         return if (viewType == 0) {
             val view = layoutInflater.inflate(R.layout.item_fav_film, parent, false)
             FavFilmVH(view)
@@ -38,5 +38,7 @@ class FavFilmAdapter (private val filmsList : ArrayList<FilmItem>) : RecyclerVie
         if (holder is FavFilmVH) {
             holder.bind(filmsList[position - 1])
         }
+
+        holder.itemView.setOnClickListener { listener?.invoke(filmsList[position-1]) }
     }
 }

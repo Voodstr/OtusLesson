@@ -10,7 +10,6 @@
         android:screenOrientation="fullUser"
         android:supportsRtl="true"
         android:theme="@style/Theme.OtusLesson">
-        <activity android:name=".FavoriteFilmsActivity"></activity>
         <activity android:name=".AboutActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

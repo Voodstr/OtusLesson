@@ -27,7 +27,7 @@ object FilmList: ArrayList<FilmItem>() {
             R.drawable.ic_inbruges,
             "In Bruges",
             "Чёрная трагикомедия режиссёра и сценариста Мартина Макдонаха 2008 года.",
-            true)
+            true,10)
         )
         this.add(
             FilmItem(

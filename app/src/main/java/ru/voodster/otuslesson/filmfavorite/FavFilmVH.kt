@@ -16,18 +16,11 @@ class FavFilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
 
     private val img: ImageView = itemView.findViewById(R.id.favImg)
     private val title: TextView = itemView.findViewById(R.id.favTitleTv)
-    private val aboutBtn : ImageView = itemView.findViewById(R.id.favAboutBtn)
 
 
     fun bind(film: FilmItem) {
         img.setImageResource(film.img)
         title.text = film.name
-        aboutBtn.setOnClickListener{
-            val intent = Intent(it.context, AboutActivity::class.java)
-            intent.putExtra("EXTRA_ID",film.id)
-            ContextCompat.startActivity(it.context, intent, Bundle.EMPTY)
-        }
-
     }
 
-    }
+}

@@ -4,9 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
+import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
-class FilmAdapter(private val filmsList : ArrayList<FilmItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class FilmAdapter( private val layoutInflater: LayoutInflater,
+                   private val filmsList :ArrayList<FilmItem>,
+                   private val listener:((filmItem:FilmItem)->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object{
         const val TAG = "FilmAdapter"
@@ -20,8 +23,6 @@ class FilmAdapter(private val filmsList : ArrayList<FilmItem>) : RecyclerView.Ad
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        // Log.d(TAG,"onCreateViewHolder $viewType")
-        val layoutInflater = LayoutInflater.from(parent.context)
         return if (viewType==0) {
                 val view = layoutInflater.inflate(R.layout.item_film, parent, false)
                 FilmVH(view)
@@ -39,6 +40,10 @@ class FilmAdapter(private val filmsList : ArrayList<FilmItem>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is FilmVH) {
             holder.bind(filmsList[position-1])
+        }
+
+        holder.itemView.setOnClickListener {
+            listener?.invoke(filmsList[position-1])
         }
     }
 
