@@ -11,4 +11,7 @@
     <string name="noBtn">No</string>
     <string name="cancelBtn">Cancel</string>
     <string name="favBtn">Favorite</string>
+    <string name="navTitleList">Films</string>
+    <string name="navTitleFavorite">Favorite</string>
+    <string name="navTitleSearch">Search</string>
 </resources>

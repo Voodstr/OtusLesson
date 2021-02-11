@@ -11,4 +11,7 @@
     <string name="noBtn">Нет</string>
     <string name="cancelBtn">Отмена</string>
     <string name="favBtn">Избранное</string>
+    <string name="navTitleList">Фильмы</string>
+    <string name="navTitleFavorite">Избранное</string>
+    <string name="navTitleSearch">Поиск</string>
 </resources>
