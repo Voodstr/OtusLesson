@@ -1,18 +1,19 @@
 package ru.voodster.otuslesson
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.voodster.otuslesson.film.FilmVH
 import ru.voodster.otuslesson.fragment.AboutFragment
 import ru.voodster.otuslesson.fragment.FavoriteFilmsFragment
 import ru.voodster.otuslesson.fragment.FilmListFragment
 import ru.voodster.otuslesson.fragment.SearchFragment
 
 
-class MainActivity : AppCompatActivity(), FilmListFragment.onFilmClickListener,
-    FavoriteFilmsFragment.onFilmClickListener {
+class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
+    FavoriteFilmsFragment.OnFilmClickListener,FilmVH.OnFavClickListener {
 
     private val filmListFragment = FilmListFragment()
     private val favFilmListFragment = FavoriteFilmsFragment()
@@ -29,7 +30,9 @@ class MainActivity : AppCompatActivity(), FilmListFragment.onFilmClickListener,
         setNavigationBar()
     }
 
-
+    override fun onFavClick(film: FilmItem) {
+        Toast.makeText(this,"fav click",Toast.LENGTH_SHORT).show()
+    }
 
 
     private fun setClickListeners(){
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.onFilmClickListener,
     private fun openAboutFilm(id: Int) {
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
             .replace(R.id.fragmentContainer,AboutFragment(id))
             .addToBackStack(null)
             .commit()

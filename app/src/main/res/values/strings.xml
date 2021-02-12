@@ -14,4 +14,6 @@
     <string name="navTitleList">Films</string>
     <string name="navTitleFavorite">Favorite</string>
     <string name="navTitleSearch">Search</string>
+    <string name="addFavToast">Added</string>
+    <string name="rmFavToast">Removed</string>
 </resources>

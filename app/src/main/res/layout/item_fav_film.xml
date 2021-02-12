@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/pal_4"
         tools:text="Название"

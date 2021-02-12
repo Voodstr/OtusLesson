@@ -14,4 +14,6 @@
     <string name="navTitleList">Фильмы</string>
     <string name="navTitleFavorite">Избранное</string>
     <string name="navTitleSearch">Поиск</string>
+    <string name="addFavToast">Добавлено</string>
+    <string name="rmFavToast">Удалено</string>
 </resources>
