@@ -16,4 +16,6 @@
     <string name="navTitleSearch">Search</string>
     <string name="addFavToast">Added</string>
     <string name="rmFavToast">Removed</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

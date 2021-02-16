@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_drawer)
         openList()
 
         setClickListeners()
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     private fun openAboutFilm(id: Int) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
+            //.setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
             .replace(R.id.fragmentContainer,AboutFragment(id))
             .addToBackStack(null)
             .commit()

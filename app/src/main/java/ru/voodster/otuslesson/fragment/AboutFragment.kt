@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
@@ -19,7 +22,7 @@ class AboutFragment(private val filmID:Int) :Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_about,container, false)
+        return inflater.inflate(R.layout.fragment_about_coordinator,container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,12 +38,8 @@ class AboutFragment(private val filmID:Int) :Fragment() {
     private fun setClickListeners() {
 
         view?.let {
-            it.findViewById<Button>(R.id.aboutLikeBtn).setOnClickListener { view ->
-                FilmList[filmID].like()
-                view.findViewById<TextView>(R.id.aboutLikesTv).text= FilmList[filmID].likes.toString()
-            }
 
-            it.findViewById<Button>(R.id.aboutShareBtn).setOnClickListener {
+            it.findViewById<FloatingActionButton>(R.id.aboutShareBtn).setOnClickListener {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
                 intent.putExtra(Intent.EXTRA_TEXT, FilmList[filmID].name+"\n"+ FilmList[filmID].description) //передаю название фильма
@@ -52,10 +51,11 @@ class AboutFragment(private val filmID:Int) :Fragment() {
 
     private fun setViews(){
         view?.let {
-            it.findViewById<TextView>(R.id.aboutTitleTv).text = FilmList[filmID].name
+            it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).title = FilmList[filmID].name
+            it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setExpandedTitleColor(it.context.getColor(R.color.pal_2))
+            it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setCollapsedTitleTextColor(it.context.getColor(R.color.pal_4))
             it.findViewById<TextView>(R.id.aboutDescriptionTv).text = FilmList[filmID].description
             it.findViewById<ImageView>(R.id.aboutImg).setImageResource(FilmList[filmID].img)
-            it.findViewById<TextView>(R.id.aboutLikesTv).text= FilmList[filmID].likes.toString()
         }
 
     }

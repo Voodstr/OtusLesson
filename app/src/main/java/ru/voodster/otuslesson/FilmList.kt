@@ -46,7 +46,7 @@ object FilmList: ArrayList<FilmItem>() {
         this.add(
             FilmItem(
             3,
-            R.drawable.ic_inbruges,
+            R.drawable.ic_shawshank,
             "The Shawshank Redemption",
             "Фильм основанный на повести Стивена Кинга «Рита Хейуорт и спасение из Шоушенка».")
         )
