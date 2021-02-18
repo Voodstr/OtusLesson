@@ -49,8 +49,8 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
         if (holder is FavFilmVH) {
             holder.bind(favFilmsList[position - 1])
             holder.itemView.findViewById<ImageView>(R.id.favRmBtn).setOnClickListener {
-                favFilmsList.removeAt(position)
-                notifyItemRemoved(position)
+                favFilmsList.removeAt(holder.adapterPosition)
+                notifyItemRemoved(holder.adapterPosition)
             }
         }
         holder.itemView.setOnClickListener { listener?.invoke(favFilmsList[position-1]) }
