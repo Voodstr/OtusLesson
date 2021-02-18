@@ -44,6 +44,7 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
             holder.bind(favFilmsList[position - 1])
             holder.itemView.findViewById<ImageView>(R.id.favRmBtn).setOnClickListener {
                 if (holder.adapterPosition==itemCount-1){
+                    it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
                     val exitDialogBuilder = AlertDialog.Builder(it.context)
                     exitDialogBuilder.setTitle(R.string.rmDialTitle)
                     exitDialogBuilder.setMessage(R.string.rmDialMsg)
@@ -51,7 +52,6 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
                     exitDialogBuilder.setPositiveButton(R.string.yesBtn
                     ) { _, _ ->
                         holder.onRmClick()
-                        it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
                         favFilmsList.removeLast()
                         notifyItemRemoved(holder.adapterPosition)
                     }
@@ -59,6 +59,7 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
                     b.show()
 
                 }else{
+                    it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
                     val exitDialogBuilder = AlertDialog.Builder(it.context)
                     exitDialogBuilder.setTitle(R.string.rmDialTitle)
                     exitDialogBuilder.setMessage(R.string.rmDialMsg)
@@ -66,7 +67,6 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
                     exitDialogBuilder.setPositiveButton(R.string.yesBtn
                     ) { _, _ ->
                         holder.onRmClick()
-                        it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
                         favFilmsList.removeAt(holder.adapterPosition)
                         notifyItemRemoved(holder.adapterPosition)
                     }
