@@ -16,4 +16,6 @@
     <string name="navTitleSearch">Поиск</string>
     <string name="addFavToast">Добавлено</string>
     <string name="rmFavToast">Удалено</string>
+    <string name="rmDialMsg">Вы уверены?</string>
+    <string name="rmDialTitle">Удаление из Избранного</string>
 </resources>

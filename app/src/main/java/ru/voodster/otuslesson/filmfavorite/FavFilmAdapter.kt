@@ -1,12 +1,12 @@
 package ru.voodster.otuslesson.filmfavorite
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
-import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
 class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
@@ -43,13 +43,35 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
         if (holder is FavFilmVH) {
             holder.bind(favFilmsList[position - 1])
             holder.itemView.findViewById<ImageView>(R.id.favRmBtn).setOnClickListener {
-                holder.onRmClick()
                 if (holder.adapterPosition==itemCount-1){
-                    favFilmsList.removeLast()
-                    notifyItemRemoved(holder.adapterPosition)
+                    val exitDialogBuilder = AlertDialog.Builder(it.context)
+                    exitDialogBuilder.setTitle(R.string.rmDialTitle)
+                    exitDialogBuilder.setMessage(R.string.rmDialMsg)
+                    exitDialogBuilder.setCancelable(true)
+                    exitDialogBuilder.setPositiveButton(R.string.yesBtn
+                    ) { _, _ ->
+                        holder.onRmClick()
+                        it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
+                        favFilmsList.removeLast()
+                        notifyItemRemoved(holder.adapterPosition)
+                    }
+                    val b = exitDialogBuilder.create()
+                    b.show()
+
                 }else{
-                    favFilmsList.removeAt(holder.adapterPosition)
-                    notifyItemRemoved(holder.adapterPosition)
+                    val exitDialogBuilder = AlertDialog.Builder(it.context)
+                    exitDialogBuilder.setTitle(R.string.rmDialTitle)
+                    exitDialogBuilder.setMessage(R.string.rmDialMsg)
+                    exitDialogBuilder.setCancelable(true)
+                    exitDialogBuilder.setPositiveButton(R.string.yesBtn
+                    ) { _, _ ->
+                        holder.onRmClick()
+                        it.startAnimation(AnimationUtils.loadAnimation(it.context, R.anim.image_btn_click))
+                        favFilmsList.removeAt(holder.adapterPosition)
+                        notifyItemRemoved(holder.adapterPosition)
+                    }
+                    val b = exitDialogBuilder.create()
+                    b.show()
                 }
             }
         }

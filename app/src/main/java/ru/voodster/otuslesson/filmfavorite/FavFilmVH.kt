@@ -25,12 +25,6 @@ class FavFilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
         title.text = film.name
         //rmBtn.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.fade_exit_500)
 
-        rmBtn.setOnClickListener {
-           rmBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
-            Toast.makeText(itemView.context,"PRESSED",Toast.LENGTH_SHORT).show()
-            film.clickFav()
-        }
-
 
     }
 
