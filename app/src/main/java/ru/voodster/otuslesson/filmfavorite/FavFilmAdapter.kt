@@ -1,10 +1,12 @@
 package ru.voodster.otuslesson.filmfavorite
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
+import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
 class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
@@ -49,8 +51,14 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
         if (holder is FavFilmVH) {
             holder.bind(favFilmsList[position - 1])
             holder.itemView.findViewById<ImageView>(R.id.favRmBtn).setOnClickListener {
-                favFilmsList.removeAt(holder.adapterPosition)
-                notifyItemRemoved(holder.adapterPosition)
+                if (holder.adapterPosition==itemCount-1){
+                    favFilmsList.removeLast()
+                    notifyItemRemoved(holder.adapterPosition)
+                }else{
+                    favFilmsList.removeAt(holder.adapterPosition)
+                    notifyItemRemoved(holder.adapterPosition)
+                    FilmList[position-1].clickFav()
+                }
             }
         }
         holder.itemView.setOnClickListener { listener?.invoke(favFilmsList[position-1]) }
