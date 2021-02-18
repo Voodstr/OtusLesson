@@ -19,7 +19,6 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
         const val VIEW_TYPE_FAV_FILM_HEADER = 0
     }
 
-    var viewHolderListener : OnRmClickListener?=null
 
 
     override fun getItemViewType(position: Int) =
@@ -29,9 +28,7 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0) {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fav_film, parent, false)
-            FavFilmVH(view){
-                viewHolderListener?.onRmClick(it)
-            }
+            FavFilmVH(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fav_header, parent, false)
             FavFilmHeaderVH(view)
@@ -39,11 +36,6 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
     }
 
 
-    interface OnRmClickListener{
-        fun onRmClick(filmItem: FilmItem){
-
-        }
-    }
 
     override fun getItemCount() = favFilmsList.size + 1 // +1 = header
 
@@ -51,13 +43,13 @@ class FavFilmAdapter (private val favFilmsList :ArrayList<FilmItem>,
         if (holder is FavFilmVH) {
             holder.bind(favFilmsList[position - 1])
             holder.itemView.findViewById<ImageView>(R.id.favRmBtn).setOnClickListener {
+                holder.onRmClick()
                 if (holder.adapterPosition==itemCount-1){
                     favFilmsList.removeLast()
                     notifyItemRemoved(holder.adapterPosition)
                 }else{
                     favFilmsList.removeAt(holder.adapterPosition)
                     notifyItemRemoved(holder.adapterPosition)
-                    FilmList[position-1].clickFav()
                 }
             }
         }
