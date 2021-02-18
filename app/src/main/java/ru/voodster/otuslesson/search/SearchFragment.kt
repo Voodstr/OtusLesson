@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.fragment
+package ru.voodster.otuslesson.search
 
 import android.os.Bundle
 import android.view.LayoutInflater

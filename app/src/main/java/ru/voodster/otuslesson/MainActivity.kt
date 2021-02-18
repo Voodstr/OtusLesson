@@ -6,14 +6,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.film.FilmVH
-import ru.voodster.otuslesson.fragment.AboutFragment
-import ru.voodster.otuslesson.fragment.FavoriteFilmsFragment
-import ru.voodster.otuslesson.fragment.FilmListFragment
-import ru.voodster.otuslesson.fragment.SearchFragment
+import ru.voodster.otuslesson.about.AboutFragment
+import ru.voodster.otuslesson.filmfavorite.FavoriteFilmsFragment
+import ru.voodster.otuslesson.film.FilmListFragment
+import ru.voodster.otuslesson.search.SearchFragment
 
 
 class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
-    FavoriteFilmsFragment.OnFilmClickListener,FilmVH.OnFavClickListener {
+    FavoriteFilmsFragment.OnFavClickListener {
 
     private val filmListFragment = FilmListFragment()
     private val favFilmListFragment = FavoriteFilmsFragment()
@@ -30,9 +30,6 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
         setNavigationBar()
     }
 
-    override fun onFavClick(film: FilmItem) {
-        Toast.makeText(this,"fav click",Toast.LENGTH_SHORT).show()
-    }
 
 
     private fun setClickListeners(){
@@ -66,8 +63,8 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     private fun openAboutFilm(id: Int) {
         supportFragmentManager
             .beginTransaction()
-            //.setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer,AboutFragment(id))
+            .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
+            .replace(R.id.fragmentContainer, AboutFragment(id))
             .addToBackStack(null)
             .commit()
     }
@@ -75,15 +72,20 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     private fun openList(){
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
             .replace(R.id.fragmentContainer, filmListFragment.apply {
                 listener = this@MainActivity
             })
             .commit()
     }
 
+    //так и не могу понять как сделать анимацию для центрального элемена
+    // надо откуда-то знать какой предыдущий был элемент, правый или левый TODO
+
     private fun openFav(){
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
             .replace(R.id.fragmentContainer, favFilmListFragment.apply {
                 listener = this@MainActivity
             })
@@ -93,6 +95,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     fun openSearch(){
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.enter_left_toright,R.anim.exit_right_toleft)
             .replace(R.id.fragmentContainer, searchFragment)
             .commit()
     }

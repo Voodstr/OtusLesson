@@ -1,5 +1,6 @@
-package ru.voodster.otuslesson.fragment
+package ru.voodster.otuslesson.filmfavorite
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +11,16 @@ import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.R.layout.fragment_favorite
-import ru.voodster.otuslesson.filmfavorite.FavFilmAdapter
 import java.lang.Exception
 
 class FavoriteFilmsFragment:Fragment() {
 
-    var listener : FavoriteFilmsFragment.OnFilmClickListener?=null
+    var listener : OnFavClickListener?=null
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if(activity is FavoriteFilmsFragment.OnFilmClickListener){
-            listener = activity as OnFilmClickListener
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(activity is OnFavClickListener){
+            listener = activity as OnFavClickListener
         }else{
             throw Exception("Activity must implement onFilmClickListener")
         }
@@ -37,12 +36,12 @@ class FavoriteFilmsFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<RecyclerView>(R.id.favoriteRV)
-            .adapter =  FavFilmAdapter(LayoutInflater.from(requireContext()),FilmList.favList()){
+            .adapter =  FavFilmAdapter(FilmList.favList()){
             listener?.onFavFilmClick(it)
         }
     }
 
-    interface OnFilmClickListener{
+    interface OnFavClickListener{
         fun onFavFilmClick(filmItem: FilmItem)
     }
 

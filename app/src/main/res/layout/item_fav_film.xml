@@ -31,6 +31,17 @@
         android:textColor="@color/pal_4"
         tools:text="Название"
         />
+
+    <ImageView
+        android:id="@+id/favRmBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/baseline_delete_forever_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
     <ImageView
         android:id="@+id/favShadow"
         android:layout_width="match_parent"

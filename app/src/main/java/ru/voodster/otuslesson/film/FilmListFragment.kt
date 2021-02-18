@@ -1,5 +1,6 @@
-package ru.voodster.otuslesson.fragment
+package ru.voodster.otuslesson.film
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.film.FilmAdapter
 import java.lang.Exception
 
 class FilmListFragment:Fragment()  {
 
     var listener : OnFilmClickListener?=null
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         if(activity is OnFilmClickListener){
             listener = activity as OnFilmClickListener
         }else{
@@ -35,7 +34,7 @@ class FilmListFragment:Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<RecyclerView>(R.id.filmListRV)
-            .adapter = FilmAdapter(LayoutInflater.from(requireContext()), FilmList) {
+            .adapter = FilmAdapter( FilmList) {
             //(activity as MainActivity).openAboutFilm(it.id)
                 listener?.onFilmClick(it)
         }

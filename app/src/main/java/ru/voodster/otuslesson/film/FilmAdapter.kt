@@ -7,8 +7,7 @@ import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
-class FilmAdapter( private val layoutInflater: LayoutInflater,
-                   private val filmsList :ArrayList<FilmItem>,
+class FilmAdapter( private val filmsList :ArrayList<FilmItem>,
                    private val listener:((filmItem:FilmItem)->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object{
@@ -24,11 +23,11 @@ class FilmAdapter( private val layoutInflater: LayoutInflater,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType==0) {
-                val view = layoutInflater.inflate(R.layout.item_film, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_film, parent, false)
                 FilmVH(view)
             }
             else {
-                val view = layoutInflater.inflate(R.layout.item_header, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_header, parent, false)
                 FilmHeaderVH(view)
             }
 
