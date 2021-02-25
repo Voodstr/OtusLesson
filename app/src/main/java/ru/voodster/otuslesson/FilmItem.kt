@@ -4,7 +4,7 @@ import android.util.Log
 
 // Data class для фильма
 //
- class FilmItem(
+ data class FilmItem(
     val id:Int,
     val img:Int,
     val name : String,

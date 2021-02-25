@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_filmList"
+        android:icon="@drawable/baseline_article_white_24dp"
+        android:title="@string/navTitleList"/>
+    <item
+        android:id="@+id/nav_favorite"
+        android:icon="@drawable/baseline_favorite_white_24dp"
+        android:title="@string/navTitleFavorite"
+        />
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/baseline_search_white_24dp"
+        android:title="@string/navTitleSearch"
+        />
+
+</menu>

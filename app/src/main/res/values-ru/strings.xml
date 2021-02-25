@@ -11,4 +11,11 @@
     <string name="noBtn">Нет</string>
     <string name="cancelBtn">Отмена</string>
     <string name="favBtn">Избранное</string>
+    <string name="navTitleList">Фильмы</string>
+    <string name="navTitleFavorite">Избранное</string>
+    <string name="navTitleSearch">Поиск</string>
+    <string name="addFavToast">Добавлено</string>
+    <string name="rmFavToast">Удалено</string>
+    <string name="rmDialMsg">Вы уверены?</string>
+    <string name="rmDialTitle">Удаление из Избранного</string>
 </resources>

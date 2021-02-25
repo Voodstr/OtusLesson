@@ -11,4 +11,14 @@
     <string name="noBtn">No</string>
     <string name="cancelBtn">Cancel</string>
     <string name="favBtn">Favorite</string>
+    <string name="navTitleList">Films</string>
+    <string name="navTitleFavorite">Favorite</string>
+    <string name="navTitleSearch">Search</string>
+    <string name="addFavToast">Added</string>
+    <string name="rmFavToast">Removed</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="anim_tex">animations can add visual cues that notify users about what\'s going on in your app. They are especially useful when the UI changes state, such as when new content loads or new actions become available. Animations also add a polished look to your app, which gives it a higher quality look and feel. Android includes different animation APIs depending on what type of animation you want, so this page provides an overview of the different ways you can add motion to your UI. To better understand when you should use animations, also see the material design guide to motion. Animate bitmaps Figure 1. An animated drawable When you want to animate a bitmap graphic such as an icon or illustration, you should use the drawable animation APIs. Usually, these animations are defined statically with a drawable resource, but you can also define the animation behavior at runtime. For example, animating a play button transforming into a pause button when tapped is a nice way to communicate to the user that the two actions are related, and that pressing one makes the other visible. For more information, read Animate Drawable Graphics.</string>
+    <string name="rmDialMsg">Are you sure?</string>
+    <string name="rmDialTitle">Remove from Favorite</string>
 </resources>

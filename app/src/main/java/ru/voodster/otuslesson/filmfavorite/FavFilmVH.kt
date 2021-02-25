@@ -1,33 +1,36 @@
 package ru.voodster.otuslesson.filmfavorite
 
-import android.content.Intent
-import android.graphics.Color
-import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import ru.voodster.otuslesson.AboutActivity
 import ru.voodster.otuslesson.FilmItem
+import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
 class FavFilmVH(FilmItem: View) : RecyclerView.ViewHolder(FilmItem) {
 
     private val img: ImageView = itemView.findViewById(R.id.favImg)
     private val title: TextView = itemView.findViewById(R.id.favTitleTv)
-    private val aboutBtn : ImageView = itemView.findViewById(R.id.favAboutBtn)
+    private val rmBtn:ImageView = itemView.findViewById(R.id.favRmBtn)
+    private var id : Int = 0
+
 
 
     fun bind(film: FilmItem) {
+        id = film.id
         img.setImageResource(film.img)
         title.text = film.name
-        aboutBtn.setOnClickListener{
-            val intent = Intent(it.context, AboutActivity::class.java)
-            intent.putExtra("EXTRA_ID",film.id)
-            ContextCompat.startActivity(it.context, intent, Bundle.EMPTY)
-        }
+        //rmBtn.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.fade_exit_500)
+
 
     }
 
-    }
+fun onRmClick(){
+    FilmList[id].clickFav()
+}
+
+
+}
