@@ -7,14 +7,22 @@ import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.FilmList
 import ru.voodster.otuslesson.R
 
-class FilmAdapter( private val filmsList :ArrayList<FilmItem>,
-                   private val listener:((filmItem:FilmItem)->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class FilmAdapter(private val listener:((filmItem:FilmItem)->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     companion object{
         const val TAG = "FilmAdapter"
 
         const val VIEW_TYPE_FILM = 1
         const val VIEW_TYPE_FILM_HEADER = 0
+    }
+    private val filmsList = ArrayList<FilmItem>()
+
+
+    fun setItems(repos: ArrayList<FilmItem>){
+        filmsList.clear()
+        filmsList.addAll(repos)
+
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int)
