@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmItem
 import ru.voodster.otuslesson.FilmList
@@ -15,6 +16,10 @@ import java.lang.Exception
 class FilmListFragment:Fragment()  {
 
     var listener : OnFilmClickListener?=null
+
+    private val viewmodel: FilmsViewModel by viewModels()
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(activity is OnFilmClickListener){
