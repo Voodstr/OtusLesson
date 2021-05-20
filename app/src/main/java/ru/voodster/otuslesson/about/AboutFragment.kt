@@ -40,7 +40,7 @@ class AboutFragment(private val filmID:Int) :Fragment() {
             it.findViewById<FloatingActionButton>(R.id.aboutShareBtn).setOnClickListener {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_TEXT, FilmList[filmID].name+"\n"+ FilmList[filmID].description) //передаю название фильма
+                intent.putExtra(Intent.EXTRA_TEXT, FilmList[filmID].title+"\n"+ FilmList[filmID].description) //передаю название фильма
                 startActivity(intent)
             }
         }
@@ -49,11 +49,11 @@ class AboutFragment(private val filmID:Int) :Fragment() {
 
     private fun setViews(){
         view?.let {
-            it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).title = FilmList[filmID].name
+            it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).title = FilmList[filmID].title
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setExpandedTitleColor(it.context.getColor(R.color.pal_2))
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setCollapsedTitleTextColor(it.context.getColor(R.color.pal_4))
             it.findViewById<TextView>(R.id.aboutDescriptionTv).text = FilmList[filmID].description.plus("\n")
-            it.findViewById<ImageView>(R.id.aboutImg).setImageResource(FilmList[filmID].img)
+            it.findViewById<ImageView>(R.id.aboutImg).setImageResource(R.drawable.filmlogo) // TODO нужна загрузка изображений
         }
 
     }

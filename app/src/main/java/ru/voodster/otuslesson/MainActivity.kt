@@ -1,23 +1,18 @@
 package ru.voodster.otuslesson
 
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.voodster.otuslesson.film.FilmVH
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.filmfavorite.FavoriteFilmsFragment
+import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.film.FilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 
 
-class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
-    FavoriteFilmsFragment.OnFavClickListener {
+class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener {
 
     private val filmListFragment = FilmListFragment()
-    private val favFilmListFragment = FavoriteFilmsFragment()
     private val searchFragment = SearchFragment()
 
 
@@ -27,25 +22,24 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
         setContentView(R.layout.activity_main_drawer)
         openList()
 
+        lifecycle.addObserver(App.instance!!.filmsUpdater)
+
+
         setClickListeners()
         setNavigationBar()
     }
 
 
-
     private fun setClickListeners(){
         filmListFragment.listener = this
-        favFilmListFragment.listener = this
     }
 
 
-    override fun onFilmClick(filmItem: FilmItem) {
+
+    override fun onFilmClick(filmItem: FilmModel) {
         openAboutFilm(filmItem.id)
     }
 
-    override fun onFavFilmClick(filmItem: FilmItem) {
-        openAboutFilm(filmItem.id)
-    }
 
     private fun setNavigationBar(){
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
@@ -81,13 +75,13 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     }
 
     //так и не могу понять как сделать анимацию для центрального элемена
-    // надо откуда-то знать какой предыдущий был элемент, правый или левый TODO
+    // надо откуда-то знать какой предыдущий был элемент, правый или левый
 
-    private fun openFav(){
+    private fun openFav(){ // TODO Добавить отдельный фрагмент для списка избранного
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, favFilmListFragment.apply {
+            .replace(R.id.fragmentContainer, filmListFragment.apply {
                 listener = this@MainActivity
             })
             .commit()
