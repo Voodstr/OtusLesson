@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.api.FilmModel
 
-class FilmAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapter<FilmVH>() {
+class FilmAdapter(private val inflater: LayoutInflater,private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
     companion object {
         const val TAG = "FilmAdapter"
@@ -41,12 +41,11 @@ class FilmAdapter(private val inflater: LayoutInflater) : RecyclerView.Adapter<F
     override fun onBindViewHolder(holder: FilmVH, position: Int) {
         holder.bind(filmsList[position])
 
-    /*
+
     holder.itemView.setOnClickListener {
         listener?.invoke(filmsList[position])
     }
 
-     */
     }
 
 }

@@ -18,9 +18,6 @@ class FilmListFragment : Fragment()  {
 
     private val filmListViewModel : FilmListViewModel by activityViewModels()
 
-    private var recyclerView: RecyclerView? = null
-    private var adapter: FilmAdapter? = null
-
     var listener : OnFilmClickListener?=null
 
     override fun onAttach(context: Context) {
@@ -41,26 +38,30 @@ class FilmListFragment : Fragment()  {
     }
 
 
-
-    private fun initRecycler() {
-        recyclerView = requireView().findViewById(R.id.filmListRV) // находим RecylerView  в layout XML
-        adapter =  FilmAdapter(LayoutInflater.from(context)) // Создаем адаптер для элементов списка
-        recyclerView!!.adapter = adapter // передаем адаптер нашему RecyclerView
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initRecycler()
+
+
+        // recyclerView init
+        view.findViewById<RecyclerView>(R.id.filmListRV)
+            .adapter = FilmAdapter(LayoutInflater.from(context)) {
+            listener?.onFilmClick(it)
+        }
+
+        //data update
         filmListViewModel.onGetData()
 
+        //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
             filmListViewModel.onGetData()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
+        //subscribe to data
         filmListViewModel.films.observe(viewLifecycleOwner, { list ->
-            (recyclerView?.adapter as FilmAdapter).setItems(list)
+            (view.findViewById<RecyclerView>(R.id.filmListRV).adapter as FilmAdapter).setItems(list)
         })
 
+        //subscribe to error message
         filmListViewModel.error.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
