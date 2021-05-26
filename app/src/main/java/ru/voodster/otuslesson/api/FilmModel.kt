@@ -1,33 +1,23 @@
 package ru.voodster.otuslesson.api
 
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
-
+@Entity(tableName = "films_table")
 class FilmModel {
+    @SerializedName("rowID")
+    @PrimaryKey(autoGenerate = true)
+    var rowID: Int = 0
     @SerializedName("id")
-    var id: Int = 0
+    @ColumnInfo(name = "id") var id: String = "empty"
     @SerializedName("img")
-    var img: String = "empty"
+    @ColumnInfo(name = "img") var img: String = "empty"
     @SerializedName("title")
-    var title: String = "empty"
+    @ColumnInfo(name = "title") var title: String = "empty"
     @SerializedName("description")
-    var description: String = "empty"
+    @ColumnInfo(name = "description") var description: String = "empty"
     @SerializedName("fav")
-    var fav: Boolean = false
+    @ColumnInfo(name = "fav") var fav: Boolean = false
     @SerializedName("likes")
-    var likes: Int = 0
-
-
-    constructor() {
-
-    }
-
-    constructor(id:Int, title: String, description: String, img: String, likes: Int, fav:Boolean) {
-        this.id = id
-        this.title = title
-        this.description = description
-        this.img = img
-        this.likes = likes
-        this.fav = fav
-    }
+    @ColumnInfo(name = "likes") var likes: Int = 0
 
 }

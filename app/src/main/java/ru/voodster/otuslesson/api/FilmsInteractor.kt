@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FilmsInteractor(private val filmsApi: FilmsService, private val filmListData: FilmsData) {
+class FilmsInteractor(private val filmsApi: FilmsService) {
 
 
     fun getFilms(callback: GetFilmsCallBack) {
@@ -12,9 +12,8 @@ class FilmsInteractor(private val filmsApi: FilmsService, private val filmListDa
         filmsApi.getFilms().enqueue(object : Callback<List<FilmModel>> {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
-                    filmListData.addToTable(response.body()!!)
-
-                    callback.onSuccess(filmListData.cachedOrFakeFilmList)
+                    Db.addToCache(response.body()!!)
+                    callback.onSuccess(Db.cachedOrFakeFilmList)
                 } else {
                     callback.onError(response.code().toString() + "")
                 }
@@ -29,7 +28,7 @@ class FilmsInteractor(private val filmsApi: FilmsService, private val filmListDa
 
 
     interface GetFilmsCallBack {
-        fun onSuccess(filmlist: List<FilmModel>)
+        fun onSuccess(filmList: List<FilmModel>)
         fun onError(error: String)
     }
 

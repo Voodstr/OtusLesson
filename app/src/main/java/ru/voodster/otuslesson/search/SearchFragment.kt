@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import ru.voodster.otuslesson.R
+import ru.voodster.otuslesson.api.Db
 
 class SearchFragment :Fragment() {
 

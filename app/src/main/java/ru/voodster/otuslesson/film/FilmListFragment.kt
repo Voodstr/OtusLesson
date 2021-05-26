@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -48,14 +49,18 @@ class FilmListFragment : Fragment()  {
         }
 
         //data update
-        filmListViewModel.onGetData()
+        //
+        filmListViewModel.onGetDataFromDatabase()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
-            filmListViewModel.onGetData()
+            filmListViewModel.onGetDataFromDatabase()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
+        view.findViewById<Button>(R.id.updateBtn).setOnClickListener {
+            filmListViewModel.onUpdateFromServer()
+        }
         //subscribe to data
         filmListViewModel.films.observe(viewLifecycleOwner, { list ->
             (view.findViewById<RecyclerView>(R.id.filmListRV).adapter as FilmAdapter).setItems(list)
@@ -65,7 +70,6 @@ class FilmListFragment : Fragment()  {
         filmListViewModel.error.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
-        filmListViewModel.onGetData()
     }
 
 

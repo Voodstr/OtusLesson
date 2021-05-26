@@ -36,20 +36,13 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
             }
     }
 
-    private fun setLike(film: FilmModel){
-        if (film.fav) {
-            likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
-        } else {
-            likeBtn.setBackgroundResource(R.drawable.baseline_favorite_border_black_24dp)
-        }
-    }
 
 
     fun bind(film: FilmModel) {
 
-        Log.d(TAG,"bind")
+        //Log.d(TAG,"bind")
 
-        img.setImageResource(R.drawable.filmlogo)
+        img.setImageResource(R.drawable.filmlogo) // TODO загрузка изображений
         title.text = film.title
 
         likeBtn.setOnClickListener {

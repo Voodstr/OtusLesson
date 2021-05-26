@@ -9,6 +9,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/updateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/filmListRV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="UPDATE"
+        android:textSize="30sp"
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filmListRV"
         android:layout_width="match_parent"

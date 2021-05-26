@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener {
 
 
     override fun onFilmClick(filmItem: FilmModel) {
-        openAboutFilm(filmItem.id)
+        openAboutFilm(filmItem)
     }
 
 
@@ -55,11 +55,11 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener {
 
 
 
-    private fun openAboutFilm(id: Int) {
+    private fun openAboutFilm(film:FilmModel) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragment(id))
+            .replace(R.id.fragmentContainer, AboutFragment(film))
             .addToBackStack(null)
             .commit()
     }
