@@ -34,12 +34,6 @@ interface FilmDao {
     )
     fun unFav(id : Int)
 
-    @Query(
-        "SELECT fav " +
-                "WHERE id = :id "
-    )
-    fun isFav(id : Int):Boolean
-
 
 
     @Query(

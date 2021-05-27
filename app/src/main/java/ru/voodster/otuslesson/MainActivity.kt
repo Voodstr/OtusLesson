@@ -3,17 +3,21 @@ package ru.voodster.otuslesson
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
 import ru.voodster.otuslesson.api.FilmModel
-import ru.voodster.otuslesson.film.FilmListFragment
+import ru.voodster.otuslesson.favoriteFilms.FavFilmListFragment
+import ru.voodster.otuslesson.films.FilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 
 
-class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener {
+class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,FavFilmListFragment.OnFilmClickListener {
 
     private val filmListFragment = FilmListFragment()
     private val searchFragment = SearchFragment()
+    private val favFilmListFragment = FavFilmListFragment()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,20 +81,20 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener {
     //так и не могу понять как сделать анимацию для центрального элемена
     // надо откуда-то знать какой предыдущий был элемент, правый или левый
 
-    private fun openFav(){ // TODO Добавить отдельный фрагмент для списка избранного
+    private fun openFav(){ //
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, filmListFragment.apply {
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
+            .replace(R.id.fragmentContainer, favFilmListFragment.apply {
                 listener = this@MainActivity
             })
             .commit()
     }
 
-    fun openSearch(){
+    private fun openSearch(){
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_left_toright,R.anim.exit_right_toleft)
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
             .replace(R.id.fragmentContainer, searchFragment)
             .commit()
     }

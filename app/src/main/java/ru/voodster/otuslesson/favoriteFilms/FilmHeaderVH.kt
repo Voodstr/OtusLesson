@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.film
+package ru.voodster.otuslesson.favoriteFilms
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

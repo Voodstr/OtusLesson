@@ -1,7 +1,8 @@
-package ru.voodster.otuslesson.film
+package ru.voodster.otuslesson.films
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
 import androidx.fragment.app.activityViewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.api.FilmModel
 import java.lang.Exception
 
 class FilmListFragment : Fragment()  {
+    companion object{
+        const val TAG = "FilmListFragment"
+    }
 
-    private val filmListViewModel : FilmListViewModel by activityViewModels()
+    private val viewModel : FilmListViewModel by activityViewModels()
 
     var listener : OnFilmClickListener?=null
 
@@ -35,44 +40,50 @@ class FilmListFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_filmlist,container, false)
     }
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
         // recyclerView init
-        view.findViewById<RecyclerView>(R.id.filmListRV)
-            .adapter = FilmAdapter(LayoutInflater.from(context)) {
-            listener?.onFilmClick(it)
-        }
+        initRecycler()
 
         //data update
         //
-        filmListViewModel.onGetDataFromDatabase()
+        viewModel.onGetDataFromDatabase()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
-            filmListViewModel.onGetDataFromDatabase()
+            viewModel.onGetDataFromDatabase()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
         view.findViewById<Button>(R.id.updateBtn).setOnClickListener {
-            filmListViewModel.onUpdateFromServer()
+            viewModel.onUpdateFromServer()
         }
         //subscribe to data
-        filmListViewModel.films.observe(viewLifecycleOwner, { list ->
+        viewModel.films.observe(viewLifecycleOwner, { list ->
             (view.findViewById<RecyclerView>(R.id.filmListRV).adapter as FilmAdapter).setItems(list)
         })
 
         //subscribe to error message
-        filmListViewModel.error.observe(viewLifecycleOwner, { error ->
+        viewModel.error.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
     }
 
-
+    private fun initRecycler(){
+        Log.d(TAG,"initRecycler")
+        view?.findViewById<RecyclerView>(R.id.filmListRV)
+            ?.adapter = FilmAdapter(LayoutInflater.from(context)) {
+            listener?.onFilmClick(it)
+    }
+}
 
     interface OnFilmClickListener{
         fun onFilmClick(filmItem: FilmModel)

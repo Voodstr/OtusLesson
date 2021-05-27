@@ -12,7 +12,7 @@ class FilmModel {
     @SerializedName("img")
     @ColumnInfo(name = "img") var img: String = "empty"
     @SerializedName("title")
-    @ColumnInfo(name = "title") var title: String = "empty"
+    @ColumnInfo(name = "title") var title: String = ""
     @SerializedName("description")
     @ColumnInfo(name = "description") var description: String = "empty"
     @SerializedName("fav")

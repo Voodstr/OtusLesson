@@ -1,7 +1,6 @@
-package ru.voodster.otuslesson.film
+package ru.voodster.otuslesson.favoriteFilms
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
@@ -9,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
+import ru.voodster.otuslesson.api.Db
 import ru.voodster.otuslesson.api.FilmModel
 
 class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
@@ -36,18 +36,25 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
             }
     }
 
-
+    private fun setLike(film: FilmModel){
+        if (film.fav) {
+            likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
+        } else {
+            likeBtn.setBackgroundResource(R.drawable.baseline_favorite_border_black_24dp)
+        }
+    }
 
     fun bind(film: FilmModel) {
 
-        //Log.d(TAG,"bind")
-
         img.setImageResource(R.drawable.filmlogo) // TODO загрузка изображений
         title.text = film.title
+        setLike(film)
 
         likeBtn.setOnClickListener {
+            Db.pressFav(film)
             pressLike(film,it.context)
         }
     }
+
 
 }

@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.film
+package ru.voodster.otuslesson.favoriteFilms
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.api.FilmModel
 
-class FilmAdapter(private val inflater: LayoutInflater,private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
+class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
     companion object {
-        const val TAG = "FilmAdapter"
+        const val TAG = "FavFilmAdapter"
 
         const val VIEW_TYPE_FILM = 1
         const val VIEW_TYPE_FILM_HEADER = 0
@@ -22,9 +22,11 @@ class FilmAdapter(private val inflater: LayoutInflater,private val listener:((fi
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER
 
     fun setItems(films: List<FilmModel>) {
-        Log.d("UI setItems", "$films")
+        Log.d(TAG, "setItems")
         filmsList.clear()
-        filmsList.addAll(films)
+        if(films.any { it.fav }) {
+            filmsList.addAll(films.filter { it.fav })
+        }else filmsList.add(FilmModel())
         notifyDataSetChanged()
     }
 
