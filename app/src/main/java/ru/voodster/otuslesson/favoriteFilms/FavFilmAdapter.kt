@@ -3,9 +3,12 @@ package ru.voodster.otuslesson.favoriteFilms
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.voodster.otuslesson.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.films.FilmAdapter
 
 class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
@@ -21,13 +24,20 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     override fun getItemViewType(position: Int) =
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER
 
+    private fun favFiltered(rawList :List<FilmModel>): List<FilmModel>{
+        return  rawList.filter { it.fav }
+    }
+
     fun setItems(films: List<FilmModel>) {
         Log.d(TAG, "setItems")
+        Log.d(TAG, "$filmsList")
+        val filmDiffUtilCallback = FilmDiffUtilCallback(filmsList,favFiltered(films))
+        val diffResult = DiffUtil.calculateDiff(filmDiffUtilCallback)
         filmsList.clear()
-        if(films.any { it.fav }) {
-            filmsList.addAll(films.filter { it.fav })
-        }else filmsList.add(FilmModel())
-        notifyDataSetChanged()
+        filmsList.addAll(favFiltered(films))
+        diffResult.dispatchUpdatesTo(this)
+
+
     }
 
 

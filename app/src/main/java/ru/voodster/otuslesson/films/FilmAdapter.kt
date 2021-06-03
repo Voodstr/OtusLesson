@@ -3,9 +3,15 @@ package ru.voodster.otuslesson.films
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import androidx.paging.PositionalDataSource
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.voodster.otuslesson.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.api.FilmModel
+
 
 class FilmAdapter(private val inflater: LayoutInflater,private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
@@ -16,6 +22,7 @@ class FilmAdapter(private val inflater: LayoutInflater,private val listener:((fi
         const val VIEW_TYPE_FILM_HEADER = 0
     }
 
+
     private val filmsList = ArrayList<FilmModel>()
 
     override fun getItemViewType(position: Int) =
@@ -23,9 +30,11 @@ class FilmAdapter(private val inflater: LayoutInflater,private val listener:((fi
 
     fun setItems(films: List<FilmModel>) {
         Log.d(TAG, "setItems")
+        val filmDiffUtilCallback = FilmDiffUtilCallback(filmsList,films)
+        val diffResult = DiffUtil.calculateDiff(filmDiffUtilCallback)
         filmsList.clear()
         filmsList.addAll(films)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
 

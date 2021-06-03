@@ -68,6 +68,7 @@ class FilmListFragment : Fragment()  {
         }
         //subscribe to data
         viewModel.films.observe(viewLifecycleOwner, { list ->
+            Log.d(TAG,list.toString())
             (view.findViewById<RecyclerView>(R.id.filmListRV).adapter as FilmAdapter).setItems(list)
         })
 

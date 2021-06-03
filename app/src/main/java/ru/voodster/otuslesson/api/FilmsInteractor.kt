@@ -13,6 +13,7 @@ class FilmsInteractor(private val filmsApi: FilmsService) {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Db.addToCache(response.body()!!)
+                    Db.writeToDbFromCache()
                     callback.onSuccess(Db.cachedOrFakeFilmList)
                 } else {
                     callback.onError(response.code().toString() + "")

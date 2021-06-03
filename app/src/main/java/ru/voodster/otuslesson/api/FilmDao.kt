@@ -1,10 +1,8 @@
 package ru.voodster.otuslesson.api
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import ru.voodster.otuslesson.api.FilmModel
+import android.util.Log
+import androidx.paging.DataSource
+import androidx.room.*
 
 @Dao
 interface FilmDao {
@@ -13,26 +11,13 @@ interface FilmDao {
                 "FROM films_table")
     fun getAll(): List<FilmModel>
 
-    @Query(
-        "SELECT * " +
-                "FROM films_table " +
-                "WHERE fav " +
-                "LIKE true"
-    )
-    fun getFav(): List<FilmModel>
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC")
+    fun filmsByRowId(): DataSource.Factory<Int?, FilmModel?>?
 
-    @Query(
-        "UPDATE films_table " +
-                "SET fav = true " +
-                "WHERE id = :id ")
-    fun fav(id : Int)
 
-    @Query(
-        "UPDATE films_table " +
-                "SET Fav = false " +
-                "WHERE id = :id "
-    )
-    fun unFav(id : Int)
+    @Update
+    fun update(film: FilmModel)
+
 
 
 

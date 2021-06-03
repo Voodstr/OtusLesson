@@ -37,8 +37,6 @@ class FilmListViewModel() : ViewModel() {
         filmsInteractor.getFilms( object : FilmsInteractor.GetFilmsCallBack {
             override fun onSuccess(filmList: List<FilmModel>) {
                 Log.d("filmsInteractor", "success")
-                Db.addToCache(filmList)
-                Db.writeToDbFromCache()
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
             override fun onError(error: String) {
