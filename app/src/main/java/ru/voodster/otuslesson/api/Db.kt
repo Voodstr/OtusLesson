@@ -42,6 +42,20 @@ object Db {
         }
         return INSTANCE
     }
+
+
+    fun updateAllFromServer(filmList : List<FilmModel>){
+        Log.d(TAG, "updateAllFromServer : $filmList")
+        this.currentFilmList.clear()
+        this.currentFilmList.addAll(filmList)
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.deleteAll()
+            getInstance()?.getFilmsDao()?.insertAll(*filmList.toTypedArray())
+        }
+    }
+
+    /*
+
     // Добавление списка в кеш
     // p.s вызывается при ответе от серверва
     fun addToCache(filmList : List<FilmModel>){
@@ -54,12 +68,9 @@ object Db {
     // Добавляем список в БД
     fun writeToDbFromCache(){
         Log.d(TAG, "writeToDbFromCache")
-        INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.deleteAll()
-            getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
-        }
-    }
 
+    }
+*/
 
     //Список избранного
 
@@ -90,6 +101,31 @@ object Db {
         return currentFilmList.subList(start,start.plus(size))
     }
 
+
+    fun loadInitial(){
+        Log.d(TAG, "loadInitial")
+        INSTANCE?.queryExecutor?.execute {
+            getInstance()?.getFilmsDao()?.getInitial()?.let {
+                currentFilmList.clear()
+                currentFilmList.addAll(it.toTypedArray()) }
+        }
+        //TODO загрузка из базы  стартовых данных
+    }
+
+    fun loadMore(){
+        Log.d(TAG, "loadMore")
+        val size = 10 // TODO размер запроса из базы
+        INSTANCE?.queryExecutor?.execute {
+            getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, size)?.let {
+                currentFilmList.addAll(it.toTypedArray()) }
+        }
+        //TODO загрузка из базы дополнительных данных
+    }
+
+
+
+
+    // Получить из базы весь список
     fun getFilmList() {
         Log.d(TAG, "getFilmList")
         INSTANCE?.queryExecutor?.execute {

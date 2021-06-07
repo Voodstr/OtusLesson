@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FilmsUpdater(private val service: FilmsService): LifecycleObserver {
+class FilmsUpdater(private val anApi: FilmsApi): LifecycleObserver {
 
 
     private val handler = Handler(Looper.getMainLooper())
@@ -35,7 +35,7 @@ class FilmsUpdater(private val service: FilmsService): LifecycleObserver {
     inner class GetFilmListRunnable : Runnable {
         override fun run() {
 
-            service.getFilms().enqueue(object : Callback<List<FilmModel>> {
+            anApi.getFilms().enqueue(object : Callback<List<FilmModel>> {
                 override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                     handler.postDelayed(GetFilmListRunnable(), DELAY.toLong())
                 }

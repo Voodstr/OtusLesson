@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import ru.voodster.otuslesson.R
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
+import ru.voodster.otuslesson.R
+import ru.voodster.otuslesson.api.Db
 import ru.voodster.otuslesson.api.FilmModel
-import java.lang.Exception
+
 
 class FilmListFragment : Fragment()  {
     companion object{
@@ -64,7 +66,7 @@ class FilmListFragment : Fragment()  {
         }
 
         view.findViewById<Button>(R.id.updateBtn).setOnClickListener {
-            viewModel.onUpdateFromServer()
+            //viewModel.onUpdateFromServer() //TODO обновление с сервера (временно отключил)
         }
         //subscribe to data
         viewModel.films.observe(viewLifecycleOwner, { list ->
@@ -84,9 +86,38 @@ class FilmListFragment : Fragment()  {
             ?.adapter = FilmAdapter(LayoutInflater.from(context)) {
             listener?.onFilmClick(it)
     }
+        view?.findViewById<RecyclerView>(R.id.filmListRV)
+            ?.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(isLastItemDisplaying(recyclerView)){
+                        viewModel.loadMore()
+                    }
+                }
+                private fun isLastItemDisplaying(recyclerView: RecyclerView): Boolean {
+                    if (recyclerView.adapter!!.itemCount != 0) {
+                        val lastVisibleItemPosition =
+                            (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                        if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.adapter!!
+                                .itemCount - 1
+                        ) return true
+                    }
+                    return false
+                }
+            })
+
 }
 
+
+
+
+    private fun initPagingRecycler(){
+      //  val pagedList = PagedList<FilmModel>.
+    }
     interface OnFilmClickListener{
         fun onFilmClick(filmItem: FilmModel)
     }
 }
+
+

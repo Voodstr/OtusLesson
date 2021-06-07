@@ -7,12 +7,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
-import java.util.concurrent.Executors
 
 class App:Application() {
 
 
-    lateinit var filmsApi: FilmsService
+    lateinit var filmsApi: FilmsApi
     lateinit var filmsUpdater : FilmsUpdater
     lateinit var filmsInteractor: FilmsInteractor
 
@@ -29,9 +28,9 @@ class App:Application() {
 
     private fun initDatabase(){
         Log.d(TAG,"initDatabase")
-        Db.getInstance()?.queryExecutor?.execute(
+        Db.getInstance()?.transactionExecutor?.execute(
             Runnable {
-                Db.getFilmList()
+                Db.loadInitial()
             }
         )
     }
@@ -55,7 +54,7 @@ class App:Application() {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .build()
-            .create(FilmsService::class.java)
+            .create(FilmsApi::class.java)
 
         filmsUpdater = FilmsUpdater(filmsApi)
         Log.d(TAG,"success")
