@@ -60,7 +60,7 @@ class FavFilmListFragment : Fragment()  {
 
         //subscribe to data
         viewModel.favorites.observe(viewLifecycleOwner, { list ->
-            Log.d("FavList","$list")
+            Log.d("FavList","observe")
             (view.findViewById<RecyclerView>(R.id.favoriteRV).adapter as FavFilmAdapter).setItems(list)
         })
 

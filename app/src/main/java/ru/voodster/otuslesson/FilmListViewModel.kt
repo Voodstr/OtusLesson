@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
 import ru.voodster.otuslesson.api.Db
 import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsInteractor
@@ -21,14 +20,14 @@ class FilmListViewModel() : ViewModel() {
 
 
     private val filmListLiveData = MutableLiveData<List<FilmModel>>()
-    private val favListLiveData = MutableLiveData<List<FilmModel>>()
+    private val favoriteLiveData = MutableLiveData<List<FilmModel>>()
     private val errorLiveData = MutableLiveData<String>()
 
 
     private val filmsInteractor = App.instance!!.filmsInteractor
 
     val favorites : LiveData<List<FilmModel>>
-        get() = favListLiveData
+        get() = favoriteLiveData
 
     val films : LiveData<List<FilmModel>>
         get() = filmListLiveData
@@ -80,12 +79,12 @@ class FilmListViewModel() : ViewModel() {
     fun onGetFavFromDatabase(){
         Log.d(TAG,"onGetDataFromDatabase")
         Db.loadInitialFav()
-        favListLiveData.postValue(Db.cachedOrFakeFavList)
+        favoriteLiveData.postValue(Db.FakeOrFavoriteList)
     }
     fun loadMoreFav(){
         Log.d(TAG,"loadMore")
         Db.loadMoreFav()
-        filmListLiveData.postValue(Db.cachedOrFakeFavList)
+        favoriteLiveData.postValue(Db.FakeOrFavoriteList)
     }
 
 

@@ -24,7 +24,7 @@ object Db {
             fakeList
 
     var currentFavList = ArrayList<FilmModel>()
-    val cachedOrFakeFavList: List<FilmModel> // если данных нет то возвращает пустой список
+    val FakeOrFavoriteList: List<FilmModel> // если данных нет то возвращает пустой список
         get() = if (currentFavList.size > 0)
             currentFavList
         else

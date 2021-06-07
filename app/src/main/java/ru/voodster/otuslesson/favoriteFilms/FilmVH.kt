@@ -52,7 +52,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
         likeBtn.setOnClickListener {
             Db.pressFav(film)
-            pressLike(film,it.context)
+            pressLike(film, it.context)
         }
     }
 

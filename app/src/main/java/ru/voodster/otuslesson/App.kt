@@ -31,6 +31,7 @@ class App:Application() {
         Db.getInstance()?.transactionExecutor?.execute(
             Runnable {
                 Db.loadInitial()
+                Db.loadInitialFav()
             }
         )
     }

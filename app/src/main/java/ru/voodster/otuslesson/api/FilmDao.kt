@@ -10,16 +10,16 @@ interface FilmDao {
     @Query("SELECT * FROM films_table ")
     fun getAll(): List<FilmModel>
 
-    @Query("SELECT * FROM films_table WHERE fav LIMIT 10")
+    @Query("SELECT * FROM films_table WHERE fav ORDER BY rowID ASC LIMIT 8")
     fun getFavInitial():List<FilmModel>
 
-    @Query("SELECT * FROM films_table WHERE fav LIMIT :size OFFSET :start")
+    @Query("SELECT * FROM films_table WHERE fav ORDER BY rowID ASC LIMIT :size OFFSET :start ")
     fun getFavRange(start:Int, size:Int):List<FilmModel>
 
-    @Query("SELECT * FROM films_table LIMIT 10")
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT 8")
     fun getInitial():List<FilmModel>
 
-    @Query("SELECT * FROM films_table LIMIT :size OFFSET :start")
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")
     fun getRange(start:Int, size:Int):List<FilmModel>
 
     @Update
