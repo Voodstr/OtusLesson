@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import ru.voodster.otuslesson.api.Db
 import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsInteractor
-import ru.voodster.otuslesson.api.FilmsPositionalDataSource
 
 class FilmListViewModel() : ViewModel() {
     init {
@@ -23,16 +21,14 @@ class FilmListViewModel() : ViewModel() {
 
 
     private val filmListLiveData = MutableLiveData<List<FilmModel>>()
+    private val favListLiveData = MutableLiveData<List<FilmModel>>()
     private val errorLiveData = MutableLiveData<String>()
 
 
-    private val config = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setPageSize(10)
-        .build()
-
     private val filmsInteractor = App.instance!!.filmsInteractor
 
+    val favorites : LiveData<List<FilmModel>>
+        get() = favListLiveData
 
     val films : LiveData<List<FilmModel>>
         get() = filmListLiveData
@@ -40,13 +36,11 @@ class FilmListViewModel() : ViewModel() {
     val error: LiveData<String>
         get() = errorLiveData
 
-    private var listFilms : LiveData<PagedList<FilmModel>> = MutableLiveData<PagedList<FilmModel>>()
-    private var mutableLiveData = MutableLiveData<FilmsPositionalDataSource>()
 
-
-
-
-    // Запрос данных сервера, кладем в БД и кэш
+    /**
+     * On update from server
+     *
+     */
     fun onUpdateFromServer() {
         Log.d(TAG,"onUpdateFromServer")
         filmsInteractor.getFilms( object : FilmsInteractor.GetFilmsCallBack {
@@ -61,18 +55,40 @@ class FilmListViewModel() : ViewModel() {
         })
     }
 
-    //Тащим данные из БД в кэш, а потом в LiveData
+    /**
+     * On get data from database
+     *  Get Initial Data to Cached LiveData
+     *
+     */
     fun onGetDataFromDatabase(){
         Log.d(TAG,"onGetDataFromDatabase")
         Db.loadInitial()
         filmListLiveData.postValue(Db.cachedOrFakeFilmList)
     }
 
+    /**
+     * Load more
+     * Get more Data to Cached LiveData
+     */
     fun loadMore(){
         Log.d(TAG,"loadMore")
         Db.loadMore()
         filmListLiveData.postValue(Db.cachedOrFakeFilmList)
     }
+
+
+    fun onGetFavFromDatabase(){
+        Log.d(TAG,"onGetDataFromDatabase")
+        Db.loadInitialFav()
+        favListLiveData.postValue(Db.cachedOrFakeFavList)
+    }
+    fun loadMoreFav(){
+        Log.d(TAG,"loadMore")
+        Db.loadMoreFav()
+        filmListLiveData.postValue(Db.cachedOrFakeFavList)
+    }
+
+
 
 
 }

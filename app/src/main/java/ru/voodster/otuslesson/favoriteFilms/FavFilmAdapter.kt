@@ -24,20 +24,14 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     override fun getItemViewType(position: Int) =
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER
 
-    private fun favFiltered(rawList :List<FilmModel>): List<FilmModel>{
-        return  rawList.filter { it.fav }
-    }
 
     fun setItems(films: List<FilmModel>) {
         Log.d(TAG, "setItems")
-        Log.d(TAG, "$filmsList")
-        val filmDiffUtilCallback = FilmDiffUtilCallback(filmsList,favFiltered(films))
+        val filmDiffUtilCallback = FilmDiffUtilCallback(filmsList,films)
         val diffResult = DiffUtil.calculateDiff(filmDiffUtilCallback)
         filmsList.clear()
-        filmsList.addAll(favFiltered(films))
+        filmsList.addAll(films)
         diffResult.dispatchUpdatesTo(this)
-
-
     }
 
 

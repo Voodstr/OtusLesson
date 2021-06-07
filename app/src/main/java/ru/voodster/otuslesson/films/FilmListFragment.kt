@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -47,8 +48,6 @@ class FilmListFragment : Fragment()  {
     }
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
@@ -65,9 +64,6 @@ class FilmListFragment : Fragment()  {
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
-        view.findViewById<Button>(R.id.updateBtn).setOnClickListener {
-            //viewModel.onUpdateFromServer() //TODO обновление с сервера (временно отключил)
-        }
         //subscribe to data
         viewModel.films.observe(viewLifecycleOwner, { list ->
             Log.d(TAG,list.toString())
@@ -92,7 +88,9 @@ class FilmListFragment : Fragment()  {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if(isLastItemDisplaying(recyclerView)){
+                        view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = true
                         viewModel.loadMore()
+                        view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = false
                     }
                 }
                 private fun isLastItemDisplaying(recyclerView: RecyclerView): Boolean {
@@ -111,10 +109,6 @@ class FilmListFragment : Fragment()  {
 
 
 
-
-    private fun initPagingRecycler(){
-      //  val pagedList = PagedList<FilmModel>.
-    }
     interface OnFilmClickListener{
         fun onFilmClick(filmItem: FilmModel)
     }

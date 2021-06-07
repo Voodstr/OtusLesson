@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.api.FilmModel
-import ru.voodster.otuslesson.films.FilmAdapter
 import ru.voodster.otuslesson.films.FilmListFragment
 import java.lang.Exception
 
@@ -50,16 +50,16 @@ class FavFilmListFragment : Fragment()  {
         initRecycler()
 
         //data update
-        viewModel.onGetDataFromDatabase()
+        viewModel.onGetFavFromDatabase()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).setOnRefreshListener {
-            viewModel.onGetDataFromDatabase()
+            viewModel.onGetFavFromDatabase()
             view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).isRefreshing=false
         }
 
         //subscribe to data
-        viewModel.films.observe(viewLifecycleOwner, { list ->
+        viewModel.favorites.observe(viewLifecycleOwner, { list ->
             Log.d("FavList","$list")
             (view.findViewById<RecyclerView>(R.id.favoriteRV).adapter as FavFilmAdapter).setItems(list)
         })
@@ -76,6 +76,30 @@ class FavFilmListFragment : Fragment()  {
             ?.adapter = FavFilmAdapter(LayoutInflater.from(context)) {
             listener?.onFilmClick(it)
         }
+
+        view?.findViewById<RecyclerView>(R.id.favoriteRV)
+            ?.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(isLastItemDisplaying(recyclerView)){
+                        view?.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate)?.isRefreshing = true
+                        viewModel.loadMoreFav()
+                        view?.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate)?.isRefreshing = false
+                    }
+                }
+                private fun isLastItemDisplaying(recyclerView: RecyclerView): Boolean {
+                    if (recyclerView.adapter!!.itemCount != 0) {
+                        val lastVisibleItemPosition =
+                            (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                        if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.adapter!!
+                                .itemCount - 1
+                        ) return true
+                    }
+                    return false
+                }
+            })
+
     }
 
     interface OnFilmClickListener{

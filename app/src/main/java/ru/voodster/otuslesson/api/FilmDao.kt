@@ -6,13 +6,15 @@ import androidx.room.*
 
 @Dao
 interface FilmDao {
-    @Query(
-        "SELECT * FROM films_table")
+
+    @Query("SELECT * FROM films_table ")
     fun getAll(): List<FilmModel>
 
-    @Query("SELECT * FROM films_table ORDER BY rowID ASC")
-    fun filmsByRowId(): DataSource.Factory<Int?, FilmModel?>?
+    @Query("SELECT * FROM films_table WHERE fav LIMIT 10")
+    fun getFavInitial():List<FilmModel>
 
+    @Query("SELECT * FROM films_table WHERE fav LIMIT :size OFFSET :start")
+    fun getFavRange(start:Int, size:Int):List<FilmModel>
 
     @Query("SELECT * FROM films_table LIMIT 10")
     fun getInitial():List<FilmModel>
