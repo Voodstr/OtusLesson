@@ -3,10 +3,9 @@ package ru.voodster.otuslesson
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 import ru.voodster.otuslesson.favoriteFilms.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         setContentView(R.layout.activity_main_drawer)
         openList()
 
-        lifecycle.addObserver(App.instance!!.filmsUpdater)
+        //lifecycle.addObserver(App.instance!!.filmsUpdater)
 
 
         setClickListeners()
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
 
 
-    private fun openAboutFilm(film:FilmModel) {
+    private fun openAboutFilm(film: FilmModel) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)

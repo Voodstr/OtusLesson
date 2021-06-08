@@ -3,17 +3,14 @@ package ru.voodster.otuslesson.films
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import androidx.paging.PositionalDataSource
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 
 
-class FilmAdapter(private val inflater: LayoutInflater,private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
+class FilmAdapter(private val inflater: LayoutInflater,private val listener:((filmItem: FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
     companion object {
         const val TAG = "FilmAdapter"

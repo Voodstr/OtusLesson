@@ -1,9 +1,8 @@
-package ru.voodster.otuslesson.api
+package ru.voodster.otuslesson.db
 
 import android.util.Log
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import java.util.concurrent.Executors
 
 class DbCallback() : RoomDatabase.Callback() {
 
@@ -19,6 +18,7 @@ class DbCallback() : RoomDatabase.Callback() {
         Db.getInstance()?.queryExecutor?.execute(Runnable {
             Db.getInstance()?.getFilmsDao()?.deleteAll()
             Db.getInstance()?.getFilmsDao()?.insertAll(*fakeList.toTypedArray())
+            Db.getInstance()?.getFilmsDao()?.addFav(0)
         })
     }
 

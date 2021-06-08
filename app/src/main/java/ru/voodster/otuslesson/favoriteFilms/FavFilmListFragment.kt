@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 import ru.voodster.otuslesson.films.FilmListFragment
 import java.lang.Exception
 
@@ -77,6 +77,7 @@ class FavFilmListFragment : Fragment()  {
             listener?.onFilmClick(it)
         }
 
+        /*
         view?.findViewById<RecyclerView>(R.id.favoriteRV)
             ?.addOnScrollListener(object :RecyclerView.OnScrollListener(){
 
@@ -99,6 +100,8 @@ class FavFilmListFragment : Fragment()  {
                     return false
                 }
             })
+
+         */
 
     }
 

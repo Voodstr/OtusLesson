@@ -2,15 +2,14 @@ package ru.voodster.otuslesson.films
 
 import android.content.Context
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.api.Db
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.Db
+import ru.voodster.otuslesson.db.FilmModel
 
 class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
@@ -26,7 +25,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
 
     private fun pressLike(film: FilmModel, context: Context){
-            if (film.fav) {
+            if (!film.fav) {
                 likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
                 likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
                 Toast.makeText(context,R.string.addFavToast,Toast.LENGTH_SHORT).show()
@@ -53,8 +52,8 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
         setLike(film)
 
         likeBtn.setOnClickListener {
-            Db.pressFav(film)
             pressLike(film,it.context)
+            Db.pressFav(film)
         }
     }
 

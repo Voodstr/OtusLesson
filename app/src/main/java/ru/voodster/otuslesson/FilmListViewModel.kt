@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.voodster.otuslesson.api.Db
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.api.FilmsInteractor
+import ru.voodster.otuslesson.db.FilmModel
 
 class FilmListViewModel() : ViewModel() {
     init {
@@ -40,25 +40,46 @@ class FilmListViewModel() : ViewModel() {
      * On update from server
      *
      */
-    fun onUpdateFromServer() {
-        Log.d(TAG,"onUpdateFromServer")
-        filmsInteractor.getFilms( object : FilmsInteractor.GetFilmsCallBack {
+
+
+    fun onGetFromServer() {
+        Log.d(TAG,"onGetFromServer")
+        filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
             override fun onSuccess(filmList: List<FilmModel>) {
-                Log.d("filmsInteractor", "success")
+                Log.d(TAG ,"success")
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
             override fun onError(error: String) {
+                // TODO пусть тащит из базы если ответа не было
+                errorLiveData.postValue(error)
+                Log.d(TAG , "Data Error")
+            }
+        })
+    }
+
+    fun onGetMoreFromServer() {
+        Log.d(TAG,"onGetMoreFromServer")
+        Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
+        filmsInteractor.getMore( Db.currentFilmList.size, Db.currentFilmList.size.plus(10)  ,object : FilmsInteractor.GetMoreFilmsCallBack {
+            override fun onSuccess(filmList: List<FilmModel>) {
+                Log.d("filmsInteractor", "onSuccessMore")
+                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+            }
+            override fun onError(error: String) {
+                // TODO пусть тащит из базы если ответа не было
                 errorLiveData.postValue(error)
                 Log.d("filmsInteractor", "Data Error")
             }
         })
     }
+    /*
 
     /**
      * On get data from database
      *  Get Initial Data to Cached LiveData
      *
      */
+
     fun onGetDataFromDatabase(){
         Log.d(TAG,"onGetDataFromDatabase")
         Db.loadInitial()
@@ -74,18 +95,21 @@ class FilmListViewModel() : ViewModel() {
         Db.loadMore()
         filmListLiveData.postValue(Db.cachedOrFakeFilmList)
     }
-
+*/
 
     fun onGetFavFromDatabase(){
-        Log.d(TAG,"onGetDataFromDatabase")
+        Log.d(TAG,"onGetFavFromDatabase")
         Db.loadInitialFav()
         favoriteLiveData.postValue(Db.FakeOrFavoriteList)
     }
+    /*
     fun loadMoreFav(){
-        Log.d(TAG,"loadMore")
+        Log.d(TAG,"loadMoreFav")
         Db.loadMoreFav()
         favoriteLiveData.postValue(Db.FakeOrFavoriteList)
     }
+
+     */
 
 
 

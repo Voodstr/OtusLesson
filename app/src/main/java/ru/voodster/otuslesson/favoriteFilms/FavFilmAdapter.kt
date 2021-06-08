@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.api.FilmModel
-import ru.voodster.otuslesson.films.FilmAdapter
+import ru.voodster.otuslesson.db.FilmModel
 
-class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem:FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
+class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem: FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
     companion object {
         const val TAG = "FavFilmAdapter"

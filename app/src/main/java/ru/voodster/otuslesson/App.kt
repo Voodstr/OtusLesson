@@ -7,6 +7,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
+import ru.voodster.otuslesson.db.Db
+import java.util.concurrent.Executors
 
 class App:Application() {
 
@@ -28,9 +30,10 @@ class App:Application() {
 
     private fun initDatabase(){
         Log.d(TAG,"initDatabase")
-        Db.getInstance()?.transactionExecutor?.execute(
+        Executors.newSingleThreadScheduledExecutor().execute(
             Runnable {
-                Db.loadInitial()
+                Db.loadFavoriteIDs()
+                Db.loadInitialFromDatabase()
                 Db.loadInitialFav()
             }
         )
@@ -62,7 +65,7 @@ class App:Application() {
     }
 
     companion object{
-        const val BASE_URL = "https://run.mocky.io/v3/"
+        const val BASE_URL = "http://10.0.2.2/"
         const val TAG = "App"
 
         var instance: App? = null

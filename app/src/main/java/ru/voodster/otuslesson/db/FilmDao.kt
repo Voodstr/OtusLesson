@@ -1,0 +1,45 @@
+package ru.voodster.otuslesson.db
+
+import androidx.room.*
+
+@Dao
+interface FilmDao {
+
+   // @Query("SELECT * FROM films_table ")
+   // fun getAll(): List<FilmModel>
+
+
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT 8")
+    fun getInitial():List<FilmModel>
+
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")
+    fun getRange(start:Int, size:Int):List<FilmModel>
+
+    //@Update(entity = FilmModel::class)
+   // fun updateFilm(film: FilmModel)
+
+    @Query("Select t.rowID,t.fav,t.id,t.img,t.title,t.description,t.likes from films_table t inner join user_favorites f on t.id = f.filmID order by t.id ")
+
+    fun getFilmsJoinFavorites():List<FilmModel>
+
+    @Query("Select filmID from user_favorites")
+    fun getUserFavorites():List<Int>
+
+    @Query("delete from user_favorites where filmID = :id")
+    fun rmFav(id: Int)
+
+    @Query("Insert into user_favorites values (null,:id)")
+    fun addFav(id: Int)
+
+
+    @Query("DELETE FROM films_table")
+    fun deleteAll()
+
+
+    @Insert
+    fun insertAll(vararg films: FilmModel)
+
+    @Delete
+    fun delete(film: FilmModel)
+
+}

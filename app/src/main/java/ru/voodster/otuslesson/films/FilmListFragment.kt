@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.api.Db
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 
 
 class FilmListFragment : Fragment()  {
@@ -56,11 +53,11 @@ class FilmListFragment : Fragment()  {
 
         //data update
         //
-        viewModel.onGetDataFromDatabase()
+        viewModel.onGetFromServer()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
-            viewModel.onGetDataFromDatabase()
+            viewModel.onGetFromServer()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
@@ -88,7 +85,7 @@ class FilmListFragment : Fragment()  {
                     super.onScrolled(recyclerView, dx, dy)
                     if(isLastItemDisplaying(recyclerView)){
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = true
-                        viewModel.loadMore()
+                        viewModel.onGetMoreFromServer()
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = false
                     }
                 }

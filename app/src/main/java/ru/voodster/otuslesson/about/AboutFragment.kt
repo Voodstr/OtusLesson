@@ -6,15 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 
-class AboutFragment(private val film:FilmModel) :Fragment() {
+class AboutFragment(private val film: FilmModel) :Fragment() {
 
 
     companion object{
@@ -60,7 +60,10 @@ class AboutFragment(private val film:FilmModel) :Fragment() {
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setExpandedTitleColor(it.context.getColor(R.color.pal_2))
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setCollapsedTitleTextColor(it.context.getColor(R.color.pal_4))
             it.findViewById<TextView>(R.id.aboutDescriptionTv).text = film.description.plus("\n")
-            it.findViewById<ImageView>(R.id.aboutImg).setImageResource(R.drawable.filmlogo) // TODO нужна загрузка изображений
+            Glide
+                .with(this)
+                .load("http://developer.alexanderklimov.ru/android/images/android_cat.jpg")
+                .into(it.findViewById(R.id.aboutImg))
         }
 
     }

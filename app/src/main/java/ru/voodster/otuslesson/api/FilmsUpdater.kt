@@ -9,6 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.voodster.otuslesson.db.FilmModel
 
 class FilmsUpdater(private val anApi: FilmsApi): LifecycleObserver {
 
@@ -35,7 +36,7 @@ class FilmsUpdater(private val anApi: FilmsApi): LifecycleObserver {
     inner class GetFilmListRunnable : Runnable {
         override fun run() {
 
-            anApi.getFilms().enqueue(object : Callback<List<FilmModel>> {
+            anApi.getInitial().enqueue(object : Callback<List<FilmModel>> {
                 override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                     handler.postDelayed(GetFilmListRunnable(), DELAY.toLong())
                 }

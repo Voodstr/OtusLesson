@@ -1,7 +1,7 @@
 package ru.voodster.otuslesson
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.voodster.otuslesson.api.FilmModel
+import ru.voodster.otuslesson.db.FilmModel
 
 class FilmDiffUtilCallback(private val oldList: List<FilmModel>,
                            private val newList: List<FilmModel>) : DiffUtil.Callback() {
@@ -15,7 +15,7 @@ class FilmDiffUtilCallback(private val oldList: List<FilmModel>,
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].rowID == newList[newItemPosition].rowID
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
