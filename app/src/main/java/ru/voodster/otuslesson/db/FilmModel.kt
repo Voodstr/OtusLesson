@@ -19,4 +19,14 @@ class FilmModel {
     @SerializedName("likes")
     @ColumnInfo(name = "likes") var likes: Int = 0
 
+
+    constructor(id:Int,img:String,title: String,description: String,fav: Boolean,likes: Int){
+
+        this.id =id
+        this.img =img
+        this.title =title
+        this.description =description
+        this.fav =fav
+        this.likes =likes
+    }
 }

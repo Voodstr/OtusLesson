@@ -18,6 +18,7 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
         const val VIEW_TYPE_FILM_HEADER = 0
     }
 
+
     private val filmsList = ArrayList<FilmModel>()
 
     override fun getItemViewType(position: Int) =
@@ -52,6 +53,8 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     }
 
     }
+
+
 
 }
 

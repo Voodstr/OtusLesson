@@ -99,7 +99,7 @@ class FilmListViewModel() : ViewModel() {
 
     fun onGetFavFromDatabase(){
         Log.d(TAG,"onGetFavFromDatabase")
-        Db.loadInitialFav()
+        Db.loadFav()
         favoriteLiveData.postValue(Db.FakeOrFavoriteList)
     }
     /*
@@ -111,7 +111,22 @@ class FilmListViewModel() : ViewModel() {
 
      */
 
+    fun saveDb(){
+        Log.d(TAG,"saveDb")
+        Db.saveCachedFilms()
+        Db.saveFavorites()
+    }
 
+    fun loadDb(){
+        Log.d(TAG,"loadDb")
+        Db.loadFavoriteIDs()
+        Db.loadInitialFromDatabase()
+    }
+
+    fun saveFav(){
+        Log.d(TAG,"saveFav")
+        Db.saveFavorites()
+    }
 
 
 }

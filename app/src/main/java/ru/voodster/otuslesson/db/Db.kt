@@ -10,7 +10,7 @@ object Db {
 
     private var INSTANCE: FilmsRoomDatabase? = null
 
-    private val fakeFilm = FilmModel()
+    private val fakeFilm = FilmModel(0,"empty","empty","empty",false,0)
     private val fakeList = arrayListOf(fakeFilm)
 
     private var favorites = ArrayList<Int>()
@@ -21,7 +21,6 @@ object Db {
             currentFilmList
         else
             fakeList
-
 
 
     var currentFavList = ArrayList<FilmModel>()
@@ -62,7 +61,6 @@ object Db {
         Log.d(TAG, "loadFavoriteIDs")
         INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.getUserFavorites()?.let {
-                Log.d(TAG, "getUserFavorites = $it")
                 favorites.clear()
                 favorites.addAll(it.toTypedArray())
             }
@@ -72,9 +70,12 @@ object Db {
 
 
     private fun parseFav(filmList: List<FilmModel>):List<FilmModel>{
+        loadFavoriteIDs()
         Log.d(TAG, "parseFav")
         Log.d(TAG, "favorites = $favorites")
-        filmList.forEach { it.fav = favorites.contains(it.id) }
+        filmList.forEach {
+            it.fav = favorites.contains(it.id)
+        }
         return filmList
     }
 
@@ -83,65 +84,84 @@ object Db {
         currentFilmList.clear()
         val parsed = parseFav(filmList)
         currentFilmList.addAll(parsed)
-        Log.d(TAG, "saveInitialFromServer : $currentFilmList")
-    }
-
-    fun saveMoreFromServer(filmList: List<FilmModel>){
-        Log.d(TAG, "saveMoreFromServer : $filmList")
-        val parsed = parseFav(filmList)
-        currentFilmList.addAll(parsed)
-    }
-
-    fun saveCachedFilms(){
+        Log.d(TAG, "saveCachedFilms : $currentFilmList")
         INSTANCE?.transactionExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAll()
             getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
         }
     }
 
+    fun saveMoreFromServer(filmList: List<FilmModel>){
+        Log.d(TAG, "saveMoreFromServer : $filmList")
+        val parsed = parseFav(filmList)
+        currentFilmList.addAll(parsed)
+        Log.d(TAG, "saveMoreFilms")
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.insertAll(*filmList.toTypedArray())
+        }
+    }
+
+    fun saveCachedFilms(){
+        Log.d(TAG, "saveCachedFilms")
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.deleteAll()
+            getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
+        }
+    }
+    fun saveMoreFilms(filmList: List<FilmModel>){
+        Log.d(TAG, "saveCachedFilms")
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.insertAll(*filmList.toTypedArray())
+        }
+    }
+
+    fun saveFavorites(){
+        Log.d(TAG, "saveFavorites")
+        val favoritesList = ArrayList<UserFavorites>()
+        favorites.forEach { favoritesList.add(UserFavorites(it)) }
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.deleteAllFavorites()
+            getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
+            Log.d(TAG, "$favoritesList")
+        }
+    }
 
 
-    /**
-     * Press favorite
-     *
-     * @param film
-     */
-    fun pressFav(film: FilmModel) {
-        Log.d(TAG, "pressFav")
-        Log.d(TAG, film.id.toString())
+    private fun updateFavorites(film: FilmModel){
+        Log.d(TAG, "updateFavorites")
+        Log.d(TAG, favorites.toString())
         if (film.fav){
             favorites.remove(film.id)
-            rmFav(film.id)
-            currentFavList.remove(film)
         }else {
             favorites.add(film.id)
-            addFav(film.id)
-            currentFavList.add(film)
         }
+        Log.d(TAG, favorites.toString())
+    }
+
+    fun pressHeart(film: FilmModel) {
+        Log.d(TAG, "pressHeart")
+        Log.d(TAG, film.id.toString())
+        updateFavorites(film)
         currentFilmList.forEachIndexed { index, _ ->
             if (currentFilmList[index].id == film.id) {
                 currentFilmList[index].fav = !currentFilmList[index].fav
             }
-
         }
     }
 
 
-    private fun addFav(id: Int){
-        Log.d(TAG, "addFav")
-        INSTANCE?.queryExecutor?.execute {
-                getInstance()?.getFilmsDao()?.addFav(id)
+    fun pressHeartFav(film: FilmModel){
+        Log.d(TAG, "pressHeartFav")
+        Log.d(TAG, film.id.toString())
+        updateFavorites(film)
+        currentFavList.forEachIndexed { index, _ ->
+            if (currentFavList[index].id == film.id) {
+                currentFavList[index].fav = !currentFavList[index].fav
             }
-    }
-
-    private fun rmFav(id: Int){
-        Log.d(TAG, "rmFav")
-        INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.rmFav(id)
         }
+
+
     }
-
-
 
 
 
@@ -180,16 +200,20 @@ object Db {
      *
      */
 
-    fun loadInitialFav() {
-        loadFavoriteIDs()
-        Log.d(TAG, "loadInitialFav: ")
-        INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.getFilmsJoinFavorites()?.let {
-                currentFavList.clear()
-                currentFavList.addAll(parseFav(it))
-            }
-        }
-        Log.d(TAG, currentFavList.toString())
+    fun loadFav() {
+        Log.d(TAG, "loadFav: ")
+        currentFavList.clear()
+        currentFavList.addAll(currentFilmList.filter { it.fav })
+
+        Log.d(TAG, "currentFavList: $currentFavList")
+    }
+
+
+
+
+    fun destroyInstance() {
+        INSTANCE?.close()
+        INSTANCE = null
     }
 
     /*
@@ -207,13 +231,6 @@ object Db {
         }
     }
     */
-
-
-    fun destroyInstance() {
-        INSTANCE?.close()
-        INSTANCE = null
-    }
-
 
 
     /*

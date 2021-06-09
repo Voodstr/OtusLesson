@@ -42,7 +42,6 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
                     Log.d(TAG,"onResponse")
                     callback.onSuccess(response.body()!!)
                     Db.saveInitialFromServer(response.body()!!)
-                    Db.saveCachedFilms()
                 } else {
                     Log.d(TAG,"onError")
                     callback.onError(response.code().toString() + "")
@@ -65,7 +64,6 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
                     Log.d(TAG,"onResponse : ${response.body()}")
                     callback.onSuccess(response.body()!!)
                     Db.saveMoreFromServer(response.body()!!)
-                    Db.saveCachedFilms()
                 } else {
                     callback.onError(response.code().toString() + "")
                     // TODO пусть тащит из базы если ответа не было

@@ -19,7 +19,6 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
 
     companion object{
-        const val EXTRA_ID = 0
         const val TAG = "FilmVH"
     }
 
@@ -52,8 +51,8 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
         setLike(film)
 
         likeBtn.setOnClickListener {
+            Db.pressHeart(film)
             pressLike(film,it.context)
-            Db.pressFav(film)
         }
     }
 

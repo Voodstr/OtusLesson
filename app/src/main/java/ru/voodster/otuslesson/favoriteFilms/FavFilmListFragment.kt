@@ -24,15 +24,26 @@ class FavFilmListFragment : Fragment()  {
 
     var listener : OnFilmClickListener?=null
 
+    companion object{
+        const val TAG = "FavFilmListFragment"
+    }
+
     override fun onAttach(context: Context) {
+        Log.d(TAG,"onAttach")
         super.onAttach(context)
-        Log.d("FavFilmListFragment","$viewModel")
         if(activity is OnFilmClickListener){
             listener = activity as OnFilmClickListener
         }else{
             throw Exception("Activity must implement onFilmClickListener")
         }
     }
+
+    override fun onPause() {
+        Log.d(TAG,"onPause")
+        super.onPause()
+        viewModel.saveFav()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +65,7 @@ class FavFilmListFragment : Fragment()  {
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).setOnRefreshListener {
+            viewModel.saveFav()
             viewModel.onGetFavFromDatabase()
             view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).isRefreshing=false
         }
@@ -71,7 +83,7 @@ class FavFilmListFragment : Fragment()  {
     }
 
     private fun initRecycler() {
-        Log.d(FilmListFragment.TAG, "initRecycler")
+        Log.d(TAG, "initRecycler")
         view?.findViewById<RecyclerView>(R.id.favoriteRV)
             ?.adapter = FavFilmAdapter(LayoutInflater.from(context)) {
             listener?.onFilmClick(it)

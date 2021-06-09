@@ -26,7 +26,21 @@ class FilmListFragment : Fragment()  {
 
     var listener : OnFilmClickListener?=null
 
+    override fun onPause() {
+        Log.d(TAG,"onPause")
+        super.onPause()
+        viewModel.saveDb()
+    }
+/*
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG,"onResume")
+        viewModel.loadDb()
+    }
+
+ */
     override fun onAttach(context: Context) {
+        Log.d(TAG,"onAttach")
         super.onAttach(context)
         if(activity is OnFilmClickListener){
             listener = activity as OnFilmClickListener
@@ -57,6 +71,7 @@ class FilmListFragment : Fragment()  {
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
+            viewModel.saveFav()
             viewModel.onGetFromServer()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }

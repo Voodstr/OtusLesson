@@ -8,5 +8,8 @@ import androidx.room.PrimaryKey
 class UserFavorites {
     @PrimaryKey(autoGenerate = true) var id = 0
     @ColumnInfo(name = "filmID") var filmID =0
+    constructor(id: Int){
+        this.filmID = id
+    }
 
 }

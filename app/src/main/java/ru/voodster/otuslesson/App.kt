@@ -28,15 +28,12 @@ class App:Application() {
 
     }
 
-    private fun initDatabase(){
-        Log.d(TAG,"initDatabase")
-        Executors.newSingleThreadScheduledExecutor().execute(
-            Runnable {
+    private fun initDatabase() {
+        Log.d(TAG, "initDatabase")
+        Db.getInstance()?.queryExecutor?.execute {
                 Db.loadFavoriteIDs()
                 Db.loadInitialFromDatabase()
-                Db.loadInitialFav()
             }
-        )
     }
 
 

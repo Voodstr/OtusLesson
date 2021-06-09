@@ -23,6 +23,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
     }
 
 
+
     private fun pressLike(film: FilmModel, context: Context){
             if (film.fav) {
                 likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
@@ -50,8 +51,8 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
         setLike(film)
 
         likeBtn.setOnClickListener {
+            Db.pressHeartFav(film)
             pressLike(film, it.context)
-            Db.pressFav(film)
         }
     }
 

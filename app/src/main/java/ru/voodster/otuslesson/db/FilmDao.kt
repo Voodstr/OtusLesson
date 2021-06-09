@@ -31,10 +31,18 @@ interface FilmDao {
     @Query("Insert into user_favorites values (null,:id)")
     fun addFav(id: Int)
 
+    @Insert(entity = UserFavorites::class)
+    fun addFav2(fav: UserFavorites)
+
+
+    @Query("DELETE FROM user_favorites")
+    fun deleteAllFavorites()
+
+    @Insert
+    fun insertFavorites(favorites: List<UserFavorites>)
 
     @Query("DELETE FROM films_table")
     fun deleteAll()
-
 
     @Insert
     fun insertAll(vararg films: FilmModel)
