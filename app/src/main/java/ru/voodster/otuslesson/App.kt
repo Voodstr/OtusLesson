@@ -32,7 +32,6 @@ class App:Application() {
         Log.d(TAG, "initDatabase")
         Db.getInstance()?.queryExecutor?.execute {
                 Db.loadFavoriteIDs()
-                Db.loadInitialFromDatabase()
             }
     }
 

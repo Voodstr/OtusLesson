@@ -24,7 +24,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
 
     private fun pressLike(film: FilmModel, context: Context){
-            if (!film.fav) {
+            if (film.fav) {
                 likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
                 likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
                 Toast.makeText(context,R.string.addFavToast,Toast.LENGTH_SHORT).show()
@@ -53,6 +53,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
         likeBtn.setOnClickListener {
             Db.pressHeart(film)
             pressLike(film,it.context)
+
         }
     }
 
