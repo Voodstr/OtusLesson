@@ -107,12 +107,6 @@ object Db {
             getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
         }
     }
-    fun saveMoreFilms(filmList: List<FilmModel>){
-        Log.d(TAG, "saveCachedFilms")
-        INSTANCE?.transactionExecutor?.execute {
-            getInstance()?.getFilmsDao()?.insertAll(*filmList.toTypedArray())
-        }
-    }
 
     fun saveFavorites(){
         Log.d(TAG, "saveFavorites")
@@ -185,11 +179,10 @@ object Db {
      * Load more
      * загрузка из базы дополнительных данных
      */
-    fun loadMoreFromDatabase() {
+    fun loadMoreFromDatabase() {  //TODO не работает, неизвестно почему
         Log.d(TAG, "loadMore")
-        val size = 8 // размер запроса из базы
         INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, size)?.let {
+            getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, 10)?.let {
                 currentFilmList.addAll(it)
             }
         }

@@ -8,13 +8,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
 import ru.voodster.otuslesson.db.Db
-import java.util.concurrent.Executors
 
 class App:Application() {
 
 
-    lateinit var filmsApi: FilmsApi
-    lateinit var filmsUpdater : FilmsUpdater
+    private lateinit var filmsApi: FilmsApi
+    private lateinit var filmsUpdater : FilmsUpdater
     lateinit var filmsInteractor: FilmsInteractor
 
     override fun onCreate() {
@@ -32,6 +31,7 @@ class App:Application() {
         Log.d(TAG, "initDatabase")
         Db.getInstance()?.queryExecutor?.execute {
                 Db.loadFavoriteIDs()
+                Db.loadInitialFromDatabase()
             }
     }
 

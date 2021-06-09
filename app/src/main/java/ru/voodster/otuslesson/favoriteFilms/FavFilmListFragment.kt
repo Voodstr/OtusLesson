@@ -11,11 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.R
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.db.FilmModel
-import ru.voodster.otuslesson.films.FilmListFragment
 import java.lang.Exception
 
 class FavFilmListFragment : Fragment()  {

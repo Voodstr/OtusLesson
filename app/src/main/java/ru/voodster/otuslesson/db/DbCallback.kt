@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-class DbCallback() : RoomDatabase.Callback() {
+class DbCallback : RoomDatabase.Callback() {
 
     companion object{
         const val TAG = "DbCallback"

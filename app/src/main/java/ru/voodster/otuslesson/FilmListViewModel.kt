@@ -8,7 +8,7 @@ import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.api.FilmsInteractor
 import ru.voodster.otuslesson.db.FilmModel
 
-class FilmListViewModel() : ViewModel() {
+class FilmListViewModel : ViewModel() {
     init {
         Log.d("viewModel",this.toString())
        // listFilms = LivePagedListBuilder(Db.f)
@@ -44,13 +44,13 @@ class FilmListViewModel() : ViewModel() {
 
     fun onGetFromServer() {
         Log.d(TAG,"onGetFromServer")
+        onGetDataFromDatabase()
         filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
             override fun onSuccess(filmList: List<FilmModel>) {
                 Log.d(TAG ,"success")
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
             override fun onError(error: String) {
-                // TODO пусть тащит из базы если ответа не было
                 errorLiveData.postValue(error)
                 Log.d(TAG , "Data Error")
             }
@@ -59,6 +59,7 @@ class FilmListViewModel() : ViewModel() {
 
     fun onGetMoreFromServer() {
         Log.d(TAG,"onGetMoreFromServer")
+        loadMoreFromDatabase()
         Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
         filmsInteractor.getMore( Db.currentFilmList.size, Db.currentFilmList.size.plus(10)  ,object : FilmsInteractor.GetMoreFilmsCallBack {
             override fun onSuccess(filmList: List<FilmModel>) {
@@ -72,6 +73,19 @@ class FilmListViewModel() : ViewModel() {
             }
         })
     }
+
+    private fun onGetDataFromDatabase(){
+        Log.d(TAG,"onGetDataFromDatabase")
+        Db.loadInitialFromDatabase()
+        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+    }
+
+     private fun loadMoreFromDatabase(){
+        Log.d(TAG,"loadMore")
+        Db.loadMoreFromDatabase()
+        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+    }
+
     /*
 
     /**
@@ -80,21 +94,12 @@ class FilmListViewModel() : ViewModel() {
      *
      */
 
-    fun onGetDataFromDatabase(){
-        Log.d(TAG,"onGetDataFromDatabase")
-        Db.loadInitial()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-    }
+
 
     /**
      * Load more
      * Get more Data to Cached LiveData
      */
-    fun loadMore(){
-        Log.d(TAG,"loadMore")
-        Db.loadMore()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-    }
 */
 
     fun onGetFavFromDatabase(){
