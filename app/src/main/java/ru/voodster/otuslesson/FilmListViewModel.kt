@@ -24,6 +24,7 @@ class FilmListViewModel : ViewModel() {
     private val favoriteLiveData = MutableLiveData<List<FilmEntity>>()
     private val errorLiveData = MutableLiveData<String>()
 
+    private val filmsLiveData = Db.filmListLiveData
 
     private val filmsInteractor = App.instance!!.filmsInteractor
 

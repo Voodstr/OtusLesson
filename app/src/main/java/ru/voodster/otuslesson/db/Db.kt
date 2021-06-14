@@ -1,6 +1,7 @@
 package ru.voodster.otuslesson.db
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import ru.voodster.otuslesson.App
 import ru.voodster.otuslesson.api.FilmModel
@@ -23,6 +24,9 @@ object Db {
             currentFilmList
         else
             fakeList
+
+
+    lateinit var filmListLiveData : LiveData<FilmEntity>
 
 
     var currentFavList = ArrayList<FilmEntity>()
@@ -95,14 +99,6 @@ object Db {
     }
 
 
-    private fun parseFav(filmList: MutableList<FilmEntity>) {
-        val favorites = loadFavoriteIDs()
-        Log.d(TAG, "parseFav")
-        Log.d(TAG, "favorites = $favorites")
-        filmList.forEach {
-            it.fav = favorites.contains(it.id)
-        }
-    }
 
     fun saveInitialFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveInitialFromServer : $filmList")
