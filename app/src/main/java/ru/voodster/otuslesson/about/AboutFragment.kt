@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
-class AboutFragment(private val film: FilmModel) :Fragment() {
+class AboutFragment(private val film: FilmEntity) :Fragment() {
 
 
     companion object{
@@ -62,7 +62,8 @@ class AboutFragment(private val film: FilmModel) :Fragment() {
             it.findViewById<TextView>(R.id.aboutDescriptionTv).text = film.description.plus("\n")
             Glide
                 .with(this)
-                .load("http://developer.alexanderklimov.ru/android/images/android_cat.jpg")
+                .load(film.img)
+                .placeholder(R.drawable.filmlogo)
                 .into(it.findViewById(R.id.aboutImg))
         }
 

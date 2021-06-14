@@ -8,7 +8,7 @@ class DbCallback : RoomDatabase.Callback() {
 
     companion object{
         const val TAG = "DbCallback"
-        val fakeList =  arrayListOf(FilmModel(0,"empty","empty","empty",false,0))
+        val fakeList =  arrayListOf(FilmEntity(0,"empty","empty","empty",false,0))
     }
 
     //Действие при создании базы

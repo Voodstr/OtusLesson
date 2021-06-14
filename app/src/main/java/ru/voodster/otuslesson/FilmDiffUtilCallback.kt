@@ -1,10 +1,10 @@
 package ru.voodster.otuslesson
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
-class FilmDiffUtilCallback(private val oldList: List<FilmModel>,
-                           private val newList: List<FilmModel>) : DiffUtil.Callback() {
+class FilmDiffUtilCallback(private val oldList: List<FilmEntity>,
+                           private val newList: List<FilmEntity>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size

@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.favoriteFilms
+package ru.voodster.otuslesson.filmsFavorite
 
 import android.content.Context
 import android.os.Bundle
@@ -13,7 +13,7 @@ import ru.voodster.otuslesson.R
 import androidx.fragment.app.activityViewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 import java.lang.Exception
 
 class FavFilmListFragment : Fragment()  {
@@ -38,8 +38,13 @@ class FavFilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
+        viewModel.saveFromFavList()
         super.onPause()
-        viewModel.saveFav()
+    }
+
+    override fun onDestroy() {
+        viewModel.saveFromFavList()
+        super.onDestroy()
     }
 
 
@@ -116,6 +121,6 @@ class FavFilmListFragment : Fragment()  {
     }
 
     interface OnFilmClickListener{
-        fun onFilmClick(filmItem: FilmModel)
+        fun onFilmClick(filmItem: FilmEntity)
     }
 }

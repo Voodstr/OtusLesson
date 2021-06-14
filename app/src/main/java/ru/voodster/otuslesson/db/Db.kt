@@ -3,6 +3,7 @@ package ru.voodster.otuslesson.db
 import android.util.Log
 import androidx.room.Room
 import ru.voodster.otuslesson.App
+import ru.voodster.otuslesson.api.FilmModel
 
 object Db {
 
@@ -10,27 +11,51 @@ object Db {
 
     private var INSTANCE: FilmsRoomDatabase? = null
 
-    private val fakeFilm = FilmModel(0,"empty","empty","empty",false,0)
+    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0)
     private val fakeList = arrayListOf(fakeFilm)
 
-    private var favorites = ArrayList<Int>()
+    //private var favorites = ArrayList<Int>()
 
-    var currentFilmList = ArrayList<FilmModel>()
-    val cachedOrFakeFilmList: List<FilmModel> // если данных нет то возвращает пустой список
+
+    var currentFilmList = ArrayList<FilmEntity>()
+    val cachedOrFakeFilmList: List<FilmEntity> // если данных нет то возвращает пустой список
         get() = if (currentFilmList.size > 0)
             currentFilmList
         else
             fakeList
 
 
-    var currentFavList = ArrayList<FilmModel>()
-    val FakeOrFavoriteList: List<FilmModel> // если данных нет то возвращает пустой список
+    var currentFavList = ArrayList<FilmEntity>()
+    val FakeOrFavoriteList: List<FilmEntity> // если данных нет то возвращает пустой список
         get() = if (currentFavList.size > 0)
             currentFavList
         else
             fakeList
 
 
+    class FilmMapper(private val favorites : List<Int>): BaseMapper<FilmEntity, FilmModel>() {
+
+        override fun map(entity: FilmEntity?): FilmModel? {
+            return if (entity != null){
+                (FilmModel(
+                    entity.id,
+                    entity.img,
+                    entity.title,
+                    entity.description,
+                    entity.likes
+                ))
+            }else null
+        }
+
+        override fun reverseMap(model: FilmModel?): FilmEntity? {
+            return if (model!=null){
+                if (favorites.contains(model.id)){
+                    FilmEntity(model.id,model.img,model.title,model.description,true,model.likes)
+                }else FilmEntity(model.id,model.img,model.title,model.description,false,model.likes)
+            }else null
+        }
+
+    }
 
     /**
      * Get instance
@@ -47,7 +72,7 @@ object Db {
                     App.instance!!.applicationContext,
                     FilmsRoomDatabase::class.java, "db-name.db"
                 )
-                    /*.allowMainThreadQueries()
+                    /*
                     .fallbackToDestructiveMigration()
                     .addMigrations(MIGRATION_1_2)*/
                     .addCallback(DbCallback())
@@ -57,20 +82,21 @@ object Db {
         return INSTANCE
     }
 
-    fun loadFavoriteIDs() {
+    fun loadFavoriteIDs():List<Int> {
         Log.d(TAG, "loadFavoriteIDs")
+        val favoriteIDs = ArrayList<Int>()
         INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.getUserFavorites()?.let {
-                favorites.clear()
-                favorites.addAll(it.toTypedArray())
+                favoriteIDs.retainAll(it.toTypedArray())
             }
         }
-        Log.d(TAG, "$favorites")
+        Log.d(TAG, "$favoriteIDs")
+        return favoriteIDs
     }
 
 
-    private fun parseFav(filmList: MutableList<FilmModel>) {
-        loadFavoriteIDs()
+    private fun parseFav(filmList: MutableList<FilmEntity>) {
+        val favorites = loadFavoriteIDs()
         Log.d(TAG, "parseFav")
         Log.d(TAG, "favorites = $favorites")
         filmList.forEach {
@@ -80,23 +106,19 @@ object Db {
 
     fun saveInitialFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveInitialFromServer : $filmList")
+        val mapper = FilmMapper(loadFavoriteIDs())
         currentFilmList.clear()
-        currentFilmList.addAll(filmList)
-        parseFav(currentFilmList)
+        currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveCachedFilms : $currentFilmList")
-        INSTANCE?.transactionExecutor?.execute {
-            getInstance()?.getFilmsDao()?.deleteAll()
-            getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
-        }
     }
 
     fun saveMoreFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveMoreFromServer : $filmList")
-        currentFilmList.addAll(filmList)
-        parseFav(currentFilmList)
+        val mapper = FilmMapper(loadFavoriteIDs())
+        currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveMoreFilms")
         INSTANCE?.transactionExecutor?.execute {
-            getInstance()?.getFilmsDao()?.insertAll(*filmList.toTypedArray())
+            getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
         }
     }
 
@@ -111,16 +133,29 @@ object Db {
     fun saveFavorites(){
         Log.d(TAG, "saveFavorites")
         val favoritesList = ArrayList<UserFavorites>()
-        favorites.forEach { favoritesList.add(UserFavorites(it)) }
+        favoritesList.clear()
+        currentFilmList.forEach { if (it.fav) favoritesList.add(UserFavorites(it.id)) }
+        Log.d(TAG, "$favoritesList")
         INSTANCE?.transactionExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAllFavorites()
             getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
-            Log.d(TAG, "$favoritesList")
         }
     }
 
+    fun saveFromFavList(){
+        Log.d(TAG, "saveFromFavList")
+        val favoritesList = ArrayList<UserFavorites>()
+        favoritesList.clear()
+        currentFavList.forEach {  if (it.fav) favoritesList.add(UserFavorites(it.id))}
+        Log.d(TAG, "$favoritesList")
+        INSTANCE?.transactionExecutor?.execute {
+            getInstance()?.getFilmsDao()?.deleteAllFavorites()
+            getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
+        }
+    }
 
-    private fun updateFavorites(film: FilmModel){
+/*
+    private fun updateFavorites(film: FilmEntity){
         Log.d(TAG, "updateFavorites")
         if (favorites.contains(film.id)){
             favorites.remove(film.id)
@@ -129,33 +164,41 @@ object Db {
         }
     }
 
-    fun pressHeart(film: FilmModel) {
+    fun pressHeart(film: FilmEntity) {
         Log.d(TAG, "pressHeart")
         Log.d(TAG, film.id.toString())
         Log.d(TAG, "updateList")
+        /*
+
         currentFilmList.forEachIndexed { index, _ ->
             if (currentFilmList[index].id == film.id) {
-                Log.d(TAG, index.toString())
+                //Log.d(TAG, index.toString())
                 currentFilmList[index].fav = !currentFilmList[index].fav
-                Log.d(TAG, currentFilmList[index].fav.toString())
+               // Log.d(TAG, currentFilmList[index].fav.toString())
             }
         }
-        updateFavorites(film)
 
+         */
+        //updateFavorites(film)
     }
 
 
-    fun pressHeartFav(film: FilmModel){
+    fun pressHeartFav(film: FilmEntity){
         Log.d(TAG, "pressHeartFav")
         Log.d(TAG, film.id.toString())
+        /*
         currentFavList.forEachIndexed { index, _ ->
             if (currentFavList[index].id == film.id) {
                 currentFavList[index].fav = !currentFavList[index].fav
             }
         }
-        updateFavorites(film)
-    }
 
+         updateFavorites(film)
+
+         */
+
+    }
+*/
 
 
     /**
@@ -171,7 +214,6 @@ object Db {
                 currentFilmList.addAll(it)
             }
         }
-        parseFav(currentFilmList)
 
     }
 
@@ -186,7 +228,6 @@ object Db {
                 currentFilmList.addAll(it)
             }
         }
-        parseFav(currentFilmList)
     }
 
     /**

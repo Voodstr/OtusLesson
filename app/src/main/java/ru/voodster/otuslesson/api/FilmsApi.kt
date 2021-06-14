@@ -2,7 +2,7 @@ package ru.voodster.otuslesson.api
 
 import retrofit2.Call
 import retrofit2.http.*
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
 interface FilmsApi {
 

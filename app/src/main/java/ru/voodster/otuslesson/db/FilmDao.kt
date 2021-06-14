@@ -10,10 +10,10 @@ interface FilmDao {
 
 
     @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT 8")
-    fun getInitial():List<FilmModel>
+    fun getInitial():List<FilmEntity>
 
     @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")
-    fun getRange(start:Int, size:Int):List<FilmModel>
+    fun getRange(start:Int, size:Int):List<FilmEntity>
 
     //@Update(entity = FilmModel::class)
    // fun updateFilm(film: FilmModel)
@@ -21,7 +21,7 @@ interface FilmDao {
    // @Query("Select t.rowID,t.fav,t.id,t.img,t.title,t.description,t.likes from films_table t inner join user_favorites f on t.id = f.filmID order by t.id ")
    // fun getFilmsJoinFavorites():List<FilmModel>
 
-    @Query("Select filmID from user_favorites")
+    @Query("Select * from user_favorites order by filmID")
     fun getUserFavorites():List<Int>
 
     //@Query("delete from user_favorites where filmID = :id")
@@ -37,16 +37,16 @@ interface FilmDao {
     @Query("DELETE FROM user_favorites")
     fun deleteAllFavorites()
 
-    @Insert
+    @Insert(entity = UserFavorites::class)
     fun insertFavorites(favorites: List<UserFavorites>)
 
     @Query("DELETE FROM films_table")
     fun deleteAll()
 
     @Insert
-    fun insertAll(vararg films: FilmModel)
+    fun insertAll(vararg films: FilmEntity)
 
     @Delete
-    fun delete(film: FilmModel)
+    fun delete(film: FilmEntity)
 
 }

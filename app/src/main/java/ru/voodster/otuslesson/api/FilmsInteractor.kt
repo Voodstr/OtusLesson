@@ -4,7 +4,7 @@ import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 import ru.voodster.otuslesson.db.Db
 
 class FilmsInteractor(private val filmsApi: FilmsApi) {

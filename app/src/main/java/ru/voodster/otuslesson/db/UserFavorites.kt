@@ -5,11 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_favorites")
-class UserFavorites {
-    @PrimaryKey(autoGenerate = true) var id = 0
-    @ColumnInfo(name = "filmID") var filmID =0
-    constructor(id: Int){
-        this.filmID = id
-    }
-
-}
+data class UserFavorites(
+    @PrimaryKey(autoGenerate = false) //TODO Разобраться насчет PrimaryKey & AutoGenerate
+    @ColumnInfo(name = "filmID") var filmID: Int = 0
+)

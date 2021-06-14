@@ -8,6 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
 import ru.voodster.otuslesson.db.Db
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
 
 class App:Application() {
 
@@ -42,11 +45,16 @@ class App:Application() {
         Log.d(TAG,"success")
     }
 
+
+    fun provideLoggingInterceptor() =
+        HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) BODY else NONE }
+
     private fun initRetrofit() {
 
         Log.d(TAG,"initRetrofit")
 
         val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(provideLoggingInterceptor())
             .build()
 
         filmsApi = Retrofit.Builder()

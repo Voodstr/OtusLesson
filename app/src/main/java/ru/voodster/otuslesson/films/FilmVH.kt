@@ -1,15 +1,17 @@
 package ru.voodster.otuslesson.films
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.db.Db
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
+import java.net.URI
 
 class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
@@ -23,7 +25,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
     }
 
 
-    private fun pressLike(film: FilmModel, context: Context){
+    private fun pressLike(film: FilmEntity, context: Context){
             if (film.fav) {
                 likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
                 likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
@@ -35,7 +37,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
             }
     }
 
-    private fun setLike(film: FilmModel){
+    private fun setLike(film: FilmEntity){
         if (film.fav) {
             likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
         } else {
@@ -44,16 +46,20 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
     }
 
 
-    fun bind(film: FilmModel) {
+    fun bind(film: FilmEntity) {
 
-        img.setImageResource(R.drawable.filmlogo) // TODO загрузка изображений
+        Glide
+            .with(this.itemView.context)
+            .load(film.img)
+            .placeholder(R.drawable.filmlogo)
+            .into(img)
+
         title.text = film.title
         setLike(film)
 
         likeBtn.setOnClickListener {
-            Db.pressHeart(film)
+            film.fav = !film.fav
             pressLike(film,it.context)
-
         }
     }
 

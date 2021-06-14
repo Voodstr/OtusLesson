@@ -9,7 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
 class FilmsUpdater(private val anApi: FilmsApi): LifecycleObserver {
 

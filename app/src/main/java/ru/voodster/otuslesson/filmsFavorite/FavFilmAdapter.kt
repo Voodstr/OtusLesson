@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.favoriteFilms
+package ru.voodster.otuslesson.filmsFavorite
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.voodster.otuslesson.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
-class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem: FilmModel)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
+class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:((filmItem: FilmEntity)->Unit)?) : RecyclerView.Adapter<FilmVH>() {
 
     companion object {
         const val TAG = "FavFilmAdapter"
@@ -19,13 +19,13 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     }
 
 
-    private val filmsList = ArrayList<FilmModel>()
+    private val filmsList = ArrayList<FilmEntity>()
 
     override fun getItemViewType(position: Int) =
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER
 
 
-    fun setItems(films: List<FilmModel>) {
+    fun setItems(films: List<FilmEntity>) {
         Log.d(TAG, "setItems")
         val filmDiffUtilCallback = FilmDiffUtilCallback(filmsList,films)
         val diffResult = DiffUtil.calculateDiff(filmDiffUtilCallback)

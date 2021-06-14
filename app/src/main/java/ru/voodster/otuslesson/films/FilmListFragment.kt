@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.db.FilmModel
+import ru.voodster.otuslesson.db.FilmEntity
 
 
 class FilmListFragment : Fragment()  {
@@ -28,8 +28,13 @@ class FilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
-        super.onPause()
         viewModel.saveDb()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        viewModel.saveDb()
+        super.onDestroy()
     }
 /*
     override fun onResume() {
@@ -121,7 +126,7 @@ class FilmListFragment : Fragment()  {
 
 
     interface OnFilmClickListener{
-        fun onFilmClick(filmItem: FilmModel)
+        fun onFilmClick(filmItem: FilmEntity)
     }
 }
 
