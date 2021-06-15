@@ -40,8 +40,8 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse")
-                    callback.onSuccess(response.body()!!)
                     Db.saveInitialFromServer(response.body()!!)
+                    callback.onSuccess(response.body()!!)
                 } else {
                     Log.d(TAG,"onError")
                     callback.onError(response.code().toString() + "")
@@ -62,8 +62,8 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse : ${response.body()}")
-                    callback.onSuccess(response.body()!!)
                     Db.saveMoreFromServer(response.body()!!)
+                    callback.onSuccess(response.body()!!)
                 } else {
                     callback.onError(response.code().toString() + "")
                     // TODO пусть тащит из базы если ответа не было

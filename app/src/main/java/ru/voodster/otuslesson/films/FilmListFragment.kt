@@ -20,6 +20,7 @@ import ru.voodster.otuslesson.db.FilmEntity
 class FilmListFragment : Fragment()  {
     companion object{
         const val TAG = "FilmListFragment"
+
     }
 
     private val viewModel : FilmListViewModel by activityViewModels()
@@ -59,7 +60,6 @@ class FilmListFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_filmlist,container, false)
     }
 

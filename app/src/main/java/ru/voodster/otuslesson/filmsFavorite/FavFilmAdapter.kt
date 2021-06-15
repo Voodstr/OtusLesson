@@ -19,7 +19,11 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     }
 
 
-    private val filmsList = ArrayList<FilmEntity>()
+    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0)
+    private val fakeList = arrayListOf(fakeFilm)
+
+
+    private var filmsList: ArrayList<FilmEntity> = fakeList
 
     override fun getItemViewType(position: Int) =
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER

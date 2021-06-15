@@ -14,11 +14,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
 
-class AboutFragment(private val film: FilmEntity) :Fragment() {
+class AboutFragment :Fragment() {
+
+    private lateinit var filmEntity: FilmEntity
 
 
     companion object{
         const val TAG = "AboutFragment"
+        private const val FILM_DATA = "FILM_DATA"
+        fun newInstance(film: FilmEntity): AboutFragment {
+            return AboutFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(FILM_DATA, film)
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -31,15 +41,15 @@ class AboutFragment(private val film: FilmEntity) :Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setViews()
-        setClickListeners()
-
-
+            arguments?.getParcelable<FilmEntity>(FILM_DATA)?.let {
+                filmEntity = it
+            }
+        setViews(filmEntity)
+        setClickListeners(filmEntity)
     }
 
 
-    private fun setClickListeners() {
+    private fun setClickListeners(film: FilmEntity) {
 
         view?.let {
 
@@ -54,7 +64,7 @@ class AboutFragment(private val film: FilmEntity) :Fragment() {
 
     }
 
-    private fun setViews(){
+    private fun setViews(film:FilmEntity){
         view?.let {
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).title = film.title
             it.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setExpandedTitleColor(it.context.getColor(R.color.pal_2))

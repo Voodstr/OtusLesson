@@ -15,9 +15,6 @@ object Db {
     private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0)
     private val fakeList = arrayListOf(fakeFilm)
 
-    //private var favorites = ArrayList<Int>()
-
-
     var currentFilmList = ArrayList<FilmEntity>()
     val cachedOrFakeFilmList: List<FilmEntity> // если данных нет то возвращает пустой список
         get() = if (currentFilmList.size > 0)
@@ -25,20 +22,10 @@ object Db {
         else
             fakeList
 
-
-    lateinit var filmListLiveData : LiveData<FilmEntity>
-
-
-    var currentFavList = ArrayList<FilmEntity>()
-    val FakeOrFavoriteList: List<FilmEntity> // если данных нет то возвращает пустой список
-        get() = if (currentFavList.size > 0)
-            currentFavList
-        else
-            fakeList
+    private val favorites = ArrayList<Int>()
 
 
-    class FilmMapper(private val favorites : List<Int>): BaseMapper<FilmEntity, FilmModel>() {
-
+    class FilmMapper: BaseMapper<FilmEntity, FilmModel>() {
         override fun map(entity: FilmEntity?): FilmModel? {
             return if (entity != null){
                 (FilmModel(
@@ -86,23 +73,22 @@ object Db {
         return INSTANCE
     }
 
-    fun loadFavoriteIDs():List<Int> {
+    fun loadFavoriteIDs() {
         Log.d(TAG, "loadFavoriteIDs")
-        val favoriteIDs = ArrayList<Int>()
+        favorites.clear()
         INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.getUserFavorites()?.let {
-                favoriteIDs.retainAll(it.toTypedArray())
+            getInstance()?.getFilmsDao()?.getUserFavorites()?.let { UF ->
+                UF.forEach { favorites.add(it.filmID) }
             }
         }
-        Log.d(TAG, "$favoriteIDs")
-        return favoriteIDs
+        Log.d(TAG, "$favorites")
     }
 
 
 
     fun saveInitialFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveInitialFromServer : $filmList")
-        val mapper = FilmMapper(loadFavoriteIDs())
+        val mapper = FilmMapper()
         currentFilmList.clear()
         currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveCachedFilms : $currentFilmList")
@@ -110,7 +96,7 @@ object Db {
 
     fun saveMoreFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveMoreFromServer : $filmList")
-        val mapper = FilmMapper(loadFavoriteIDs())
+        val mapper = FilmMapper()
         currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveMoreFilms")
         INSTANCE?.transactionExecutor?.execute {
@@ -130,7 +116,12 @@ object Db {
         Log.d(TAG, "saveFavorites")
         val favoritesList = ArrayList<UserFavorites>()
         favoritesList.clear()
-        currentFilmList.forEach { if (it.fav) favoritesList.add(UserFavorites(it.id)) }
+        currentFilmList.forEach {
+            if (it.fav){
+                favoritesList.add(UserFavorites(it.id))
+                favorites.add(it.id)
+            }
+        }
         Log.d(TAG, "$favoritesList")
         INSTANCE?.transactionExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAllFavorites()
@@ -138,6 +129,7 @@ object Db {
         }
     }
 
+    /*
     fun saveFromFavList(){
         Log.d(TAG, "saveFromFavList")
         val favoritesList = ArrayList<UserFavorites>()
@@ -149,6 +141,8 @@ object Db {
             getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
         }
     }
+
+     */
 
 /*
     private fun updateFavorites(film: FilmEntity){
@@ -230,7 +224,7 @@ object Db {
      * Load initial favorites
      *
      */
-
+/*
     fun loadFav() {
         Log.d(TAG, "loadFav: ")
         currentFavList.clear()
@@ -238,6 +232,8 @@ object Db {
 
         Log.d(TAG, "currentFavList: $currentFavList")
     }
+
+ */
 
 
 

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragment(film))
+            .replace(R.id.fragmentContainer, AboutFragment.newInstance(film))
             .addToBackStack(null)
             .commit()
     }

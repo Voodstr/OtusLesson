@@ -21,8 +21,8 @@ interface FilmDao {
    // @Query("Select t.rowID,t.fav,t.id,t.img,t.title,t.description,t.likes from films_table t inner join user_favorites f on t.id = f.filmID order by t.id ")
    // fun getFilmsJoinFavorites():List<FilmModel>
 
-    @Query("Select * from user_favorites order by filmID")
-    fun getUserFavorites():List<Int>
+    @Query("Select filmID from user_favorites order by filmID")
+    fun getUserFavorites():List<UserFavorites>
 
     //@Query("delete from user_favorites where filmID = :id")
    // fun rmFav(id: Int)
@@ -36,14 +36,14 @@ interface FilmDao {
 
     @Query("DELETE FROM user_favorites")
     fun deleteAllFavorites()
-
-    @Insert(entity = UserFavorites::class)
+//entity = UserFavorites::class,
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFavorites(favorites: List<UserFavorites>)
 
     @Query("DELETE FROM films_table")
     fun deleteAll()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg films: FilmEntity)
 
     @Delete

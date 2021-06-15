@@ -22,9 +22,10 @@ class FilmListViewModel : ViewModel() {
 
     private val filmListLiveData = MutableLiveData<List<FilmEntity>>()
     private val favoriteLiveData = MutableLiveData<List<FilmEntity>>()
+
     private val errorLiveData = MutableLiveData<String>()
 
-    private val filmsLiveData = Db.filmListLiveData
+
 
     private val filmsInteractor = App.instance!!.filmsInteractor
 
@@ -88,35 +89,12 @@ class FilmListViewModel : ViewModel() {
         filmListLiveData.postValue(Db.cachedOrFakeFilmList)
     }
 
-    /*
 
-    /**
-     * On get data from database
-     *  Get Initial Data to Cached LiveData
-     *
-     */
-
-
-
-    /**
-     * Load more
-     * Get more Data to Cached LiveData
-     */
-*/
 
     fun onGetFavFromDatabase(){
         Log.d(TAG,"onGetFavFromDatabase")
-        Db.loadFav()
-        favoriteLiveData.postValue(Db.FakeOrFavoriteList)
+        favoriteLiveData.postValue(Db.currentFilmList.filter { it.fav })
     }
-    /*
-    fun loadMoreFav(){
-        Log.d(TAG,"loadMoreFav")
-        Db.loadMoreFav()
-        favoriteLiveData.postValue(Db.FakeOrFavoriteList)
-    }
-
-     */
 
     fun saveDb(){
         Log.d(TAG,"saveDb")
@@ -135,10 +113,6 @@ class FilmListViewModel : ViewModel() {
         Db.saveFavorites()
     }
 
-    fun saveFromFavList(){
-        Log.d(TAG,"saveFromFavList")
-        Db.saveFromFavList()
-    }
 
 
 }
