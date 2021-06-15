@@ -20,6 +20,9 @@ import ru.voodster.otuslesson.db.FilmEntity
 class FilmListFragment : Fragment()  {
     companion object{
         const val TAG = "FilmListFragment"
+        fun newInstance(): FilmListFragment {
+            return FilmListFragment()
+        }
 
     }
 

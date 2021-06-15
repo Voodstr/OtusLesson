@@ -24,6 +24,9 @@ class FavFilmListFragment : Fragment()  {
 
     companion object{
         const val TAG = "FavFilmListFragment"
+        fun newInstance():FavFilmListFragment{
+            return FavFilmListFragment()
+        }
     }
 
     override fun onAttach(context: Context) {
