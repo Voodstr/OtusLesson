@@ -46,6 +46,7 @@ class FavFilmListFragment : Fragment()  {
     }
 
     override fun onDestroy() {
+        Log.d(TAG,"onDestroy")
         viewModel.saveFav()
         super.onDestroy()
     }
@@ -83,7 +84,7 @@ class FavFilmListFragment : Fragment()  {
         })
 
         //subscribe to error message
-        viewModel.error.observe(viewLifecycleOwner, { error ->
+        viewModel.errorMsg.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
     }

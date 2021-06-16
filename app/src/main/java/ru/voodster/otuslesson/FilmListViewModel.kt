@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.voodster.otuslesson.api.FilmModel
-import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.api.FilmsInteractor
+import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.SingleLiveEvent
 
 class FilmListViewModel : ViewModel() {
     init {
@@ -23,9 +24,9 @@ class FilmListViewModel : ViewModel() {
     private val filmListLiveData = MutableLiveData<List<FilmEntity>>()
     private val favoriteLiveData = MutableLiveData<List<FilmEntity>>()
 
-    private val errorLiveData = MutableLiveData<String>()
 
 
+    val errorMsg = SingleLiveEvent<String>()
 
     private val filmsInteractor = App.instance!!.filmsInteractor
 
@@ -35,8 +36,6 @@ class FilmListViewModel : ViewModel() {
     val films : LiveData<List<FilmEntity>>
         get() = filmListLiveData
 
-    val error: LiveData<String>
-        get() = errorLiveData
 
 
     /**
@@ -54,11 +53,13 @@ class FilmListViewModel : ViewModel() {
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
             override fun onError(error: String) {
-                errorLiveData.postValue(error)
-                Log.d(TAG , "Data Error")
+                errorMsg.value = error
+                Db.loadInitialFromDatabase()
+                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
+
 
     fun onGetMoreFromServer() {
         Log.d(TAG,"onGetMoreFromServer")
@@ -70,12 +71,14 @@ class FilmListViewModel : ViewModel() {
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
             override fun onError(error: String) {
-                //
-                errorLiveData.postValue(error)
+                errorMsg.value = error
                 Log.d("filmsInteractor", "Data Error")
+                Db.loadMoreFromDatabase()
+                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
+
 
     private fun onGetDataFromDatabase(){
         Log.d(TAG,"onGetDataFromDatabase")

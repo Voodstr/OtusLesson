@@ -32,11 +32,12 @@ class FilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
-        viewModel.saveDb()
+        //viewModel.saveDb()
         super.onPause()
     }
 
     override fun onDestroy() {
+        Log.d(TAG,"onDestroy")
         viewModel.saveDb()
         super.onDestroy()
     }
@@ -90,7 +91,7 @@ class FilmListFragment : Fragment()  {
         })
 
         //subscribe to error message
-        viewModel.error.observe(viewLifecycleOwner, { error ->
+        viewModel.errorMsg.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
     }

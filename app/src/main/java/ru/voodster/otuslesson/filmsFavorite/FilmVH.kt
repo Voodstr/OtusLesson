@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.voodster.otuslesson.R
+import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
 
 class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
@@ -57,6 +58,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
         likeBtn.setOnClickListener {
             film.fav = !film.fav
+            //Db.pressFavorite(film.id)
             pressLike(film, it.context)
         }
     }
