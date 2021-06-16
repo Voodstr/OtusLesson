@@ -33,11 +33,11 @@ class App:Application() {
 
     private fun initDatabase() {
         Log.d(TAG, "initDatabase")
-        Executors.newSingleThreadScheduledExecutor().execute(
-            {
-                Db.getInstance()?.getFilmsDao()?.getInitial()
-            }
-        )
+
+
+        Executors.newSingleThreadScheduledExecutor().execute{
+            Db.getInstance()?.getFilmsDao()?.getInitial()
+        }
     }
 
 
@@ -69,9 +69,9 @@ class App:Application() {
         filmsUpdater = FilmsUpdater(filmsApi)
         Log.d(TAG,"success")
     }
-
+//"http://10.0.2.2/"
     companion object{
-        const val BASE_URL = "https://db.shs.com.ru/"
+        const val BASE_URL = "http://130.193.43.126/"
 
         const val TAG = "App"
 
