@@ -52,6 +52,7 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
         holder.bind(filmsList[position])
 
 
+
     holder.itemView.setOnClickListener {
         listener?.invoke(filmsList[position])
     }
