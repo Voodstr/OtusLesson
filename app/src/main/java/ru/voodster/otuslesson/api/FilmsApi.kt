@@ -11,5 +11,5 @@ interface FilmsApi {
     fun getInitial():Call<List<FilmModel>>
 
     @GET("/tst/films.lsp")
-    fun getMore(@Query("start")start:Int,@Query("stop") end:Int):Call<List<FilmModel>>
+    fun getMore(@Query("start")start:Int,@Query("rows") end:Int):Call<List<FilmModel>>
 }

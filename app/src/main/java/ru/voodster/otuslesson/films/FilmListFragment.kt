@@ -71,7 +71,7 @@ class FilmListFragment : Fragment()  {
 
         //data update
         //
-        viewModel.onGetFromServer()
+        //viewModel.onGetFromServer()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {

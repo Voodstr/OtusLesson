@@ -65,7 +65,7 @@ class FilmListViewModel : ViewModel() {
         Log.d(TAG,"onGetMoreFromServer")
 
         Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
-        filmsInteractor.getMore( Db.currentFilmList.size, Db.currentFilmList.size.plus(10)  ,object : FilmsInteractor.GetMoreFilmsCallBack {
+        filmsInteractor.getMore( Db.currentFilmList.size.plus(1), 10  ,object : FilmsInteractor.GetMoreFilmsCallBack {
             override fun onSuccess() {
                 Log.d("filmsInteractor", "onSuccessMore")
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)

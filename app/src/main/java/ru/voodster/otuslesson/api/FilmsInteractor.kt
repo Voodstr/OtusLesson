@@ -56,9 +56,9 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
         })
     }
 
-    fun getMore(start:Int,end:Int,callback: GetMoreFilmsCallBack){
+    fun getMore(start:Int,size:Int,callback: GetMoreFilmsCallBack){
         Log.d(TAG,"getMore")
-        filmsApi.getMore(start, end).enqueue(object : Callback<List<FilmModel>> {
+        filmsApi.getMore(start, size).enqueue(object : Callback<List<FilmModel>> {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse : ${response.body()}")
