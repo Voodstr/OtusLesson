@@ -91,7 +91,7 @@ object Db {
         val mapper = FilmMapper()
         currentFilmList.clear()
         currentFilmList.addAll(mapper.reverseMap(filmList))
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
         }
         Log.d(TAG, "saveCachedFilms : $currentFilmList")
@@ -102,14 +102,14 @@ object Db {
         val mapper = FilmMapper()
         currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveMoreFilms")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
         }
     }
 
     fun saveCachedFilms(){
         Log.d(TAG, "saveCachedFilms")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAll()
             getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
         }
@@ -127,7 +127,7 @@ object Db {
             }
         }
         Log.d(TAG, "$favoritesList")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAllFavorites()
             getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
         }
