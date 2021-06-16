@@ -35,13 +35,9 @@ class App:Application() {
         Log.d(TAG, "initDatabase")
 
 
-        Executors.newSingleThreadScheduledExecutor().execute(
-            Runnable {
-                Db.getInstance()?.getFilmsDao()?.getInitial()
-                suspend {
-                }
-            }
-        )
+        Executors.newSingleThreadScheduledExecutor().execute{
+            Db.getInstance()?.getFilmsDao()?.getInitial()
+        }
     }
 
 
