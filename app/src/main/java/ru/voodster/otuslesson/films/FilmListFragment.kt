@@ -32,15 +32,10 @@ class FilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
-        //viewModel.saveDb()
+        viewModel.saveDb()
         super.onPause()
     }
 
-    override fun onDestroy() {
-        Log.d(TAG,"onDestroy")
-        viewModel.saveDb()
-        super.onDestroy()
-    }
 /*
     override fun onResume() {
         super.onResume()

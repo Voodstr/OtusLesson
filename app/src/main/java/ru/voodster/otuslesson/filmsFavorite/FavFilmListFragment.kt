@@ -41,15 +41,10 @@ class FavFilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
-        //viewModel.saveFav()
+        viewModel.saveFav()
         super.onPause()
     }
 
-    override fun onDestroy() {
-        Log.d(TAG,"onDestroy")
-        viewModel.saveFav()
-        super.onDestroy()
-    }
 
 
     override fun onCreateView(
