@@ -16,7 +16,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
     private val img: ImageView = itemView.findViewById(R.id.filmImg)
     private val title: TextView = itemView.findViewById(R.id.filmTitleTv)
-    private val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
+    val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
 
 
     companion object{
@@ -55,12 +55,13 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
             .into(img)
         title.text = film.title
         setLike(film)
-
+/*
         likeBtn.setOnClickListener {
             film.fav = !film.fav
-            //Db.pressFavorite(film.id)
-            pressLike(film, it.context)
+            this.bindingAdapter?.notifyItemChanged(this.absoluteAdapterPosition)
         }
+
+ */
     }
 
 

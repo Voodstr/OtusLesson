@@ -48,7 +48,7 @@ class FilmListViewModel : ViewModel() {
         Log.d(TAG,"onGetFromServer")
 
         filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
-            override fun onSuccess(filmList: List<FilmModel>) {
+            override fun onSuccess() {
                 Log.d(TAG ,"success")
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
@@ -66,7 +66,7 @@ class FilmListViewModel : ViewModel() {
 
         Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
         filmsInteractor.getMore( Db.currentFilmList.size, Db.currentFilmList.size.plus(10)  ,object : FilmsInteractor.GetMoreFilmsCallBack {
-            override fun onSuccess(filmList: List<FilmModel>) {
+            override fun onSuccess() {
                 Log.d("filmsInteractor", "onSuccessMore")
                 filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }

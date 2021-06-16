@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import okhttp3.internal.notify
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
@@ -18,7 +19,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
     private val img: ImageView = itemView.findViewById(R.id.filmImg)
     private val title: TextView = itemView.findViewById(R.id.filmTitleTv)
-    private val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
+    val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
 
 
     companion object{
@@ -26,17 +27,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
     }
 
 
-    private fun pressLike(film: FilmEntity, context: Context){
-            if (film.fav) {
-                likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
-                likeBtn.setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
-                Toast.makeText(context,R.string.addFavToast,Toast.LENGTH_SHORT).show()
-            } else {
-                likeBtn.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.image_btn_click))
-                likeBtn.setBackgroundResource(R.drawable.baseline_favorite_border_black_24dp)
-                Toast.makeText(context,R.string.rmFavToast,Toast.LENGTH_SHORT).show()
-            }
-    }
+
 
     private fun setLike(film: FilmEntity){
         if (film.fav) {
@@ -57,12 +48,12 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 
         title.text = film.title
         setLike(film)
-
+/*
         likeBtn.setOnClickListener {
-            film.fav = !film.fav
-            //Db.pressFavorite(film.id)
-            pressLike(film,it.context)
+            //film.fav = !film.fav
+            this.bindingAdapter?.notifyItemChanged(this.absoluteAdapterPosition)
         }
+ */
     }
 
 }
