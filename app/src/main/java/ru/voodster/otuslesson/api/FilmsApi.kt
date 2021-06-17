@@ -7,9 +7,9 @@ import ru.voodster.otuslesson.db.FilmEntity
 interface FilmsApi {
 
 
-    @GET("/get")
+    @GET("/tst/films.lsp")
     fun getInitial():Call<List<FilmModel>>
 
-    @GET("/get?")
-    fun getMore(@Query("start")start:Int,@Query("end") end:Int):Call<List<FilmModel>>
+    @GET("/tst/films.lsp")
+    fun getMore(@Query("start")start:Int,@Query("rows") end:Int):Call<List<FilmModel>>
 }

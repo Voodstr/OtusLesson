@@ -41,7 +41,7 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse")
                     Db.saveInitialFromServer(response.body()!!)
-                    callback.onSuccess(response.body()!!)
+                    callback.onSuccess()
                 } else {
                     Log.d(TAG,"onError")
                     callback.onError(response.code().toString() + "")
@@ -56,14 +56,14 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
         })
     }
 
-    fun getMore(start:Int,end:Int,callback: GetMoreFilmsCallBack){
+    fun getMore(start:Int,size:Int,callback: GetMoreFilmsCallBack){
         Log.d(TAG,"getMore")
-        filmsApi.getMore(start, end).enqueue(object : Callback<List<FilmModel>> {
+        filmsApi.getMore(start, size).enqueue(object : Callback<List<FilmModel>> {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse : ${response.body()}")
                     Db.saveMoreFromServer(response.body()!!)
-                    callback.onSuccess(response.body()!!)
+                    callback.onSuccess()
                 } else {
                     callback.onError(response.code().toString() + "")
                     // TODO пусть тащит из базы если ответа не было
@@ -80,11 +80,11 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
 
 
     interface GetFilmsCallBack {
-        fun onSuccess(filmList: List<FilmModel>)
+        fun onSuccess()
         fun onError(error: String)
     }
     interface GetMoreFilmsCallBack{
-        fun onSuccess(filmList: List<FilmModel>)
+        fun onSuccess()
         fun onError(error: String)
     }
 

@@ -52,9 +52,15 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
         holder.bind(filmsList[position])
 
 
+
     holder.itemView.setOnClickListener {
         listener?.invoke(filmsList[position])
     }
+        holder.likeBtn.setOnClickListener {
+            filmsList[position].fav = !filmsList[position].fav
+            filmsList.remove(filmsList[position])
+            notifyItemRemoved(position)
+        }
 
     }
 

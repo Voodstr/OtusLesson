@@ -41,14 +41,10 @@ class FavFilmListFragment : Fragment()  {
 
     override fun onPause() {
         Log.d(TAG,"onPause")
-        //viewModel.saveFav()
+        viewModel.saveFav()
         super.onPause()
     }
 
-    override fun onDestroy() {
-        viewModel.saveFav()
-        super.onDestroy()
-    }
 
 
     override fun onCreateView(
@@ -83,7 +79,7 @@ class FavFilmListFragment : Fragment()  {
         })
 
         //subscribe to error message
-        viewModel.error.observe(viewLifecycleOwner, { error ->
+        viewModel.errorMsg.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
     }

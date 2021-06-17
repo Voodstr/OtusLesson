@@ -36,10 +36,6 @@ class FilmListFragment : Fragment()  {
         super.onPause()
     }
 
-    override fun onDestroy() {
-        viewModel.saveDb()
-        super.onDestroy()
-    }
 /*
     override fun onResume() {
         super.onResume()
@@ -75,7 +71,7 @@ class FilmListFragment : Fragment()  {
 
         //data update
         //
-        viewModel.onGetFromServer()
+        //viewModel.onGetFromServer()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
@@ -90,7 +86,7 @@ class FilmListFragment : Fragment()  {
         })
 
         //subscribe to error message
-        viewModel.error.observe(viewLifecycleOwner, { error ->
+        viewModel.errorMsg.observe(viewLifecycleOwner, { error ->
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         })
     }

@@ -11,6 +11,7 @@ import ru.voodster.otuslesson.db.Db
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
+import java.util.concurrent.Executors
 
 class App:Application() {
 
@@ -32,10 +33,11 @@ class App:Application() {
 
     private fun initDatabase() {
         Log.d(TAG, "initDatabase")
-        Db.getInstance()?.queryExecutor?.execute {
-                Db.loadFavoriteIDs()
-                Db.loadInitialFromDatabase()
-            }
+
+
+        Executors.newSingleThreadScheduledExecutor().execute{
+            Db.getInstance()?.getFilmsDao()?.getInitial()
+        }
     }
 
 
@@ -69,7 +71,7 @@ class App:Application() {
     }
 //"http://10.0.2.2/"
     companion object{
-        const val BASE_URL = "http://130.193.43.126/"
+        const val BASE_URL = "https://db.shs.com.ru/"
 
         const val TAG = "App"
 

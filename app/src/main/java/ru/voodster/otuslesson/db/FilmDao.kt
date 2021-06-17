@@ -9,7 +9,7 @@ interface FilmDao {
    // fun getAll(): List<FilmModel>
 
 
-    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT 8")
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT 10")
     fun getInitial():List<FilmEntity>
 
     @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")

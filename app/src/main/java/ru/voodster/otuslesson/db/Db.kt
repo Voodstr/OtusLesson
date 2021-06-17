@@ -91,6 +91,9 @@ object Db {
         val mapper = FilmMapper()
         currentFilmList.clear()
         currentFilmList.addAll(mapper.reverseMap(filmList))
+        INSTANCE?.queryExecutor?.execute {
+            getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
+        }
         Log.d(TAG, "saveCachedFilms : $currentFilmList")
     }
 
@@ -99,14 +102,14 @@ object Db {
         val mapper = FilmMapper()
         currentFilmList.addAll(mapper.reverseMap(filmList))
         Log.d(TAG, "saveMoreFilms")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
         }
     }
 
     fun saveCachedFilms(){
         Log.d(TAG, "saveCachedFilms")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAll()
             getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
         }
@@ -116,6 +119,7 @@ object Db {
         Log.d(TAG, "saveFavorites")
         val favoritesList = ArrayList<UserFavorites>()
         favoritesList.clear()
+        favorites.clear()
         currentFilmList.forEach {
             if (it.fav){
                 favoritesList.add(UserFavorites(it.id))
@@ -123,7 +127,7 @@ object Db {
             }
         }
         Log.d(TAG, "$favoritesList")
-        INSTANCE?.transactionExecutor?.execute {
+        INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.deleteAllFavorites()
             getInstance()?.getFilmsDao()?.insertFavorites(favoritesList)
         }
@@ -197,7 +201,7 @@ object Db {
      */
 
     fun loadInitialFromDatabase() {
-        Log.d(TAG, "loadInitial")
+        Log.d(TAG, "loadInitialFromDatabase")
         INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.getInitial()?.let {
                 currentFilmList.clear()
@@ -212,9 +216,10 @@ object Db {
      * загрузка из базы дополнительных данных
      */
     fun loadMoreFromDatabase() {  //TODO не работает, неизвестно почему
-        Log.d(TAG, "loadMore")
+        Log.d(TAG, "loadMoreFromDatabase")
         INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, 10)?.let {
+                Log.d("Db getRange","$it")
                 currentFilmList.addAll(it)
             }
         }

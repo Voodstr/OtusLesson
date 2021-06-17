@@ -27,8 +27,6 @@ class FilmAdapter(private val inflater: LayoutInflater,private val listener:((fi
     private var filmsList: ArrayList<FilmEntity> = fakeList
 
 
-
-
     override fun getItemViewType(position: Int) =
         if (position == 0) VIEW_TYPE_FILM else VIEW_TYPE_FILM_HEADER
 
@@ -59,6 +57,10 @@ class FilmAdapter(private val inflater: LayoutInflater,private val listener:((fi
         listener?.invoke(filmsList[position])
     }
 
+        holder.likeBtn.setOnClickListener {
+            filmsList[position].fav = !filmsList[position].fav
+            notifyItemChanged(position)
+        }
     }
 
 }
