@@ -1,24 +1,23 @@
 package ru.voodster.otuslesson
 
 import android.os.Bundle
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.voodster.otuslesson.film.FilmVH
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.filmfavorite.FavoriteFilmsFragment
-import ru.voodster.otuslesson.film.FilmListFragment
+import ru.voodster.otuslesson.db.Db
+import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
+import ru.voodster.otuslesson.films.FilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 
 
-class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
-    FavoriteFilmsFragment.OnFavClickListener {
+class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,FavFilmListFragment.OnFilmClickListener {
 
     private val filmListFragment = FilmListFragment()
-    private val favFilmListFragment = FavoriteFilmsFragment()
     private val searchFragment = SearchFragment()
+    private val favFilmListFragment = FavFilmListFragment()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,25 +26,24 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
         setContentView(R.layout.activity_main_drawer)
         openList()
 
+        //lifecycle.addObserver(App.instance!!.filmsUpdater)
+
+
         setClickListeners()
         setNavigationBar()
     }
 
 
-
     private fun setClickListeners(){
         filmListFragment.listener = this
-        favFilmListFragment.listener = this
     }
 
 
-    override fun onFilmClick(filmItem: FilmItem) {
-        openAboutFilm(filmItem.id)
+
+    override fun onFilmClick(filmItem: FilmEntity) {
+        openAboutFilm(filmItem)
     }
 
-    override fun onFavFilmClick(filmItem: FilmItem) {
-        openAboutFilm(filmItem.id)
-    }
 
     private fun setNavigationBar(){
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
@@ -61,11 +59,11 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
 
 
 
-    private fun openAboutFilm(id: Int) {
+    private fun openAboutFilm(film: FilmEntity) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragment(id))
+            .replace(R.id.fragmentContainer, AboutFragment.newInstance(film))
             .addToBackStack(null)
             .commit()
     }
@@ -81,22 +79,22 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
     }
 
     //так и не могу понять как сделать анимацию для центрального элемена
-    // надо откуда-то знать какой предыдущий был элемент, правый или левый TODO
+    // надо откуда-то знать какой предыдущий был элемент, правый или левый
 
-    private fun openFav(){
+    private fun openFav(){ //
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
             .replace(R.id.fragmentContainer, favFilmListFragment.apply {
                 listener = this@MainActivity
             })
             .commit()
     }
 
-    fun openSearch(){
+    private fun openSearch(){
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_left_toright,R.anim.exit_right_toleft)
+            .setCustomAnimations(R.anim.enter_right_toleftt,R.anim.exit_left_toright)
             .replace(R.id.fragmentContainer, searchFragment)
             .commit()
     }
@@ -119,6 +117,12 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,
             b.show()
         }
 
+    }
+
+    override fun onDestroy() {
+        Db.saveFavorites()
+        Db.saveCachedFilms()
+        super.onDestroy()
     }
 }
 
