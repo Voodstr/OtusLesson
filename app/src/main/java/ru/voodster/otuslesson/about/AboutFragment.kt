@@ -19,13 +19,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
+import java.util.*
+
 
 class AboutFragment :Fragment() {
 
     private lateinit var filmEntity: FilmEntity
 
 
-    companion object{
+    private val viewModel: FilmListViewModel by activityViewModels()
+    private var FAB_STATUS = false
+
+
+
+    companion object {
         const val TAG = "AboutFragment"
         private const val FILM_DATA = "FILM_DATA"
         fun newInstance(film: FilmEntity): AboutFragment {
