@@ -12,7 +12,7 @@ object Db {
 
     private var INSTANCE: FilmsRoomDatabase? = null
 
-    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0)
+    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0,false)
     private val fakeList = arrayListOf(fakeFilm)
 
     var currentFilmList = ArrayList<FilmEntity>()
@@ -246,6 +246,16 @@ object Db {
     fun destroyInstance() {
         INSTANCE?.close()
         INSTANCE = null
+    }
+
+    fun itemChange(film: FilmEntity) {
+        currentFilmList.find { it.id == film.id }.apply {
+            if (this !=null){
+                watch = film.watch
+                watchDate = film.watchDate
+                fav = film.fav
+            }
+        }
     }
 
     /*
