@@ -1,7 +1,6 @@
 package ru.voodster.otuslesson.db
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.room.Room
 import ru.voodster.otuslesson.App
 import ru.voodster.otuslesson.api.FilmModel
@@ -26,7 +25,7 @@ object Db {
 
 
     class FilmMapper: BaseMapper<FilmEntity, FilmModel>() {
-        override fun map(entity: FilmEntity?): FilmModel? {
+        override fun reverseMap(entity: FilmEntity?): FilmModel? {
             return if (entity != null){
                 (FilmModel(
                     entity.id,
@@ -38,7 +37,7 @@ object Db {
             }else null
         }
 
-        override fun reverseMap(model: FilmModel?): FilmEntity? {
+        override fun map(model: FilmModel?): FilmEntity? {
             return if (model!=null){
                 if (favorites.contains(model.id)){
                     FilmEntity(model.id,model.img,model.title,model.description,true,model.likes)
@@ -90,9 +89,9 @@ object Db {
         Log.d(TAG, "saveInitialFromServer : $filmList")
         val mapper = FilmMapper()
         currentFilmList.clear()
-        currentFilmList.addAll(mapper.reverseMap(filmList))
+        currentFilmList.addAll(mapper.map(filmList))
         INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
+            getInstance()?.getFilmsDao()?.insertAll(*mapper.map(filmList).toTypedArray())
         }
         Log.d(TAG, "saveCachedFilms : $currentFilmList")
     }
@@ -100,17 +99,16 @@ object Db {
     fun saveMoreFromServer(filmList: List<FilmModel>){
         Log.d(TAG, "saveMoreFromServer : $filmList")
         val mapper = FilmMapper()
-        currentFilmList.addAll(mapper.reverseMap(filmList))
+        currentFilmList.addAll(mapper.map(filmList))
         Log.d(TAG, "saveMoreFilms")
         INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.insertAll(*mapper.reverseMap(filmList).toTypedArray())
+            getInstance()?.getFilmsDao()?.insertAll(*mapper.map(filmList).toTypedArray())
         }
     }
 
     fun saveCachedFilms(){
         Log.d(TAG, "saveCachedFilms")
         INSTANCE?.queryExecutor?.execute {
-            getInstance()?.getFilmsDao()?.deleteAll()
             getInstance()?.getFilmsDao()?.insertAll(*currentFilmList.toTypedArray())
         }
     }

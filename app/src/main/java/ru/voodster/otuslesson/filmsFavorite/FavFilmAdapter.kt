@@ -49,21 +49,20 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
 
 
     override fun onBindViewHolder(holder: FilmVH, position: Int) {
+        val xx = filmsList[position]
+        holder.bind(xx)
+
         holder.bind(filmsList[position])
-
-
 
     holder.itemView.setOnClickListener {
         listener?.invoke(filmsList[position])
     }
         holder.likeBtn.setOnClickListener {
-            filmsList[position].fav = !filmsList[position].fav
-            filmsList.remove(filmsList[position])
-            notifyItemRemoved(position)
+            xx.fav = !xx.fav
+            filmsList.remove(xx)
+            notifyItemRemoved(holder.absoluteAdapterPosition)
         }
-
     }
-
 
 
 }

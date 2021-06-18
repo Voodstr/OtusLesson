@@ -81,13 +81,7 @@ class FilmListViewModel : ViewModel() {
     }
 
 
-    private fun onGetDataFromDatabase(){
-        Log.d(TAG,"onGetDataFromDatabase")
-        Db.loadInitialFromDatabase()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-    }
-
-     private fun loadMoreFromDatabase(){
+     fun loadMoreFromDatabase(){
         Log.d(TAG,"loadMore")
         Db.loadMoreFromDatabase()
         filmListLiveData.postValue(Db.cachedOrFakeFilmList)

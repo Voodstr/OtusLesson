@@ -80,9 +80,8 @@ class App:Application() {
             val token = task.result
 
             // Log and toast
-            val msg = "token is $token"
+            val msg = "Firebase token is $token"
             Log.d(TAG, msg)
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         })
     }
 
