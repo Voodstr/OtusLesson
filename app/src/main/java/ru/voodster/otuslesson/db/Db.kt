@@ -151,12 +151,24 @@ object Db {
         }
 
     }
+    fun loadInitialFromDatabase(callback: (List<FilmEntity>) -> Unit) {
+        Log.d(TAG, "loadInitialFromDatabase")
+        INSTANCE?.queryExecutor?.execute {
+            getInstance()?.getFilmsDao()?.getInitial()?.let {
+                currentFilmList.clear()
+                currentFilmList.addAll(it)
+                callback(currentFilmList)
+            }
+        }
+
+    }
+
 
     /**
      * Load more
      * загрузка из базы дополнительных данных
      */
-    fun loadMoreFromDatabase() {  //TODO не работает, неизвестно почему
+    fun loadMoreFromDatabase() {  //
         Log.d(TAG, "loadMoreFromDatabase")
         INSTANCE?.queryExecutor?.execute {
             getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, 10)?.let {
@@ -165,6 +177,18 @@ object Db {
             }
         }
     }
+
+    fun loadMoreFromDatabase(callback: (List<FilmEntity>) -> Unit) {  //
+        Log.d(TAG, "loadMoreFromDatabase")
+        INSTANCE?.queryExecutor?.execute {
+            getInstance()?.getFilmsDao()?.getRange(currentFilmList.size, 10)?.let {
+                Log.d("Db getRange","$it")
+                currentFilmList.addAll(it)
+                callback(currentFilmList)
+            }
+        }
+    }
+
 
     fun getFilm(filmid:Int, callback: (FilmEntity) -> Unit){
         Log.d(TAG, "getFilm")

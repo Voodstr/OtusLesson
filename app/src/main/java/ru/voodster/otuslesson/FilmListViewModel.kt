@@ -48,7 +48,7 @@ class FilmListViewModel : ViewModel() {
 
     fun onGetFromServer() {
         Log.d(TAG,"onGetFromServer")
-
+        loadMoreFromDatabase()
         filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
             override fun onSuccess() {
                 Log.d(TAG ,"success")
@@ -56,8 +56,6 @@ class FilmListViewModel : ViewModel() {
             }
             override fun onError(error: String) {
                 errorMsg.value = error
-                Db.loadInitialFromDatabase()
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
@@ -65,7 +63,7 @@ class FilmListViewModel : ViewModel() {
 
     fun onGetMoreFromServer() {
         Log.d(TAG,"onGetMoreFromServer")
-
+        loadMoreFromDatabase()
         Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
         filmsInteractor.getMore( Db.currentFilmList.size.plus(1), 10  ,object : FilmsInteractor.GetMoreFilmsCallBack {
             override fun onSuccess() {
@@ -75,8 +73,6 @@ class FilmListViewModel : ViewModel() {
             override fun onError(error: String) {
                 errorMsg.value = error
                 Log.d("filmsInteractor", "Data Error")
-                Db.loadMoreFromDatabase()
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
@@ -84,8 +80,10 @@ class FilmListViewModel : ViewModel() {
 
      fun loadMoreFromDatabase(){
         Log.d(TAG,"loadMore")
-        Db.loadMoreFromDatabase()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+        Db.loadMoreFromDatabase{
+            filmListLiveData.postValue(it)
+        }
+
     }
 
 
