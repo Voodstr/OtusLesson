@@ -24,4 +24,5 @@
     <string name="msg_token_fmt">AAAAIl_d6p0:APA91bHEg1wGHcrNd9ROFmoK4ItXX1cRYRVKrn3LWcr-u4P6lc9fH4ZG9FlCitG_OosgEcf8OM47Y0-XFaGPceCxEGdUhUTr8slMlIdl79Rsgac1HvzYtfnDzvSsx7LmJI8N-CaPHQUc</string>
     <string name="channel_name">otuslesson</string>
     <string name="channel_description">otuslesson</string>
+    <string name="default_notification_channel_id">10</string>
 </resources>

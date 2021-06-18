@@ -6,10 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -30,7 +28,8 @@ class App:Application() {
 
         const val TAG = "App"
 
-        const val CHANNEL_ID = "Watch Later"
+        const val CHANNEL_WATCH = "Watch Later"
+        const val CHANNEL_FCM = "FCM"
         var instance: App? = null
             private set
     }
@@ -59,13 +58,17 @@ class App:Application() {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            val channelWatch = NotificationChannel(CHANNEL_WATCH, name, importance).apply {
+                description = descriptionText
+            }
+            val channelFCM = NotificationChannel(CHANNEL_FCM, "CloudMessage", importance).apply {
                 description = descriptionText
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(channelWatch)
+            notificationManager.createNotificationChannel(channelFCM)
         }
     }
 

@@ -14,7 +14,8 @@ import ru.voodster.otuslesson.db.FilmEntity
 
 class Receiver :BroadcastReceiver() {
     companion object{
-        const val CHANNEL_ID = "Watch Later"
+        const val CHANNEL_WATCH = "Watch Later"
+        const val CHANNEL_FCM = "FCM"
         const val TAG = "BroadcastReceiver"
 
         /**
@@ -36,7 +37,7 @@ class Receiver :BroadcastReceiver() {
             putExtra("bundle",bundle)
         }
         val pendingIntent = PendingIntent.getActivity(context,0,activityIntent,PendingIntent.FLAG_UPDATE_CURRENT)
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, App.CHANNEL_WATCH)
             .setSmallIcon(R.drawable.ic_dialog_info)
             .setContentTitle("Watch film")
             .setContentText(film?.title)

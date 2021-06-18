@@ -4,17 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.util.DBUtil
-import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsInteractor
 import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.SingleLiveEvent
 
 class FilmListViewModel : ViewModel() {
     init {
         Log.d("viewModel",this.toString())
-       // listFilms = LivePagedListBuilder(Db.f)
+       // listFilms = LivePagedListBuilder(Db.f)\
+
     }
 
     companion object {
@@ -37,7 +35,10 @@ class FilmListViewModel : ViewModel() {
     val films : LiveData<List<FilmEntity>>
         get() = filmListLiveData
 
-
+    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0,false)
+    private val watchFilmLiveData = MutableLiveData<FilmEntity>()
+    val watchFilm : LiveData<FilmEntity>
+        get() = watchFilmLiveData
 
     /**
      * On update from server
@@ -109,6 +110,14 @@ class FilmListViewModel : ViewModel() {
     fun saveFav(){
         Log.d(TAG,"saveFav")
         Db.saveFavorites()
+    }
+
+    fun getFilm(filmid:Int){
+        Log.d(TAG, "getfilm")
+        Db.getFilm(filmid) {
+            watchFilmLiveData.postValue(it)
+        }
+
     }
 
     fun itemChanged(film: FilmEntity) {
