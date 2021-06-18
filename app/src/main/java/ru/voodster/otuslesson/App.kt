@@ -71,7 +71,7 @@ class App:Application() {
     }
 //"http://10.0.2.2/"
     companion object{
-        const val BASE_URL = "https://db.shs.com.ru/"
+        const val BASE_URL = "https://db.shs.com.ru"
 
         const val TAG = "App"
 
