@@ -1,6 +1,7 @@
 package ru.voodster.otuslesson
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,13 +19,21 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
+    companion object{
+        const val TAG = "MainActivity"
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_drawer)
+        val  bundle = intent.getBundleExtra("bundle")
+        val film = bundle?.getParcelable<FilmEntity>("film")
         openList()
+        if(film!=null){
+            openAboutFilm(film)
+        }
 
         //lifecycle.addObserver(App.instance!!.filmsUpdater)
 

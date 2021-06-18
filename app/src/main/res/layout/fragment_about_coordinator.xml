@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aboutRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/aboutCoordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -95,16 +97,15 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/aboutMenuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_anchorGravity="bottom|right|end"
-            app:layout_anchor="@id/aboutDescriptionTv"
-            android:src="@drawable/baseline_menu_black_36dp"
-            android:contentDescription="@string/share_btn"/>
-        <include layout="@layout/fab_layout" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/aboutMenuBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/baseline_menu_black_36dp"
+        android:contentDescription="@string/share_btn"/>
+    <include layout="@layout/fab_layout" />
 </RelativeLayout>
