@@ -58,7 +58,8 @@ class FavFilmAdapter(private val inflater: LayoutInflater, private val listener:
     }
         holder.likeBtn.setOnClickListener {
             filmsList[position].fav = !filmsList[position].fav
-            notifyItemChanged(position)
+            filmsList.remove(filmsList[position])
+            notifyItemRemoved(position)
         }
 
     }
