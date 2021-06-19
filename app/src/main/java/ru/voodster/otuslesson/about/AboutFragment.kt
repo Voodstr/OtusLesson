@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -201,18 +202,18 @@ class AboutFragment :Fragment() {
         Log.d(TAG,"setLike")
         if (film.fav){
             view.findViewById<FloatingActionButton>(R.id.fab_fav).
-            background.setTint(resources.getColor(R.color.pal_2))
+            background.setTint(getColor(requireContext(),R.color.pal_2))
         }else  view.findViewById<FloatingActionButton>(R.id.fab_fav).
-        background.setTint(resources.getColor(R.color.pal_3))
+        background.setTint(getColor(requireContext(),R.color.pal_3))
     }
 
     private fun setLater(view:View,film: FilmEntity){
         Log.d(TAG,"setLater")
         if (film.watch){
             view.findViewById<FloatingActionButton>(R.id.fab_watch).
-            background.setTint(resources.getColor(R.color.pal_2))
+            background.setTint(getColor(requireContext(),R.color.pal_2))
         }else  view.findViewById<FloatingActionButton>(R.id.fab_watch).
-        background.setTint(resources.getColor(R.color.pal_3))
+        background.setTint(getColor(requireContext(),R.color.pal_3))
     }
 
 
