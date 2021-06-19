@@ -15,5 +15,6 @@ class SearchFragment :Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_search,container,false)
+
     }
 }

@@ -78,7 +78,7 @@ class FilmListViewModel : ViewModel() {
     }
 
 
-     fun loadMoreFromDatabase(){
+     private fun loadMoreFromDatabase(){
         Log.d(TAG,"loadMore")
         Db.loadMoreFromDatabase{
             filmListLiveData.postValue(it)
