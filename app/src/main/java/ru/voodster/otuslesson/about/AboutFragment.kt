@@ -201,8 +201,10 @@ class AboutFragment :Fragment() {
     private fun setLike(view:View,film: FilmEntity){
         Log.d(TAG,"setLike")
         if (film.fav){
-            view.findViewById<FloatingActionButton>(R.id.fab_fav).
-            background.setTint(getColor(requireContext(),R.color.pal_2))
+            with(view) {
+                findViewById<FloatingActionButton>(R.id.fab_fav).
+                    background.setTint(getColor(requireContext(),R.color.pal_2))
+            }
         }else  view.findViewById<FloatingActionButton>(R.id.fab_fav).
         background.setTint(getColor(requireContext(),R.color.pal_3))
     }
