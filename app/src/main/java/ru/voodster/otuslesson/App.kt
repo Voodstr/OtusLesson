@@ -9,14 +9,16 @@ import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
-import ru.voodster.otuslesson.db.Db
+import ru.voodster.otuslesson.db.FilmsCache
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import java.util.concurrent.Executors
 
 class App:Application() {
@@ -34,7 +36,7 @@ class App:Application() {
             private set
     }
 
-    private lateinit var filmsApi: FilmsApi
+    lateinit var filmsApi: FilmsApi
     private lateinit var filmsUpdater : FilmsUpdater
     lateinit var filmsInteractor: FilmsInteractor
 
@@ -93,8 +95,9 @@ class App:Application() {
 
 
         Executors.newSingleThreadScheduledExecutor().execute{
-            Db.getInstance()?.getFilmsDao()?.getInitial()
+            FilmsCache.getInstance()?.getFilmsDao()?.getInitial()
         }
+        FilmsCache.init()
     }
 
 
@@ -116,9 +119,11 @@ class App:Application() {
             .addInterceptor(provideLoggingInterceptor())
             .build()
 
+        val rxAdapter = RxJava3CallAdapterFactory.create()
         filmsApi = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
+            .addCallAdapterFactory(rxAdapter)
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .build()
             .create(FilmsApi::class.java)

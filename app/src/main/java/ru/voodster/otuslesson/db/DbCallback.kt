@@ -16,9 +16,9 @@ class DbCallback : RoomDatabase.Callback() {
     override fun onCreate(db: SupportSQLiteDatabase) {
         Log.d(TAG, "onCreate")
 
-        Db.getInstance()?.queryExecutor?.execute {
-            Db.getInstance()?.getFilmsDao()?.deleteAll()
-            Db.getInstance()?.getFilmsDao()?.insertAll(*fakeList.toTypedArray())
+        FilmsCache.getInstance()?.queryExecutor?.execute {
+            FilmsCache.getInstance()?.getFilmsDao()?.deleteAll()
+            FilmsCache.getInstance()?.getFilmsDao()?.insertAll(*fakeList.toTypedArray())
         }
     }
 

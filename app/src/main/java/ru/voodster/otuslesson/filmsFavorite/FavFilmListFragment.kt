@@ -68,7 +68,8 @@ class FavFilmListFragment : Fragment()  {
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).setOnRefreshListener {
             viewModel.saveFav()
-            viewModel.onGetFavFromDatabase()
+            viewModel.update()
+            viewModel.getMoreFilmsRx()
             view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).isRefreshing=false
         }
 

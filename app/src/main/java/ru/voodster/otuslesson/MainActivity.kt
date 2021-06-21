@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.db.Db
+import ru.voodster.otuslesson.db.FilmsCache
 import ru.voodster.otuslesson.db.FilmEntity
 import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         val watchfilm = bundle?.getString("filmid")
         Log.d(TAG, "watchFilm = $watchfilm")
         if (watchfilm!=null){
-            viewModel.getFilm(watchfilm.toInt())
+            viewModel.getFilmRx(watchfilm.toInt())
         }
 
         viewModel.watchFilm.observe(this,{
@@ -146,8 +146,8 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     }
 
     override fun onDestroy() {
-        Db.saveFavorites()
-        Db.saveCachedFilms()
+        FilmsCache.saveCachedFavorites()
+        FilmsCache.saveCachedFilms()
         super.onDestroy()
     }
 }

@@ -3,9 +3,9 @@ package ru.voodster.otuslesson
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import ru.voodster.otuslesson.api.FilmsInteractor
-import ru.voodster.otuslesson.db.Db
+import ru.voodster.otuslesson.db.FilmsCache
 import ru.voodster.otuslesson.db.FilmEntity
 
 class FilmListViewModel : ViewModel() {
@@ -19,6 +19,15 @@ class FilmListViewModel : ViewModel() {
         const val TAG = "FilmListViewModel"
     }
 
+
+    private val filmListObserver by lazy {
+        object:Observer<List<FilmEntity>> {
+
+            override fun onChanged(t: List<FilmEntity>?) {
+                TODO("Not yet implemented")
+            }
+        }
+    }
 
     private val filmListLiveData = MutableLiveData<List<FilmEntity>>()
     private val favoriteLiveData = MutableLiveData<List<FilmEntity>>()
@@ -35,91 +44,85 @@ class FilmListViewModel : ViewModel() {
     val films : LiveData<List<FilmEntity>>
         get() = filmListLiveData
 
+
     private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0,false)
     private val watchFilmLiveData = MutableLiveData<FilmEntity>()
     val watchFilm : LiveData<FilmEntity>
         get() = watchFilmLiveData
+
+
+    fun getFilmRx(filmid: Int){
+        Log.d(TAG,"getFilmRx")
+        FilmsCache.rxGetFilm(filmid){
+            if (it != null) {
+                watchFilmLiveData.postValue(it)
+            }
+        }
+    }
 
     /**
      * On update from server
      *
      */
 
+    fun getMoreFilmsRx(){
+        Log.d(TAG,"getMoreFilmsRx")
+        FilmsCache.rxGetNetMore( object: FilmsCache.GetFilmsCallBack{
 
-    fun onGetFromServer() {
-        Log.d(TAG,"onGetFromServer")
-        loadMoreFromDatabase()
-        filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
-            override fun onSuccess() {
-                Log.d(TAG ,"success")
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+            override fun onSuccess(films: List<FilmEntity>) {
+                filmListLiveData.postValue(films)
             }
-            override fun onError(error: String) {
-                errorMsg.value = error
-            }
-        })
-    }
 
+            override fun onError(error: String?) {
+                errorMsg.postValue("Network error")
+                FilmsCache.rxGetDbMore(object: FilmsCache.GetFilmsCallBack{
+                    override fun onSuccess(films: List<FilmEntity>) {
+                        filmListLiveData.postValue(films)
+                    }
 
-    fun onGetMoreFromServer() {
-        Log.d(TAG,"onGetMoreFromServer")
-        loadMoreFromDatabase()
-        Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
-        filmsInteractor.getMore( Db.currentFilmList.size.plus(1), 10  ,object : FilmsInteractor.GetMoreFilmsCallBack {
-            override fun onSuccess() {
-                Log.d("filmsInteractor", "onSuccessMore")
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-            }
-            override fun onError(error: String) {
-                errorMsg.value = error
-                Log.d("filmsInteractor", "Data Error")
+                    override fun onError(error: String?) {
+                        errorMsg.postValue(error!!)
+                    }
+                }
+
+                )
             }
         })
     }
 
-
-     private fun loadMoreFromDatabase(){
-        Log.d(TAG,"loadMore")
-        Db.loadMoreFromDatabase{
-            filmListLiveData.postValue(it)
-        }
-
+    fun update(){
+        Log.d(TAG,"update")
+        FilmsCache.saveCachedFilms()
+        FilmsCache.filmListClear()
+        filmListLiveData.postValue(listOf(fakeFilm))
     }
+
 
 
 
     fun onGetFavFromDatabase(){
         Log.d(TAG,"onGetFavFromDatabase")
-        favoriteLiveData.postValue(Db.currentFilmList.filter { it.fav })
+        favoriteLiveData.postValue(FilmsCache.currentFilmList.filter { it.fav })
     }
 
     fun saveDb(){
         Log.d(TAG,"saveDb")
-        Db.saveFavorites()
-        Db.saveCachedFilms()
+        FilmsCache.saveCachedFavorites()
+        FilmsCache.saveCachedFilms()
 
     }
 
-    fun loadDb(){
-        Log.d(TAG,"loadDb")
-        Db.loadInitialFromDatabase()
-    }
 
     fun saveFav(){
         Log.d(TAG,"saveFav")
-        Db.saveFavorites()
+        FilmsCache.saveCachedFavorites()
     }
 
-    fun getFilm(filmid:Int){
-        Log.d(TAG, "getfilm")
-        Db.getFilm(filmid) {
-            watchFilmLiveData.postValue(it)
-        }
 
-    }
+
 
     fun itemChanged(film: FilmEntity) {
-        Db.itemChange(film)
+        FilmsCache.itemChange(film)
     }
 
 
