@@ -3,15 +3,20 @@ package ru.voodster.otuslesson
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import ru.voodster.otuslesson.db.FilmsCache
+import com.google.android.datatransport.runtime.dagger.Component
+import ru.voodster.otuslesson.api.FilmsApi
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.db.FilmsRoomDatabase
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FilmListViewModel : ViewModel() {
+
+class FilmListViewModel  : ViewModel() {
+    lateinit var filmsRepository:FilmsRepository
+
     init {
         Log.d("viewModel",this.toString())
-       // listFilms = LivePagedListBuilder(Db.f)\
 
     }
 
@@ -20,14 +25,6 @@ class FilmListViewModel : ViewModel() {
     }
 
 
-    private val filmListObserver by lazy {
-        object:Observer<List<FilmEntity>> {
-
-            override fun onChanged(t: List<FilmEntity>?) {
-                TODO("Not yet implemented")
-            }
-        }
-    }
 
     private val filmListLiveData = MutableLiveData<List<FilmEntity>>()
     private val favoriteLiveData = MutableLiveData<List<FilmEntity>>()
@@ -36,7 +33,6 @@ class FilmListViewModel : ViewModel() {
 
     val errorMsg = SingleLiveEvent<String>()
 
-    private val filmsInteractor = App.instance!!.filmsInteractor
 
     val favorites : LiveData<List<FilmEntity>>
         get() = favoriteLiveData
@@ -53,7 +49,7 @@ class FilmListViewModel : ViewModel() {
 
     fun getFilmRx(filmid: Int){
         Log.d(TAG,"getFilmRx")
-        FilmsCache.rxGetFilm(filmid){
+        filmsRepository.rxGetFilm(filmid){
             if (it != null) {
                 watchFilmLiveData.postValue(it)
             }
@@ -67,7 +63,7 @@ class FilmListViewModel : ViewModel() {
 
     fun getMoreFilmsRx(){
         Log.d(TAG,"getMoreFilmsRx")
-        FilmsCache.rxGetNetMore( object: FilmsCache.GetFilmsCallBack{
+        filmsRepository.rxGetNetMore( object: FilmsRepository.GetFilmsCallBack{
 
             override fun onSuccess(films: List<FilmEntity>) {
                 filmListLiveData.postValue(films)
@@ -75,7 +71,7 @@ class FilmListViewModel : ViewModel() {
 
             override fun onError(error: String?) {
                 errorMsg.postValue("Network error")
-                FilmsCache.rxGetDbMore(object: FilmsCache.GetFilmsCallBack{
+                filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack{
                     override fun onSuccess(films: List<FilmEntity>) {
                         filmListLiveData.postValue(films)
                     }
@@ -92,8 +88,8 @@ class FilmListViewModel : ViewModel() {
 
     fun update(){
         Log.d(TAG,"update")
-        FilmsCache.saveCachedFilms()
-        FilmsCache.filmListClear()
+        filmsRepository.saveCachedFilms()
+        filmsRepository.filmListClear()
         filmListLiveData.postValue(listOf(fakeFilm))
     }
 
@@ -102,27 +98,27 @@ class FilmListViewModel : ViewModel() {
 
     fun onGetFavFromDatabase(){
         Log.d(TAG,"onGetFavFromDatabase")
-        favoriteLiveData.postValue(FilmsCache.currentFilmList.filter { it.fav })
+        favoriteLiveData.postValue(filmsRepository.currentFilmList.filter { it.fav })
     }
 
     fun saveDb(){
         Log.d(TAG,"saveDb")
-        FilmsCache.saveCachedFavorites()
-        FilmsCache.saveCachedFilms()
+        filmsRepository.saveCachedFavorites()
+        filmsRepository.saveCachedFilms()
 
     }
 
 
     fun saveFav(){
         Log.d(TAG,"saveFav")
-        FilmsCache.saveCachedFavorites()
+        filmsRepository.saveCachedFavorites()
     }
 
 
 
 
     fun itemChanged(film: FilmEntity) {
-        FilmsCache.itemChange(film)
+        filmsRepository.itemChange(film)
     }
 
 

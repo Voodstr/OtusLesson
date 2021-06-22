@@ -9,20 +9,34 @@ import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import dagger.Component
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.api.*
-import ru.voodster.otuslesson.db.FilmsCache
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import java.util.concurrent.Executors
+import ru.voodster.otuslesson.api.DaggerApiComponent.create
+import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.db.FilmsRoomDatabase
+import ru.voodster.otuslesson.db.UserFavorites
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Component(modules = [ApiModule::class,AppModule::class])
+@Singleton
+interface AppComponent {
+    fun inject(filmsRepository: FilmsRepository)
+    fun inject(filmListViewModel: FilmListViewModel)
+
+
+}
 
 class App:Application() {
-
 
     //"http://10.0.2.2/"
     companion object{
@@ -32,24 +46,26 @@ class App:Application() {
 
         const val CHANNEL_WATCH = "Watch Later"
         const val CHANNEL_FCM = "FCM"
+        lateinit var database: FilmsRoomDatabase
+        val component = DaggerAppComponent.
         var instance: App? = null
             private set
     }
 
+
     lateinit var filmsApi: FilmsApi
     private lateinit var filmsUpdater : FilmsUpdater
     lateinit var filmsInteractor: FilmsInteractor
+    init {
+        instance = this
+    }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG,"onCreate")
-        instance = this
 
         createNotificationChannel()
         initFireBase()
-        initRetrofit()
-        initInteractor()
-        initDatabase()
 
     }
 
@@ -90,49 +106,6 @@ class App:Application() {
         })
     }
 
-    private fun initDatabase() {
-        Log.d(TAG, "initDatabase")
-
-
-        Executors.newSingleThreadScheduledExecutor().execute{
-            FilmsCache.getInstance()?.getFilmsDao()?.getInitial()
-        }
-        FilmsCache.init()
-    }
-
-
-    private fun initInteractor() {
-        Log.d(TAG,"initInteractor")
-        filmsInteractor = FilmsInteractor(filmsApi)
-        Log.d(TAG,"success")
-    }
-
-
-    fun provideLoggingInterceptor() =
-        HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) BODY else NONE }
-
-    private fun initRetrofit() {
-
-        Log.d(TAG,"initRetrofit")
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(provideLoggingInterceptor())
-            .build()
-
-        val rxAdapter = RxJava3CallAdapterFactory.create()
-        filmsApi = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addCallAdapterFactory(rxAdapter)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-            .create(FilmsApi::class.java)
-
-        filmsUpdater = FilmsUpdater(filmsApi)
-        Log.d(TAG,"success")
-    }
-
-
-
 
 }
+

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.db.FilmsCache
 import ru.voodster.otuslesson.db.FilmEntity
 import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
@@ -147,8 +146,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     }
 
     override fun onDestroy() {
-        FilmsCache.saveCachedFavorites()
-        FilmsCache.saveCachedFilms()
+        viewModel.saveDb()
         super.onDestroy()
     }
 }
