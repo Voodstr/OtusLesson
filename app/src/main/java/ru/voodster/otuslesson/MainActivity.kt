@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
             .commit()
     }
 
+
     private fun openList(){
         supportFragmentManager
             .beginTransaction()
