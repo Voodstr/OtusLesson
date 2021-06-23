@@ -8,14 +8,10 @@ import dagger.Component
 import ru.voodster.otuslesson.db.FilmEntity
 import javax.inject.Inject
 
-@Component
-interface ViewModelComponent{
-    fun inject(filmListViewModel: FilmListViewModel)
-}
 
 class FilmListViewModel  : ViewModel() {
 
-    @Inject lateinit var filmsRepository:FilmsRepository
+ var filmsRepository:FilmsRepository = App.instance!!.component.repos()
 
     init {
         Log.d("viewModel",this.toString())

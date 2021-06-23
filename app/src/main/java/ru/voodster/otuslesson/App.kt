@@ -23,6 +23,8 @@ interface AppComponent {
     fun inject(filmsRepository: FilmsRepository)
     fun inject(filmListViewModel: FilmListViewModel)
 
+    fun repos():FilmsRepository
+
 }
 
 class App:Application() {
@@ -54,7 +56,7 @@ class App:Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG,"onCreate")
-        component = DaggerAppComponent.create()
+        component = DaggerAppComponent.builder().build()
 
         createNotificationChannel()
         initFireBase()

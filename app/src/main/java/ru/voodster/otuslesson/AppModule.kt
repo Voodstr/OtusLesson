@@ -9,19 +9,21 @@ import ru.voodster.otuslesson.db.FilmsRoomDatabase
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val app:App) {
+class AppModule() {
 
-    @Provides
-    @Singleton
-    fun provideApp():Application{
-        return app
-    }
-    @Provides
-    @Singleton
-    fun provideContext():Context{
-        return app.applicationContext
+
+    companion object{
+        const val DATABASE_NAME = "db-name.db"
     }
 
+    @Singleton
+    @Provides
+    fun provideDatabase(): FilmsRoomDatabase {
+        return Room.databaseBuilder(
+            App.instance!!.applicationContext,
+            FilmsRoomDatabase::class.java,
+            DATABASE_NAME).fallbackToDestructiveMigration().build()
+    }
 
 
 }
