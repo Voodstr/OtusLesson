@@ -4,12 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.Component
 import ru.voodster.otuslesson.db.FilmEntity
 import javax.inject.Inject
 
+@Component
+interface ViewModelComponent{
+    fun inject(filmListViewModel: FilmListViewModel)
+}
 
-class FilmListViewModel @Inject constructor(private val filmsRepository:FilmsRepository) : ViewModel() {
+class FilmListViewModel  : ViewModel() {
 
+    @Inject lateinit var filmsRepository:FilmsRepository
 
     init {
         Log.d("viewModel",this.toString())
