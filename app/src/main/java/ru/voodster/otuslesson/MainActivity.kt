@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         val  bundle = intent.getBundleExtra("bundle")
         val film = bundle?.getParcelable<FilmEntity>("film")
         if(film!=null){
-            openAboutFilm(film)
+            viewModel.getFilmRx(film.id)
         }
         val watchfilm = bundle?.getString("filmid")
         Log.d(TAG, "watchFilm = $watchfilm")
