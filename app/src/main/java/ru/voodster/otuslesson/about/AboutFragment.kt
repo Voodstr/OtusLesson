@@ -57,11 +57,6 @@ class AboutFragment :Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDestroy() {
-        viewModel.itemChanged(filmEntity)
-        super.onDestroy()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -127,10 +122,12 @@ class AboutFragment :Fragment() {
         view.findViewById<FloatingActionButton>(R.id.fab_watch).setOnClickListener {
             Log.d(TAG,"pickDate: ")
             pickDateTime(view,film)
+            viewModel.itemChanged(filmEntity)
         }
         view.findViewById<FloatingActionButton>(R.id.fab_fav).setOnClickListener {
             film.fav = !film.fav
             setLike(view,film)
+            viewModel.itemChanged(filmEntity)
         }
 
     }
