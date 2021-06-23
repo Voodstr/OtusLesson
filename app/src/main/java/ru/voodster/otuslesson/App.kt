@@ -47,7 +47,7 @@ class App:Application() {
         const val CHANNEL_WATCH = "Watch Later"
         const val CHANNEL_FCM = "FCM"
         lateinit var database: FilmsRoomDatabase
-        val component = DaggerAppComponent.
+        //val component = DaggerAppComponent.
         var instance: App? = null
             private set
     }
