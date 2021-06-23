@@ -57,7 +57,6 @@ dependencies {
     //dagger2
     implementation 'com.google.dagger:dagger:2.37'
     kapt 'com.google.dagger:dagger-compiler:2.37'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.37'
 
     // RxJava 3
     implementation "io.reactivex.rxjava3:rxjava:3.0.13"
