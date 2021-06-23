@@ -5,17 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.Component
+import ru.voodster.otuslesson.api.ApiModule
+import ru.voodster.otuslesson.db.DbModule
 import ru.voodster.otuslesson.db.FilmEntity
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Component(modules = [ApiModule::class, DbModule::class])
+@Singleton
+interface ViewModelComponent {
 
+    fun repos():FilmsRepository
+
+}
 class FilmListViewModel  : ViewModel() {
-
- var filmsRepository:FilmsRepository = App.instance!!.component.repos()
+    private val filmsComponent=DaggerViewModelComponent.builder().build()
+    private val filmsRepository = filmsComponent.repos()
 
     init {
         Log.d("viewModel",this.toString())
-
     }
 
     companion object {

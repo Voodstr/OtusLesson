@@ -12,20 +12,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dagger.Component
 
 import ru.voodster.otuslesson.api.*
+import ru.voodster.otuslesson.db.DbModule
 
 import ru.voodster.otuslesson.db.FilmsRoomDatabase
 
 import javax.inject.Singleton
 
-@Component(modules = [ApiModule::class,AppModule::class])
-@Singleton
-interface AppComponent {
-    fun inject(filmsRepository: FilmsRepository)
-    fun inject(filmListViewModel: FilmListViewModel)
 
-    fun repos():FilmsRepository
-
-}
 
 class App:Application() {
 
@@ -43,7 +36,6 @@ class App:Application() {
             private set
     }
 
-    lateinit var component:AppComponent
 
 
     lateinit var filmsApi: FilmsApi
@@ -56,7 +48,6 @@ class App:Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG,"onCreate")
-        component = DaggerAppComponent.builder().build()
 
         createNotificationChannel()
         initFireBase()
