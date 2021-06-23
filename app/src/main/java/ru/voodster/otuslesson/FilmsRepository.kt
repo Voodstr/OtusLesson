@@ -33,7 +33,6 @@ class FilmsRepository @Inject constructor(
 
 
     init {
-        DaggerAppComponent.create().inject(this)
 
         db.getFilmsDao().getUserFavoritesRx()
             .subscribeOn(Schedulers.io())

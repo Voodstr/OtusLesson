@@ -41,7 +41,7 @@ class App:Application() {
             private set
     }
 
-    val component = DaggerAppComponent.create()
+    lateinit var component:AppComponent
 
 
     lateinit var filmsApi: FilmsApi
@@ -54,6 +54,7 @@ class App:Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG,"onCreate")
+        component = DaggerAppComponent.create()
 
         createNotificationChannel()
         initFireBase()

@@ -13,7 +13,6 @@ class FilmListViewModel @Inject constructor(private val filmsRepository:FilmsRep
 
     init {
         Log.d("viewModel",this.toString())
-        DaggerAppComponent.create().inject(this)
 
     }
 
