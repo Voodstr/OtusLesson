@@ -21,16 +21,13 @@ class AppModule(private val app:App) {
     fun provideContext():Context{
         return app.applicationContext
     }
+    
 
 
-    @Provides
-    @Singleton
-    fun provideRepository():FilmsRepository{
-        return FilmsRepository()
-    }
     companion object{
         const val DATABASE_NAME = "db-name.db"
     }
+
     @Singleton
     @Provides
     fun provideDatabase(): FilmsRoomDatabase {

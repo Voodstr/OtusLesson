@@ -4,19 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.datatransport.runtime.dagger.Component
-import ru.voodster.otuslesson.api.FilmsApi
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.db.FilmsRoomDatabase
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
-class FilmListViewModel  : ViewModel() {
-    lateinit var filmsRepository:FilmsRepository
+class FilmListViewModel @Inject constructor(private val filmsRepository:FilmsRepository) : ViewModel() {
+
 
     init {
         Log.d("viewModel",this.toString())
+        DaggerAppComponent.create().inject(this)
 
     }
 
@@ -49,7 +46,7 @@ class FilmListViewModel  : ViewModel() {
 
     fun getFilmRx(filmid: Int){
         Log.d(TAG,"getFilmRx")
-        filmsRepository.rxGetFilm(filmid){
+        filmsRepository.rxGetFilmFromDb(filmid){
             if (it != null) {
                 watchFilmLiveData.postValue(it)
             }
@@ -96,7 +93,7 @@ class FilmListViewModel  : ViewModel() {
 
 
 
-    fun onGetFavFromDatabase(){
+    fun onGetFavFromCache(){
         Log.d(TAG,"onGetFavFromDatabase")
         favoriteLiveData.postValue(filmsRepository.currentFilmList.filter { it.fav })
     }

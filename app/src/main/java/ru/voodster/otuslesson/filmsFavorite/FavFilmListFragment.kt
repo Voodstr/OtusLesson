@@ -63,7 +63,7 @@ class FavFilmListFragment : Fragment()  {
         initRecycler()
 
         //data update
-        viewModel.onGetFavFromDatabase()
+        viewModel.onGetFavFromCache()
 
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.favSwipeUpdate).setOnRefreshListener {

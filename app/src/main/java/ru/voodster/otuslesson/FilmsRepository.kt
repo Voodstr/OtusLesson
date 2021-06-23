@@ -21,7 +21,6 @@ class FilmsRepository @Inject constructor(
 ) {
 
 
-
     companion object {
         const val TAG = "Db"
     }
@@ -30,12 +29,12 @@ class FilmsRepository @Inject constructor(
 
     var currentFilmList = ArrayList<FilmEntity>()
 
-    val favorites = ArrayList<Int>()
+    private val favorites = ArrayList<Int>()
 
 
     init {
+        DaggerAppComponent.create().inject(this)
 
-        //App.component.inject(this)
         db.getFilmsDao().getUserFavoritesRx()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -53,34 +52,6 @@ class FilmsRepository @Inject constructor(
 
     }
 
-
-    /**
-     * Get instance
-     *
-     * @return FilmsRoomDatabase?
-     */
-    /*
-    fun getInstance(): FilmsRoomDatabase? {
-        Log.d(TAG, "getInstance")
-        Log.d(TAG, "$INSTANCE")
-        if (INSTANCE == null) {
-            synchronized(FilmsRoomDatabase::class) {
-
-                INSTANCE = Room.databaseBuilder(
-                    App.instance!!.applicationContext,
-                    FilmsRoomDatabase::class.java, "db-name.db"
-                )
-                    /*
-                    .fallbackToDestructiveMigration()
-                    .addMigrations(MIGRATION_1_2)*/
-                    .addCallback(DbCallback())
-                    .build()
-            }
-        }
-        return INSTANCE
-    }
-
-     */
 
 
     fun saveCachedFilms() {
@@ -153,7 +124,7 @@ class FilmsRepository @Inject constructor(
 
     }
 
-    fun rxGetFilm(filmid: Int, callback: (FilmEntity?) -> Unit) {
+    fun rxGetFilmFromDb(filmid: Int, callback: (FilmEntity?) -> Unit) {
         Log.d(TAG, "rxGetFilm")
         db.getFilmsDao().getFilmRx(filmid)
             .subscribeOn(Schedulers.io())
