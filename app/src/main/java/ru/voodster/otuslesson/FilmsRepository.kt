@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsApi
 import ru.voodster.otuslesson.db.*
+import ru.voodster.otuslesson.ext.BaseMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 

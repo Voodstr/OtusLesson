@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson
+package ru.voodster.otuslesson.ext
 
 import androidx.recyclerview.widget.DiffUtil
 import ru.voodster.otuslesson.db.FilmEntity

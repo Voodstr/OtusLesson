@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.voodster.otuslesson.FilmDiffUtilCallback
+import ru.voodster.otuslesson.ext.FilmDiffUtilCallback
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
 

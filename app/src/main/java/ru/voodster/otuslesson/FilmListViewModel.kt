@@ -8,7 +8,7 @@ import dagger.Component
 import ru.voodster.otuslesson.api.ApiModule
 import ru.voodster.otuslesson.db.DbModule
 import ru.voodster.otuslesson.db.FilmEntity
-import javax.inject.Inject
+import ru.voodster.otuslesson.ext.SingleLiveEvent
 import javax.inject.Singleton
 
 @Component(modules = [ApiModule::class, DbModule::class])

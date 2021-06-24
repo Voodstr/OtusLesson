@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson;
+package ru.voodster.otuslesson.ext;
 
 import android.util.Log;
 
