@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
+import ru.voodster.otuslesson.about.AboutFragmentStatic
 import ru.voodster.otuslesson.db.FilmEntity
 import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragment.newInstance(film))
+            .replace(R.id.fragmentContainer, AboutFragmentStatic.newInstance(film)) //Static for Tests
             .addToBackStack(null)
             .commit()
     }
