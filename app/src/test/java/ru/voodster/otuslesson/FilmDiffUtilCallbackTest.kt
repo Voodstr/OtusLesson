@@ -1,18 +1,14 @@
-package ru.voodster.otuslesson.ext
+package ru.voodster.otuslesson
 
 import junit.framework.Assert.assertEquals
-import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.junit.MockitoJUnitRunner
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.ext.FilmDiffUtilCallback
 
-@RunWith(MockitoJUnitRunner::class)
+
 class FilmDiffUtilCallbackTest {
-    val mockedClass = mock(FilmDiffUtilCallback::class.java)
+
 
     val e1 = FilmEntity(0,"","","",false,0)
     val e2 = FilmEntity(2,"","","",false,0)
@@ -20,8 +16,8 @@ class FilmDiffUtilCallbackTest {
     val e4 = FilmEntity(0,"","","",false,0)
 
     val testClass_empty = FilmDiffUtilCallback(listOf(), listOf())
-    val testClass_equal =FilmDiffUtilCallback(listOf(e1), listOf(e1))
-    val testClass_different =FilmDiffUtilCallback(listOf(e1), listOf(e2))
+    val testClass_equal = FilmDiffUtilCallback(listOf(e1), listOf(e1))
+    val testClass_different = FilmDiffUtilCallback(listOf(e1), listOf(e2))
 
     @Before
     fun setUp() {
@@ -49,7 +45,7 @@ class FilmDiffUtilCallbackTest {
 
     @Test
     fun testGetNewListSize_equalList() {
-        assertEquals(0,testClass_equal.newListSize)
+        assertEquals(1,testClass_equal.newListSize)
     }
 
 
