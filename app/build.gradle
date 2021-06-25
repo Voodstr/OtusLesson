@@ -117,7 +117,11 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:2.24.0'
 
     //Robolectric environment
-    testImplementation('androidx.test:core:1.3.0')
+    testImplementation 'org.robolectric:robolectric:4.5.1'
+    testImplementation 'androidx.test:core:1.3.0'
+    testImplementation 'androidx.test.ext:truth:1.3.0'
+    testImplementation 'com.google.truth:truth:1.1.2'
+
 
     //Espresso - android UI test
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

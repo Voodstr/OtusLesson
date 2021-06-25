@@ -49,8 +49,8 @@ class App:Application() {
         super.onCreate()
         Log.d(TAG,"onCreate")
 
-        createNotificationChannel()
-        initFireBase()
+        //createNotificationChannel()
+        //initFireBase()
 
     }
 

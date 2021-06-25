@@ -180,7 +180,7 @@ class AboutFragmentStatic :Fragment() {
     }
 
 
-    private fun setFav(view:View, film: FilmEntity){
+    fun setFav(view:View, film: FilmEntity){
         Log.d(TAG,"setLike")
         if (film.fav){
             with(view) {

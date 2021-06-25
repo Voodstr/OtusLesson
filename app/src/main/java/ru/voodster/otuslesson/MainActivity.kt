@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
+    val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
     private val viewModel : FilmListViewModel by viewModels()
 
     companion object{
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
 
     private fun setNavigationBar(){
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_filmList -> openList()
