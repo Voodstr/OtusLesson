@@ -26,6 +26,6 @@ class EspressoTest {
         onView(withId(R.id.fab_fav))
             .perform(click())
         onView(withId(R.id.fab_fav))
-            .check(matches(withTagKey(R.drawable.baseline_favorite_red_a200_24dp)))
+            .check(matches(withContentDescription((R.drawable.baseline_favorite_red_a200_24dp).toString())))
     }
 }

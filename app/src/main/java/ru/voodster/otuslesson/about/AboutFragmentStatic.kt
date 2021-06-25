@@ -186,12 +186,12 @@ class AboutFragmentStatic :Fragment() {
             with(view) {
                 findViewById<ImageView>(R.id.fab_fav)
                     .setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
-                findViewById<ImageView>(R.id.fab_fav).setTag(R.drawable.baseline_favorite_border_black_24dp,"")
+                findViewById<ImageView>(R.id.fab_fav).contentDescription = (R.drawable.baseline_favorite_red_a200_24dp).toString()
             }
         }else {
             view.findViewById<ImageView>(R.id.fab_fav)
                 .setBackgroundResource(R.drawable.baseline_favorite_border_black_24dp)
-            view.findViewById<ImageView>(R.id.fab_fav).setTag(R.drawable.baseline_favorite_border_black_24dp,"")
+            view.findViewById<ImageView>(R.id.fab_fav).contentDescription = (R.drawable.baseline_favorite_border_black_24dp).toString()
         }
     }
 
