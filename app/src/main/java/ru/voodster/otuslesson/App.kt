@@ -37,10 +37,6 @@ class App:Application() {
     }
 
 
-
-    lateinit var filmsApi: FilmsApi
-    private lateinit var filmsUpdater : FilmsUpdater
-    lateinit var filmsInteractor: FilmsInteractor
     init {
         instance = this
     }
@@ -49,8 +45,9 @@ class App:Application() {
         super.onCreate()
         Log.d(TAG,"onCreate")
 
-        //createNotificationChannel()
-        //initFireBase()
+        createNotificationChannel()
+        FlavorGetter().initFireBase()
+
 
     }
 
@@ -75,21 +72,6 @@ class App:Application() {
         }
     }
 
-    private fun initFireBase(){
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            val msg = "Firebase token is $token"
-            Log.d(TAG, msg)
-        })
-    }
 
 
 }

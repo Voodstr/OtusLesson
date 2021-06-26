@@ -6,11 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.about.AboutFragmentStatic
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
+import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 
 
@@ -20,7 +18,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
-    val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
 
     private val viewModel : FilmListViewModel by viewModels()
 
@@ -28,7 +26,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         const val TAG = "MainActivity"
     }
 
-
+    lateinit var bottomNav:  BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +72,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
     private fun setNavigationBar(){
 
+        bottomNav = findViewById(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_filmList -> openList()
@@ -88,10 +87,11 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
     private fun openAboutFilm(film: FilmEntity) {
         Log.d(TAG,"openAboutFilm")
+        val fragment = FlavorGetter().getAboutFragment(film)
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragmentStatic.newInstance(film)) //Static for Tests
+            .replace(R.id.fragmentContainer, fragment) //Static for Tests
             .addToBackStack(null)
             .commit()
     }

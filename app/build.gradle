@@ -29,10 +29,33 @@ android {
         unitTests.includeAndroidResources = true
     }
 
+    signingConfigs {
+        production {
+            storeFile file('C:\\Users\\Dimon\\key\\testJKS.jks')
+            keyAlias 'testkey'
+            keyPassword 'test123'
+            storePassword 'test123'
+        }
+        dev {
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        dev {
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules-dev.pro'
+        }
+        production {
+            minifyEnabled false
+            applicationIdSuffix '.prod'
+            versionNameSuffix '-prod'
+            signingConfig signingConfigs.production
         }
     }
     compileOptions {
@@ -42,6 +65,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions 'deafult'
+
+    productFlavors {
+        paid {
+            dimension 'deafult'
+            versionName 'paid'
+            applicationId 'ru.voodster.otuslesson.paid'
+            proguardFiles 'proguard-rules.pro'
+        }
+        free {
+            dimension 'deafult'
+            versionName 'free'
+            applicationId 'ru.voodster.otuslesson.free'
+        }
+    }
+
 }
 
 dependencies {
@@ -106,7 +146,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
     //JUnit
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     // Required for instrumented tests
     androidTestImplementation 'com.android.support:support-annotations:28.0.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -120,7 +160,7 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.5.1'
     testImplementation 'androidx.test:core:1.3.0'
     testImplementation 'androidx.test.ext:truth:1.3.0'
-    testImplementation 'com.google.truth:truth:1.1.2'
+    testImplementation 'com.google.truth:truth:1.1.3'
 
 
     //Espresso - android UI test

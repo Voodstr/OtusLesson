@@ -26,3 +26,6 @@
     public static int i(...);
     public static int d(...);
 }
+
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
