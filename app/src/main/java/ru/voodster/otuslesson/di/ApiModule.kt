@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson.api
+package ru.voodster.otuslesson.di
 
 import com.google.gson.Gson
 import dagger.Module
@@ -10,6 +10,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.App
 import ru.voodster.otuslesson.BuildConfig
+import ru.voodster.otuslesson.api.FilmsApi
 import javax.inject.Singleton
 
 @Module

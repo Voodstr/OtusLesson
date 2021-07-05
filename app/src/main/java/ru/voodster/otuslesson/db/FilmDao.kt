@@ -21,7 +21,6 @@ interface FilmDao {
     @Query("SELECT * FROM films_table where id = :filmid")
     fun getFilm(filmid:Int):FilmEntity
 
-
     @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")
     fun getRangeRx(start:Int, size:Int):Single<List<FilmEntity>>
 

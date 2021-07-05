@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         })
 
 
-
         //lifecycle.addObserver(App.instance!!.filmsUpdater)
-
 
         setClickListeners()
         setNavigationBar()
