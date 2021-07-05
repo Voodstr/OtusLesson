@@ -9,15 +9,9 @@ import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 
-import dagger.Component
-
 import ru.voodster.otuslesson.api.*
-import ru.voodster.otuslesson.db.DbModule
 
 import ru.voodster.otuslesson.db.FilmsRoomDatabase
-
-import javax.inject.Singleton
-
 
 
 class App:Application() {

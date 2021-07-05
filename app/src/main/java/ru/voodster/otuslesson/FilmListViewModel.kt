@@ -4,22 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import dagger.Component
-import ru.voodster.otuslesson.api.ApiModule
-import ru.voodster.otuslesson.db.DbModule
 import ru.voodster.otuslesson.db.FilmEntity
-import javax.inject.Inject
-import javax.inject.Singleton
+import ru.voodster.otuslesson.di.DaggerViewModelComponent
 
-@Component(modules = [ApiModule::class, DbModule::class])
-@Singleton
-interface ViewModelComponent {
-
-    fun repos():FilmsRepository
-
-}
 class FilmListViewModel  : ViewModel() {
-    private val filmsComponent=DaggerViewModelComponent.builder().build()
+    private val filmsComponent= DaggerViewModelComponent.builder().build()
     private val filmsRepository = filmsComponent.repos()
 
     init {
@@ -77,19 +66,23 @@ class FilmListViewModel  : ViewModel() {
 
             override fun onError(error: String?) {
                 errorMsg.postValue("Network error")
-                filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack{
-                    override fun onSuccess(films: List<FilmEntity>) {
-                        filmListLiveData.postValue(films)
-                    }
-
-                    override fun onError(error: String?) {
-                        errorMsg.postValue(error!!)
-                    }
-                }
-
-                )
+                getFromDb()
             }
         })
+    }
+
+    fun getFromDb(){
+        filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack{
+            override fun onSuccess(films: List<FilmEntity>) {
+                filmListLiveData.postValue(films)
+            }
+
+            override fun onError(error: String?) {
+                errorMsg.postValue(error!!)
+            }
+        }
+
+        )
     }
 
     fun update(){

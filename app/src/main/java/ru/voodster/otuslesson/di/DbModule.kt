@@ -1,10 +1,10 @@
-package ru.voodster.otuslesson.db
+package ru.voodster.otuslesson.di
 
-import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import ru.voodster.otuslesson.App
+import ru.voodster.otuslesson.db.FilmsRoomDatabase
 import javax.inject.Singleton
 
 
