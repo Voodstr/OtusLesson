@@ -18,27 +18,19 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.Receiver
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.viewModel.FilmListViewModel
 import java.util.*
+import javax.inject.Inject
 
 
 class AboutFragment :Fragment() {
-
-    private lateinit var filmEntity: FilmEntity
-
-    private var pIntentOnce: PendingIntent? = null
-    private var am: AlarmManager? = null
-
-    private val viewModel: FilmListViewModel by activityViewModels()
-    private var FAB_STATUS = false
-
-
 
     companion object {
         const val TAG = "AboutFragment"
@@ -52,6 +44,18 @@ class AboutFragment :Fragment() {
         }
     }
 
+    private lateinit var filmEntity: FilmEntity
+
+    private var pIntentOnce: PendingIntent? = null
+    private var am: AlarmManager? = null
+
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+
+    private var FAB_STATUS = false
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         am = getSystemService(requireContext(), AlarmManager::class.java)
         super.onCreate(savedInstanceState)
@@ -63,7 +67,6 @@ class AboutFragment :Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_about_coordinator, container, false)
     }
 
