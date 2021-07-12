@@ -21,24 +21,15 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.Receiver
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
+import ru.voodster.otuslesson.viewModel.FilmListViewModel
 import java.util.*
 
 
 class AboutFragment :Fragment() {
-
-    private lateinit var filmEntity: FilmEntity
-
-    private var pIntentOnce: PendingIntent? = null
-    private var am: AlarmManager? = null
-
-    private val viewModel: FilmListViewModel by activityViewModels()
-    private var FAB_STATUS = false
-
-
 
     companion object {
         const val TAG = "AboutFragment"
@@ -52,23 +43,31 @@ class AboutFragment :Fragment() {
         }
     }
 
+    private lateinit var filmEntity: FilmEntity
+
+    private var pIntentOnce: PendingIntent? = null
+    private var am: AlarmManager? = null
+
+    //@Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    //private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+    private val viewModel : FilmListViewModel by activityViewModels()
+
+    private var FAB_STATUS = false
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         am = getSystemService(requireContext(), AlarmManager::class.java)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDestroy() {
-        viewModel.itemChanged(filmEntity)
-        super.onDestroy()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         return inflater.inflate(R.layout.fragment_about_coordinator, container, false)
     }
 
@@ -127,10 +126,12 @@ class AboutFragment :Fragment() {
         view.findViewById<FloatingActionButton>(R.id.fab_watch).setOnClickListener {
             Log.d(TAG,"pickDate: ")
             pickDateTime(view,film)
+            viewModel.itemChanged(filmEntity)
         }
         view.findViewById<FloatingActionButton>(R.id.fab_fav).setOnClickListener {
             film.fav = !film.fav
             setLike(view,film)
+            viewModel.itemChanged(filmEntity)
         }
 
     }

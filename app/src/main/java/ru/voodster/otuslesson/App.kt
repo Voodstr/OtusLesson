@@ -8,19 +8,13 @@ import android.os.Build
 import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 import ru.voodster.otuslesson.api.*
-import ru.voodster.otuslesson.db.Db
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
-import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
-import java.util.concurrent.Executors
+
+import ru.voodster.otuslesson.db.FilmsRoomDatabase
+
 
 class App:Application() {
-
 
     //"http://10.0.2.2/"
     companion object{
@@ -30,24 +24,27 @@ class App:Application() {
 
         const val CHANNEL_WATCH = "Watch Later"
         const val CHANNEL_FCM = "FCM"
+        lateinit var database: FilmsRoomDatabase
+
         var instance: App? = null
             private set
     }
 
-    private lateinit var filmsApi: FilmsApi
+
+
+    lateinit var filmsApi: FilmsApi
     private lateinit var filmsUpdater : FilmsUpdater
     lateinit var filmsInteractor: FilmsInteractor
+    init {
+        instance = this
+    }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG,"onCreate")
-        instance = this
 
         createNotificationChannel()
         initFireBase()
-        initRetrofit()
-        initInteractor()
-        initDatabase()
 
     }
 
@@ -88,46 +85,6 @@ class App:Application() {
         })
     }
 
-    private fun initDatabase() {
-        Log.d(TAG, "initDatabase")
-
-
-        Executors.newSingleThreadScheduledExecutor().execute{
-            Db.getInstance()?.getFilmsDao()?.getInitial()
-        }
-    }
-
-
-    private fun initInteractor() {
-        Log.d(TAG,"initInteractor")
-        filmsInteractor = FilmsInteractor(filmsApi)
-        Log.d(TAG,"success")
-    }
-
-
-    fun provideLoggingInterceptor() =
-        HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) BODY else NONE }
-
-    private fun initRetrofit() {
-
-        Log.d(TAG,"initRetrofit")
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(provideLoggingInterceptor())
-            .build()
-
-        filmsApi = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-            .create(FilmsApi::class.java)
-
-        filmsUpdater = FilmsUpdater(filmsApi)
-        Log.d(TAG,"success")
-    }
-
-
-
 
 }
+

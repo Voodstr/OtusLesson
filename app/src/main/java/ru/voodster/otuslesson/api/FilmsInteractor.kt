@@ -4,8 +4,6 @@ import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.db.Db
 
 class FilmsInteractor(private val filmsApi: FilmsApi) {
 
@@ -21,11 +19,11 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse")
-                    Db.saveInitialFromServer(response.body()!!)
+                    //FilmsCache.saveInitialFromServer(response.body()!!)
                     callback.onSuccess()
                 } else {
                     Log.d(TAG,"onError")
-                    Db.loadMoreFromDatabase()
+                    //FilmsCache.loadMoreFromDatabase()
                     callback.onError(response.code().toString() + "")
                 }
             }
@@ -43,10 +41,10 @@ class FilmsInteractor(private val filmsApi: FilmsApi) {
             override fun onResponse(call: Call<List<FilmModel>>, response: Response<List<FilmModel>>) {
                 if (response.isSuccessful) {
                     Log.d(TAG,"onResponse : ${response.body()}")
-                    Db.saveMoreFromServer(response.body()!!)
+                    //FilmsCache.saveMoreFromServer(response.body()!!)
                     callback.onSuccess()
                 } else {
-                    Db.loadMoreFromDatabase()
+                    //FilmsCache.loadMoreFromDatabase()
                     callback.onError(response.code().toString() + "")
                 }
             }

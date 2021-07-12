@@ -5,13 +5,16 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.films.FilmListFragment
+import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
+import ru.voodster.otuslesson.viewModel.FilmListViewModel
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,FavFilmListFragment.OnFilmClickListener {
@@ -20,7 +23,9 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
-    private val viewModel : FilmListViewModel by viewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<FilmListViewModel>{viewModelFactory}
 
     companion object{
         const val TAG = "MainActivity"
@@ -30,19 +35,18 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         setContentView(R.layout.activity_main_drawer)
-
         openList()
-
         val  bundle = intent.getBundleExtra("bundle")
         val film = bundle?.getParcelable<FilmEntity>("film")
         if(film!=null){
-            openAboutFilm(film)
+            viewModel.getFilmRx(film.id)
         }
         val watchfilm = bundle?.getString("filmid")
         Log.d(TAG, "watchFilm = $watchfilm")
         if (watchfilm!=null){
-            viewModel.getFilm(watchfilm.toInt())
+            viewModel.getFilmRx(watchfilm.toInt())
         }
 
         viewModel.watchFilm.observe(this,{
@@ -93,6 +97,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
             .addToBackStack(null)
             .commit()
     }
+
 
     private fun openList(){
         supportFragmentManager
@@ -146,8 +151,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     }
 
     override fun onDestroy() {
-        Db.saveFavorites()
-        Db.saveCachedFilms()
+        viewModel.saveDb()
         super.onDestroy()
     }
 }

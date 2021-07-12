@@ -12,9 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.viewModel.FilmListViewModel
 
 
 class FilmListFragment : Fragment()  {
@@ -26,6 +26,9 @@ class FilmListFragment : Fragment()  {
 
     }
 
+   // @Inject
+    //lateinit var viewModelFactory: ViewModelProvider.Factory
+   // private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
     private val viewModel : FilmListViewModel by activityViewModels()
 
     var listener : OnFilmClickListener?=null
@@ -35,6 +38,7 @@ class FilmListFragment : Fragment()  {
         viewModel.saveDb()
         super.onPause()
     }
+
 
 /*
     override fun onResume() {
@@ -47,6 +51,7 @@ class FilmListFragment : Fragment()  {
     override fun onAttach(context: Context) {
         Log.d(TAG,"onAttach")
         super.onAttach(context)
+        //DaggerViewModelFactoryComponent.builder().build().inject(this)
         if(activity is OnFilmClickListener){
             listener = activity as OnFilmClickListener
         }else{
@@ -73,7 +78,8 @@ class FilmListFragment : Fragment()  {
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
             viewModel.saveFav()
-            viewModel.onGetFromServer()
+            viewModel.update()
+            viewModel.getMoreFilmsRx()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
@@ -101,7 +107,7 @@ class FilmListFragment : Fragment()  {
                     super.onScrolled(recyclerView, dx, dy)
                     if(isLastItemDisplaying(recyclerView)){
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = true
-                        viewModel.onGetMoreFromServer()
+                        viewModel.getMoreFilmsRx()
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = false
                     }
                 }
