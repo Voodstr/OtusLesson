@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.Reusable
 import ru.voodster.otuslesson.FilmsRepository
 import ru.voodster.otuslesson.SingleLiveEvent
 import ru.voodster.otuslesson.db.FilmEntity
 import javax.inject.Inject
 
+@Reusable
 class FilmListViewModel @Inject constructor(private val filmsRepository: FilmsRepository)  : ViewModel() {
-
 
 
     init {

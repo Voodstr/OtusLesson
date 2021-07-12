@@ -1,16 +1,17 @@
 package ru.voodster.otuslesson
 
 import android.util.Log
+import dagger.Reusable
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsApi
-import ru.voodster.otuslesson.db.*
+import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.db.FilmsRoomDatabase
+import ru.voodster.otuslesson.db.UserFavorites
 import javax.inject.Inject
-import javax.inject.Singleton
 
-
-@Singleton
+@Reusable
 class FilmsRepository @Inject constructor(
     private val db: FilmsRoomDatabase,
     private val api: FilmsApi

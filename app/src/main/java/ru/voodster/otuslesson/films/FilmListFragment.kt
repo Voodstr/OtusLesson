@@ -29,7 +29,8 @@ class FilmListFragment : Fragment()  {
 
     }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
     //private val viewModel : FilmListViewModel by activityViewModels()
 
