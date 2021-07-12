@@ -3,6 +3,7 @@ package ru.voodster.otuslesson.di
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,12 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.voodster.otuslesson.App
 import ru.voodster.otuslesson.BuildConfig
 import ru.voodster.otuslesson.api.FilmsApi
-import javax.inject.Singleton
 
 @Module
 class ApiModule {
-    @Singleton
     @Provides
+    @Reusable
     fun provideApi(): FilmsApi {
 
         val provideLoggingInterceptor =

@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.delay
-import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
+import ru.voodster.otuslesson.viewModel.FilmListViewModel
+import javax.inject.Inject
 
 
 class FilmListFragment : Fragment()  {
@@ -27,7 +29,10 @@ class FilmListFragment : Fragment()  {
 
     }
 
-    private val viewModel : FilmListViewModel by activityViewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+    //private val viewModel : FilmListViewModel by activityViewModels()
 
     var listener : OnFilmClickListener?=null
 
@@ -60,6 +65,7 @@ class FilmListFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         return inflater.inflate(R.layout.fragment_filmlist,container, false)
     }
 

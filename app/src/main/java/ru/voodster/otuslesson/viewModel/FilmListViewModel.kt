@@ -1,15 +1,18 @@
-package ru.voodster.otuslesson
+package ru.voodster.otuslesson.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.Reusable
+import ru.voodster.otuslesson.FilmsRepository
+import ru.voodster.otuslesson.SingleLiveEvent
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.di.DaggerViewModelComponent
+import javax.inject.Inject
 
-class FilmListViewModel  : ViewModel() {
-    private val filmsComponent= DaggerViewModelComponent.builder().build()
-    private val filmsRepository = filmsComponent.repos()
+@Reusable
+class FilmListViewModel @Inject constructor(private val filmsRepository: FilmsRepository)  : ViewModel() {
+
 
     init {
         Log.d("viewModel",this.toString())
@@ -58,7 +61,7 @@ class FilmListViewModel  : ViewModel() {
 
     fun getMoreFilmsRx(){
         Log.d(TAG,"getMoreFilmsRx")
-        filmsRepository.rxGetNetMore( object: FilmsRepository.GetFilmsCallBack{
+        filmsRepository.rxGetNetMore( object: FilmsRepository.GetFilmsCallBack {
 
             override fun onSuccess(films: List<FilmEntity>) {
                 filmListLiveData.postValue(films)
@@ -72,7 +75,7 @@ class FilmListViewModel  : ViewModel() {
     }
 
     fun getFromDb(){
-        filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack{
+        filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack {
             override fun onSuccess(films: List<FilmEntity>) {
                 filmListLiveData.postValue(films)
             }
