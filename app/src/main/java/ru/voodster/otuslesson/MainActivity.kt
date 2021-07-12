@@ -9,11 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.voodster.otuslesson.about.AboutFragment
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.films.FilmListFragment
 import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 import ru.voodster.otuslesson.viewModel.FilmListViewModel
-import ru.voodster.otuslesson.viewModel.ViewModelFactory
 import javax.inject.Inject
 
 
@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         setContentView(R.layout.activity_main_drawer)
         openList()
-        viewModelFactory = ViewModelFactory()
         val  bundle = intent.getBundleExtra("bundle")
         val film = bundle?.getParcelable<FilmEntity>("film")
         if(film!=null){

@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.Receiver
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.viewModel.FilmListViewModel
 import java.util.*
 import javax.inject.Inject
@@ -67,6 +68,7 @@ class AboutFragment :Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         return inflater.inflate(R.layout.fragment_about_coordinator, container, false)
     }
 

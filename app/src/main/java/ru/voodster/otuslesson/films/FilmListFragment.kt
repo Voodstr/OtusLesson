@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.viewModel.FilmListViewModel
 import javax.inject.Inject
 
@@ -63,6 +64,7 @@ class FilmListFragment : Fragment()  {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        DaggerViewModelFactoryComponent.builder().build().inject(this)
         return inflater.inflate(R.layout.fragment_filmlist,container, false)
     }
 
