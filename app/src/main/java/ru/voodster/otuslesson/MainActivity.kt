@@ -1,6 +1,8 @@
 package ru.voodster.otuslesson
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,13 +20,36 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
+    private val viewModel : FilmListViewModel by viewModels()
+
+    companion object{
+        const val TAG = "MainActivity"
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_drawer)
+
         openList()
+
+        val  bundle = intent.getBundleExtra("bundle")
+        val film = bundle?.getParcelable<FilmEntity>("film")
+        if(film!=null){
+            openAboutFilm(film)
+        }
+        val watchfilm = bundle?.getString("filmid")
+        Log.d(TAG, "watchFilm = $watchfilm")
+        if (watchfilm!=null){
+            viewModel.getFilm(watchfilm.toInt())
+        }
+
+        viewModel.watchFilm.observe(this,{
+            openAboutFilm(it)
+        })
+
+
 
         //lifecycle.addObserver(App.instance!!.filmsUpdater)
 
@@ -60,6 +85,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
 
     private fun openAboutFilm(film: FilmEntity) {
+        Log.d(TAG,"openAboutFilm")
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)

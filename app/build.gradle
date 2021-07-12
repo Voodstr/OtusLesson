@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -58,11 +59,14 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     //lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+
 
     //room
     def room_version = "2.3.0"
@@ -78,7 +82,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     // Paging
-    implementation "android.arch.paging:runtime:1.0.0"
+    //implementation "android.arch.paging:runtime:1.0.0"
 
     //glide - image loader
     implementation 'com.github.bumptech.glide:glide:4.12.0'
@@ -86,7 +90,7 @@ dependencies {
 
     //layout
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
 

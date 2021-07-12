@@ -4,16 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.voodster.otuslesson.api.FilmModel
 import ru.voodster.otuslesson.api.FilmsInteractor
 import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.SingleLiveEvent
 
 class FilmListViewModel : ViewModel() {
     init {
         Log.d("viewModel",this.toString())
-       // listFilms = LivePagedListBuilder(Db.f)
+       // listFilms = LivePagedListBuilder(Db.f)\
+
     }
 
     companion object {
@@ -36,7 +35,10 @@ class FilmListViewModel : ViewModel() {
     val films : LiveData<List<FilmEntity>>
         get() = filmListLiveData
 
-
+    private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0,false)
+    private val watchFilmLiveData = MutableLiveData<FilmEntity>()
+    val watchFilm : LiveData<FilmEntity>
+        get() = watchFilmLiveData
 
     /**
      * On update from server
@@ -46,7 +48,7 @@ class FilmListViewModel : ViewModel() {
 
     fun onGetFromServer() {
         Log.d(TAG,"onGetFromServer")
-
+        loadMoreFromDatabase()
         filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
             override fun onSuccess() {
                 Log.d(TAG ,"success")
@@ -54,8 +56,6 @@ class FilmListViewModel : ViewModel() {
             }
             override fun onError(error: String) {
                 errorMsg.value = error
-                Db.loadInitialFromDatabase()
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
@@ -63,7 +63,7 @@ class FilmListViewModel : ViewModel() {
 
     fun onGetMoreFromServer() {
         Log.d(TAG,"onGetMoreFromServer")
-
+        loadMoreFromDatabase()
         Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
         filmsInteractor.getMore( Db.currentFilmList.size.plus(1), 10  ,object : FilmsInteractor.GetMoreFilmsCallBack {
             override fun onSuccess() {
@@ -73,23 +73,17 @@ class FilmListViewModel : ViewModel() {
             override fun onError(error: String) {
                 errorMsg.value = error
                 Log.d("filmsInteractor", "Data Error")
-                Db.loadMoreFromDatabase()
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
             }
         })
     }
 
 
-    private fun onGetDataFromDatabase(){
-        Log.d(TAG,"onGetDataFromDatabase")
-        Db.loadInitialFromDatabase()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-    }
-
      private fun loadMoreFromDatabase(){
         Log.d(TAG,"loadMore")
-        Db.loadMoreFromDatabase()
-        filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+        Db.loadMoreFromDatabase{
+            filmListLiveData.postValue(it)
+        }
+
     }
 
 
@@ -116,6 +110,17 @@ class FilmListViewModel : ViewModel() {
         Db.saveFavorites()
     }
 
+    fun getFilm(filmid:Int){
+        Log.d(TAG, "getfilm")
+        Db.getFilm(filmid) {
+            watchFilmLiveData.postValue(it)
+        }
+
+    }
+
+    fun itemChanged(film: FilmEntity) {
+        Db.itemChange(film)
+    }
 
 
 }
