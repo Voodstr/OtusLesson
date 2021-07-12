@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,7 +27,6 @@ import ru.voodster.otuslesson.db.FilmEntity
 import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.viewModel.FilmListViewModel
 import java.util.*
-import javax.inject.Inject
 
 
 class AboutFragment :Fragment() {
@@ -50,8 +48,9 @@ class AboutFragment :Fragment() {
     private var pIntentOnce: PendingIntent? = null
     private var am: AlarmManager? = null
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+    //@Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    //private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+    private val viewModel : FilmListViewModel by activityViewModels()
 
     private var FAB_STATUS = false
 

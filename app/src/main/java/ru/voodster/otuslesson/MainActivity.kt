@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         super.onCreate(savedInstanceState)
         DaggerViewModelFactoryComponent.builder().build().inject(this)
         setContentView(R.layout.activity_main_drawer)
-            //openList()
+        openList()
         val  bundle = intent.getBundleExtra("bundle")
         val film = bundle?.getParcelable<FilmEntity>("film")
         if(film!=null){

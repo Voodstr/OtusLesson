@@ -9,21 +9,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.di.DaggerViewModelFactoryComponent
 import ru.voodster.otuslesson.viewModel.FilmListViewModel
-import javax.inject.Inject
 
 class FavFilmListFragment : Fragment()  {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
+   // @Inject
+   // lateinit var viewModelFactory: ViewModelProvider.Factory
+   // private val viewModel by activityViewModels<FilmListViewModel>{viewModelFactory}
 
+   private val viewModel : FilmListViewModel by activityViewModels()
     var listener : OnFilmClickListener?=null
 
     companion object{
@@ -36,6 +34,7 @@ class FavFilmListFragment : Fragment()  {
     override fun onAttach(context: Context) {
         Log.d(TAG,"onAttach")
         super.onAttach(context)
+        //DaggerViewModelFactoryComponent.builder().build().inject(this)
         if(activity is OnFilmClickListener){
             listener = activity as OnFilmClickListener
         }else{
@@ -50,13 +49,11 @@ class FavFilmListFragment : Fragment()  {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        DaggerViewModelFactoryComponent.builder().build().inject(this)
         return inflater.inflate(R.layout.fragment_favorite,container, false)
     }
 
