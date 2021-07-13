@@ -25,10 +25,37 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
+    signingConfigs {
+        production {
+            storeFile file('C:\\Users\\Dimon\\key\\testJKS.jks')
+            keyAlias 'testkey'
+            keyPassword 'test123'
+            storePassword 'test123'
+        }
+        dev {
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        dev {
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules-dev.pro'
+        }
+        production {
+            minifyEnabled false
+            applicationIdSuffix '.prod'
+            versionNameSuffix '-prod'
+            signingConfig signingConfigs.production
         }
     }
     compileOptions {
@@ -38,6 +65,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions 'deafult'
+
+    productFlavors {
+        paid {
+            dimension 'deafult'
+            versionName 'paid'
+            applicationId 'ru.voodster.otuslesson.paid'
+            proguardFiles 'proguard-rules.pro'
+        }
+        free {
+            dimension 'deafult'
+            versionName 'free'
+            applicationId 'ru.voodster.otuslesson.free'
+        }
+    }
+
 }
 
 dependencies {
@@ -51,9 +95,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-   // implementation "androidx.activity:activity-ktx:1.3.2"
-    implementation 'androidx.fragment:fragment-ktx:1.3.4'
+    implementation 'androidx.fragment:fragment-ktx:1.3.5'
     implementation 'androidx.core:core-ktx:1.5.0'
+
+    //dagger2
+    implementation 'com.google.dagger:dagger:2.37'
+    kapt 'com.google.dagger:dagger-compiler:2.37'
+
+    // RxJava 3
+    implementation "io.reactivex.rxjava3:rxjava:3.0.13"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 
     //firebase
     // Add the dependencies for any other desired Firebase products
@@ -73,33 +125,54 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
 
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //httpinterceptor
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
-
-    // Paging
-    //implementation "android.arch.paging:runtime:1.0.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
 
     //glide - image loader
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-
-
     //layout
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
-
     //coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-native-mt'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
+    //JUnit
+    testImplementation 'junit:junit:4.13.2'
+    // Required for instrumented tests
+    androidTestImplementation 'com.android.support:support-annotations:28.0.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+    //Moockito
+    testImplementation "org.mockito:mockito-core:2.24.0"
+    androidTestImplementation "org.mockito:mockito-android:2.24.0"
+    testImplementation 'org.mockito:mockito-inline:2.24.0'
+
+    //Robolectric environment
+    testImplementation 'org.robolectric:robolectric:4.5.1'
+    testImplementation 'androidx.test:core:1.3.0'
+    testImplementation 'androidx.test.ext:truth:1.3.0'
+    testImplementation 'com.google.truth:truth:1.1.3'
+
 
     //Espresso - android UI test
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+    }
 
 
 

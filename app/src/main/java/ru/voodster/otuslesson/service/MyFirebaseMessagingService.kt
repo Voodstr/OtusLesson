@@ -1,9 +1,8 @@
-package ru.voodster.otuslesson
+package ru.voodster.otuslesson.service
 
 import android.R
 import android.app.PendingIntent
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
@@ -12,6 +11,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import ru.voodster.otuslesson.App
+import ru.voodster.otuslesson.MainActivity
 
 class MyFirebaseMessagingService() : FirebaseMessagingService(), Parcelable {
     constructor(parcel: Parcel) : this() {

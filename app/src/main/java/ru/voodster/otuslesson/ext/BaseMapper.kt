@@ -1,5 +1,5 @@
-package ru.voodster.otuslesson.db
-abstract class BaseMapper<Entity, Model> {
+package ru.voodster.otuslesson.ext
+abstract class BaseMapper<Entity, Model>() {
 
     abstract fun reverseMap(entity: Entity?) : Model?
 

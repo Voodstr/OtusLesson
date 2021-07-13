@@ -10,8 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
@@ -28,7 +27,7 @@ import ru.voodster.otuslesson.db.FilmEntity
 import java.util.*
 
 
-class AboutFragment :Fragment() {
+class AboutFragmentStatic :Fragment() {
 
     private lateinit var filmEntity: FilmEntity
 
@@ -43,8 +42,8 @@ class AboutFragment :Fragment() {
     companion object {
         const val TAG = "AboutFragment"
         private const val FILM_DATA = "FILM_DATA"
-        fun newInstance(film: FilmEntity): AboutFragment {
-            return AboutFragment().apply {
+        fun newInstance(film: FilmEntity): AboutFragmentStatic {
+            return AboutFragmentStatic().apply {
                 arguments = Bundle().apply {
                     putParcelable(FILM_DATA, film)
                 }
@@ -64,7 +63,7 @@ class AboutFragment :Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_about_coordinator, container, false)
+        return inflater.inflate(R.layout.fragment_about_static, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,34 +98,20 @@ class AboutFragment :Fragment() {
 
     private fun setClickListeners(view: View, film: FilmEntity) {
 
-        val fab1 = view.findViewById<FloatingActionButton>(R.id.fab_fav)
-        val fab2 = view.findViewById<FloatingActionButton>(R.id.fab_share)
-        val fab3 = view.findViewById<FloatingActionButton>(R.id.fab_watch)
 
 
 
-        view.findViewById<FloatingActionButton>(R.id.aboutMenuBtn).setOnClickListener {
-            if (!FAB_STATUS){
-                setLater(view,film)
-                setLike(view, film)
-                expandFAB(fab1, fab2, fab3)
-            }else {
-                hideFAB(fab1, fab2, fab3)
-            }
-            FAB_STATUS=!FAB_STATUS
-        }
-
-        view.findViewById<FloatingActionButton>(R.id.fab_share).setOnClickListener {
+        view.findViewById<ImageView>(R.id.fab_share).setOnClickListener {
             share(film)
         }
-        view.findViewById<FloatingActionButton>(R.id.fab_watch).setOnClickListener {
+        view.findViewById<ImageView>(R.id.fab_watch).setOnClickListener {
             Log.d(TAG,"pickDate: ")
             pickDateTime(view,film)
             viewModel.itemChanged(filmEntity)
         }
-        view.findViewById<FloatingActionButton>(R.id.fab_fav).setOnClickListener {
+        view.findViewById<ImageView>(R.id.fab_fav).setOnClickListener {
             film.fav = !film.fav
-            setLike(view,film)
+            setFav(view,film)
             viewModel.itemChanged(filmEntity)
         }
 
@@ -195,83 +180,32 @@ class AboutFragment :Fragment() {
     }
 
 
-    private fun setLike(view:View,film: FilmEntity){
+    fun setFav(view:View, film: FilmEntity){
         Log.d(TAG,"setLike")
         if (film.fav){
             with(view) {
-                findViewById<FloatingActionButton>(R.id.fab_fav).
-                    background.setTint(getColor(requireContext(),R.color.pal_2))
+                findViewById<ImageView>(R.id.fab_fav)
+                    .setBackgroundResource(R.drawable.baseline_favorite_red_a200_24dp)
+                findViewById<ImageView>(R.id.fab_fav).contentDescription = (R.drawable.baseline_favorite_red_a200_24dp).toString()
             }
-        }else  view.findViewById<FloatingActionButton>(R.id.fab_fav).
-        background.setTint(getColor(requireContext(),R.color.pal_3))
+        }else {
+            view.findViewById<ImageView>(R.id.fab_fav)
+                .setBackgroundResource(R.drawable.baseline_favorite_border_black_24dp)
+            view.findViewById<ImageView>(R.id.fab_fav).contentDescription = (R.drawable.baseline_favorite_border_black_24dp).toString()
+        }
     }
 
     private fun setLater(view:View,film: FilmEntity){
         Log.d(TAG,"setLater")
         if (film.watch){
-            view.findViewById<FloatingActionButton>(R.id.fab_watch).
+            view.findViewById<ImageView>(R.id.fab_watch).
             background.setTint(getColor(requireContext(),R.color.pal_2))
-        }else  view.findViewById<FloatingActionButton>(R.id.fab_watch).
+        }else  view.findViewById<ImageView>(R.id.fab_watch).
         background.setTint(getColor(requireContext(),R.color.pal_3))
     }
 
 
 
-
-    private fun expandFAB(fab1:FloatingActionButton,fab2:FloatingActionButton,fab3:FloatingActionButton) {
-
-        //Floating Action Button 1
-        val layoutParams = fab1.layoutParams as FrameLayout.LayoutParams
-        layoutParams.rightMargin += (fab1.width * 1.7).toInt()
-        layoutParams.bottomMargin += (fab1.height * 0.25).toInt()
-        fab1.layoutParams = layoutParams
-        fab1.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab1_show))
-        fab1.isClickable = true
-
-        //Floating Action Button 2
-        val layoutParams2 = fab2.layoutParams as FrameLayout.LayoutParams
-        layoutParams2.rightMargin += (fab2.width * 1.5).toInt()
-        layoutParams2.bottomMargin += (fab2.height * 1.5).toInt()
-        fab2.layoutParams = layoutParams2
-        fab2.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab2_show))
-        fab2.isClickable = true
-
-        //Floating Action Button 3
-        val layoutParams3 = fab3.layoutParams as FrameLayout.LayoutParams
-        layoutParams3.rightMargin += (fab3.width * 0.25).toInt()
-        layoutParams3.bottomMargin += (fab3.height * 1.7).toInt()
-        fab3.layoutParams = layoutParams3
-        fab3.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab3_show))
-        fab3.isClickable = true
-    }
-
-
-    private fun hideFAB(fab1:FloatingActionButton,fab2:FloatingActionButton,fab3:FloatingActionButton) {
-
-        //Floating Action Button 1
-        val layoutParams = fab1.layoutParams as FrameLayout.LayoutParams
-        layoutParams.rightMargin -= (fab1.width * 1.7).toInt()
-        layoutParams.bottomMargin -= (fab1.height * 0.25).toInt()
-        fab1.layoutParams = layoutParams
-        fab1.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab1_hide))
-        fab1.isClickable = false
-
-        //Floating Action Button 2
-        val layoutParams2 = fab2.layoutParams as FrameLayout.LayoutParams
-        layoutParams2.rightMargin -= (fab2.width * 1.5).toInt()
-        layoutParams2.bottomMargin -= (fab2.height * 1.5).toInt()
-        fab2.layoutParams = layoutParams2
-        fab2.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab2_hide))
-        fab2.isClickable = false
-
-        //Floating Action Button 3
-        val layoutParams3 = fab3.layoutParams as FrameLayout.LayoutParams
-        layoutParams3.rightMargin -= (fab3.width * 0.25).toInt()
-        layoutParams3.bottomMargin -= (fab3.height * 1.7).toInt()
-        fab3.layoutParams = layoutParams3
-        fab3.startAnimation(AnimationUtils.loadAnimation(this.context,R.anim.fab3_hide))
-        fab3.isClickable = false
-    }
 
 
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.delay
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.db.FilmEntity
@@ -73,7 +74,8 @@ class FilmListFragment : Fragment()  {
         //update after top swipe
         view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).setOnRefreshListener {
             viewModel.saveFav()
-            viewModel.onGetFromServer()
+            viewModel.update()
+            viewModel.getMoreFilmsRx()
             view.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate).isRefreshing=false
         }
 
@@ -101,7 +103,7 @@ class FilmListFragment : Fragment()  {
                     super.onScrolled(recyclerView, dx, dy)
                     if(isLastItemDisplaying(recyclerView)){
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = true
-                        viewModel.onGetMoreFromServer()
+                        viewModel.getMoreFilmsRx()
                         view?.findViewById<SwipeRefreshLayout>(R.id.swipeUpdate)?.isRefreshing = false
                     }
                 }

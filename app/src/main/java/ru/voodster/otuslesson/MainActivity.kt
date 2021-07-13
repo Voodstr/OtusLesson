@@ -6,11 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.voodster.otuslesson.about.AboutFragment
-import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
-import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.films.FilmListFragment
+import ru.voodster.otuslesson.filmsFavorite.FavFilmListFragment
 import ru.voodster.otuslesson.search.SearchFragment
 
 
@@ -20,13 +18,15 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     private val searchFragment = SearchFragment()
     private val favFilmListFragment = FavFilmListFragment()
 
+
+
     private val viewModel : FilmListViewModel by viewModels()
 
     companion object{
         const val TAG = "MainActivity"
     }
 
-
+    lateinit var bottomNav:  BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +37,12 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         val  bundle = intent.getBundleExtra("bundle")
         val film = bundle?.getParcelable<FilmEntity>("film")
         if(film!=null){
-            openAboutFilm(film)
+            viewModel.getFilmRx(film.id)
         }
         val watchfilm = bundle?.getString("filmid")
         Log.d(TAG, "watchFilm = $watchfilm")
         if (watchfilm!=null){
-            viewModel.getFilm(watchfilm.toInt())
+            viewModel.getFilmRx(watchfilm.toInt())
         }
 
         viewModel.watchFilm.observe(this,{
@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
         })
 
 
-
         //lifecycle.addObserver(App.instance!!.filmsUpdater)
-
 
         setClickListeners()
         setNavigationBar()
@@ -71,7 +69,8 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
 
     private fun setNavigationBar(){
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
+        bottomNav = findViewById(R.id.bottomNavigation)
         bottomNav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_filmList -> openList()
@@ -86,13 +85,15 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
 
     private fun openAboutFilm(film: FilmEntity) {
         Log.d(TAG,"openAboutFilm")
+        val fragment = FlavorGetter().getAboutFragment(film)
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.enter_toptobottom,R.anim.exit_bottomtotop,R.anim.enter_bottomtotop,R.anim.exit_toptobottom)
-            .replace(R.id.fragmentContainer, AboutFragment.newInstance(film))
+            .replace(R.id.fragmentContainer, fragment) //Static for Tests
             .addToBackStack(null)
             .commit()
     }
+
 
     private fun openList(){
         supportFragmentManager
@@ -146,8 +147,7 @@ class MainActivity : AppCompatActivity(), FilmListFragment.OnFilmClickListener,F
     }
 
     override fun onDestroy() {
-        Db.saveFavorites()
-        Db.saveCachedFilms()
+        viewModel.saveDb()
         super.onDestroy()
     }
 }

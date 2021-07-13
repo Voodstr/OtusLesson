@@ -1,19 +1,12 @@
 package ru.voodster.otuslesson.films
 
-import android.content.Context
-import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import okhttp3.internal.notify
 import ru.voodster.otuslesson.R
-import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
-import java.net.URI
 
 class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
 

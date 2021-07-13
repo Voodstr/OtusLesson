@@ -4,20 +4,23 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.voodster.otuslesson.api.FilmsInteractor
-import ru.voodster.otuslesson.db.Db
 import ru.voodster.otuslesson.db.FilmEntity
+import ru.voodster.otuslesson.di.DaggerViewModelComponent
+import ru.voodster.otuslesson.ext.SingleLiveEvent
 
-class FilmListViewModel : ViewModel() {
+
+class FilmListViewModel  : ViewModel() {
+    private val filmsComponent= DaggerViewModelComponent.builder().build()
+    private val filmsRepository = filmsComponent.repos()
+
     init {
         Log.d("viewModel",this.toString())
-       // listFilms = LivePagedListBuilder(Db.f)\
-
     }
 
     companion object {
         const val TAG = "FilmListViewModel"
     }
+
 
 
     private val filmListLiveData = MutableLiveData<List<FilmEntity>>()
@@ -27,7 +30,6 @@ class FilmListViewModel : ViewModel() {
 
     val errorMsg = SingleLiveEvent<String>()
 
-    private val filmsInteractor = App.instance!!.filmsInteractor
 
     val favorites : LiveData<List<FilmEntity>>
         get() = favoriteLiveData
@@ -35,91 +37,85 @@ class FilmListViewModel : ViewModel() {
     val films : LiveData<List<FilmEntity>>
         get() = filmListLiveData
 
+
     private val fakeFilm = FilmEntity(0,"empty","empty","empty",false,0,false)
     private val watchFilmLiveData = MutableLiveData<FilmEntity>()
     val watchFilm : LiveData<FilmEntity>
         get() = watchFilmLiveData
+
+
+    fun getFilmRx(filmid: Int){
+        Log.d(TAG,"getFilmRx")
+        filmsRepository.rxGetFilmFromDb(filmid){
+            if (it != null) {
+                watchFilmLiveData.postValue(it)
+            }
+        }
+    }
 
     /**
      * On update from server
      *
      */
 
+    fun getMoreFilmsRx(){
+        Log.d(TAG,"getMoreFilmsRx")
+        filmsRepository.rxGetNetMore( object: FilmsRepository.GetFilmsCallBack{
 
-    fun onGetFromServer() {
-        Log.d(TAG,"onGetFromServer")
-        loadMoreFromDatabase()
-        filmsInteractor.getInitial( object : FilmsInteractor.GetFilmsCallBack {
-            override fun onSuccess() {
-                Log.d(TAG ,"success")
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
+            override fun onSuccess(films: List<FilmEntity>) {
+                filmListLiveData.postValue(films)
             }
-            override fun onError(error: String) {
-                errorMsg.value = error
-            }
-        })
-    }
 
+            override fun onError(error: String?) {
+                errorMsg.postValue("Network error")
+                filmsRepository.rxGetDbMore(object: FilmsRepository.GetFilmsCallBack{
+                    override fun onSuccess(films: List<FilmEntity>) {
+                        filmListLiveData.postValue(films)
+                    }
 
-    fun onGetMoreFromServer() {
-        Log.d(TAG,"onGetMoreFromServer")
-        loadMoreFromDatabase()
-        Log.d(TAG,"${Db.currentFilmList.size}, ${Db.currentFilmList.size.plus(10)}")
-        filmsInteractor.getMore( Db.currentFilmList.size.plus(1), 10  ,object : FilmsInteractor.GetMoreFilmsCallBack {
-            override fun onSuccess() {
-                Log.d("filmsInteractor", "onSuccessMore")
-                filmListLiveData.postValue(Db.cachedOrFakeFilmList)
-            }
-            override fun onError(error: String) {
-                errorMsg.value = error
-                Log.d("filmsInteractor", "Data Error")
+                    override fun onError(error: String?) {
+                        errorMsg.postValue(error!!)
+                    }
+                }
+
+                )
             }
         })
     }
 
-
-     private fun loadMoreFromDatabase(){
-        Log.d(TAG,"loadMore")
-        Db.loadMoreFromDatabase{
-            filmListLiveData.postValue(it)
-        }
-
+    fun update(){
+        Log.d(TAG,"update")
+        filmsRepository.saveCachedFilms()
+        filmsRepository.filmListClear()
+        filmListLiveData.postValue(listOf(fakeFilm))
     }
 
 
 
-    fun onGetFavFromDatabase(){
+
+    fun onGetFavFromCache(){
         Log.d(TAG,"onGetFavFromDatabase")
-        favoriteLiveData.postValue(Db.currentFilmList.filter { it.fav })
+        favoriteLiveData.postValue(filmsRepository.currentFilmList.filter { it.fav })
     }
 
     fun saveDb(){
         Log.d(TAG,"saveDb")
-        Db.saveFavorites()
-        Db.saveCachedFilms()
+        filmsRepository.saveCachedFavorites()
+        filmsRepository.saveCachedFilms()
 
     }
 
-    fun loadDb(){
-        Log.d(TAG,"loadDb")
-        Db.loadInitialFromDatabase()
-    }
 
     fun saveFav(){
         Log.d(TAG,"saveFav")
-        Db.saveFavorites()
+        filmsRepository.saveCachedFavorites()
     }
 
-    fun getFilm(filmid:Int){
-        Log.d(TAG, "getfilm")
-        Db.getFilm(filmid) {
-            watchFilmLiveData.postValue(it)
-        }
 
-    }
+
 
     fun itemChanged(film: FilmEntity) {
-        Db.itemChange(film)
+        filmsRepository.itemChange(film)
     }
 
 

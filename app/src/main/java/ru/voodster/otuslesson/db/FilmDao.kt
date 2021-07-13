@@ -1,6 +1,9 @@
 package ru.voodster.otuslesson.db
 
 import androidx.room.*
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface FilmDao {
@@ -18,8 +21,15 @@ interface FilmDao {
     @Query("SELECT * FROM films_table where id = :filmid")
     fun getFilm(filmid:Int):FilmEntity
 
+    @Query("SELECT * FROM films_table ORDER BY rowID ASC LIMIT :size OFFSET :start")
+    fun getRangeRx(start:Int, size:Int):Single<List<FilmEntity>>
+
+    @Query("SELECT * FROM films_table where id = :filmid")
+    fun getFilmRx(filmid: Int):Single<FilmEntity>
+
     @Query("Select filmID from user_favorites order by filmID")
-    fun getUserFavorites():List<UserFavorites>
+    fun getUserFavoritesRx():Flowable<List<UserFavorites>>
+
 
 
     @Query("DELETE FROM user_favorites")

@@ -1,4 +1,4 @@
-package ru.voodster.otuslesson
+package ru.voodster.otuslesson.db
 
 import androidx.room.TypeConverter
 import java.util.*

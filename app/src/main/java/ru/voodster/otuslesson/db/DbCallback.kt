@@ -3,6 +3,7 @@ package ru.voodster.otuslesson.db
 import android.util.Log
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ru.voodster.otuslesson.FilmsRepository
 
 class DbCallback : RoomDatabase.Callback() {
 
@@ -15,11 +16,13 @@ class DbCallback : RoomDatabase.Callback() {
     //Действие при создании базы
     override fun onCreate(db: SupportSQLiteDatabase) {
         Log.d(TAG, "onCreate")
-
-        Db.getInstance()?.queryExecutor?.execute {
-            Db.getInstance()?.getFilmsDao()?.deleteAll()
-            Db.getInstance()?.getFilmsDao()?.insertAll(*fakeList.toTypedArray())
+        /*
+        FilmsRepository.getInstance()?.queryExecutor?.execute {
+            FilmsRepository.getInstance()?.getFilmsDao()?.deleteAll()
+            FilmsRepository.getInstance()?.getFilmsDao()?.insertAll(*fakeList.toTypedArray())
         }
+
+         */
     }
 
     override fun onOpen(db: SupportSQLiteDatabase) {
