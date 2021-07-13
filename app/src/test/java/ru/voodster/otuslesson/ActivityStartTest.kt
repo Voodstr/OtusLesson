@@ -1,18 +1,14 @@
 package ru.voodster.otuslesson
 
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric.*
-import ru.voodster.otuslesson.films.FilmListFragment
-import  org.robolectric.RobolectricTestRunner
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import org.robolectric.Robolectric.buildActivity
+import org.robolectric.RobolectricTestRunner
 
 
 @RunWith(RobolectricTestRunner::class)
-class RobolectricTest {
+class ActivityStartTest {
 
 
 

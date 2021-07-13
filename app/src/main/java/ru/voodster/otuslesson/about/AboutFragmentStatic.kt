@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.voodster.otuslesson.FilmListViewModel
 import ru.voodster.otuslesson.R
 import ru.voodster.otuslesson.Receiver
@@ -91,7 +90,7 @@ class AboutFragmentStatic :Fragment() {
         view.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setExpandedTitleColor(view.context.getColor(R.color.pal_2))
         view.findViewById<CollapsingToolbarLayout>(R.id.aboutTitleTv).setCollapsedTitleTextColor(view.context.getColor(R.color.pal_4))
         view.findViewById<TextView>(R.id.aboutDescriptionTv).text = film.description.plus("\n")
-
+        setFav(view,film)
 
     }
 

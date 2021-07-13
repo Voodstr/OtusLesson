@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "147637267101",
+    "project_id": "otus-firebasetrial",
+    "storage_bucket": "otus-firebasetrial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147637267101:android:ddeb615a862e29cc038274",
+        "android_client_info": {
+          "package_name": "ru.voodster.otuslesson.free"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147637267101-4pd0666eephfcb39qo1rl1t8ndi7719g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnpgksRWHm-gCwRKg4Bbd3TTFudNN9ORg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147637267101-4pd0666eephfcb39qo1rl1t8ndi7719g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147637267101:android:13a215825ba4bebe038274",
+        "android_client_info": {
+          "package_name": "ru.voodster.otuslesson.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147637267101-4pd0666eephfcb39qo1rl1t8ndi7719g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnpgksRWHm-gCwRKg4Bbd3TTFudNN9ORg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147637267101-4pd0666eephfcb39qo1rl1t8ndi7719g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
