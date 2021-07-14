@@ -11,6 +11,7 @@ import ru.voodster.otuslesson.db.FilmEntity
 
 class RepoTest {
 
+
     val mockRepo = mock(FilmsRepository::class.java)
     val e1 = FilmEntity(3,"","","",false,0)
     val e2 = FilmEntity(2,"","","",false,0)
