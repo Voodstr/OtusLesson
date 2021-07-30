@@ -13,6 +13,7 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
     private val img: ImageView = itemView.findViewById(R.id.filmImg)
     private val title: TextView = itemView.findViewById(R.id.filmTitleTv)
     val likeBtn: ImageView = itemView.findViewById(R.id.filmLikeBtn)
+    val description: TextView = itemView.findViewById(R.id.filmDescTv)
 
 
     companion object{
@@ -40,6 +41,8 @@ class FilmVH(FilmView: View) : RecyclerView.ViewHolder(FilmView) {
             .into(img)
 
         title.text = film.title
+        description.text = film.description
+
         setLike(film)
 /*
         likeBtn.setOnClickListener {
