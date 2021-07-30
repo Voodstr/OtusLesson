@@ -8,15 +8,8 @@ import android.os.Build
 import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-
-import dagger.Component
-
 import ru.voodster.otuslesson.api.*
-import ru.voodster.otuslesson.db.DbModule
-
 import ru.voodster.otuslesson.db.FilmsRoomDatabase
-
-import javax.inject.Singleton
 
 
 
@@ -24,7 +17,7 @@ class App:Application() {
 
     //"http://10.0.2.2/"
     companion object{
-        const val BASE_URL = "https://db.shs.com.ru/"
+        const val BASE_URL = "https://svn.signalmodelling.ru/"
 
         const val TAG = "App"
 
